@@ -22,21 +22,39 @@
             android:paddingBottom="20dp"
             android:paddingTop="20dp" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/layoutCategotyAction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/background_blue_border"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/select_bussiness_area"
-            android:textColor="@android:color/white" />
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="@string/select_bussiness_area"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:id="@+id/imgCategotyAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/arrow_down" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/listExhibition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical"
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>

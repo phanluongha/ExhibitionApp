@@ -2,19 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@android:color/white"
+    android:orientation="horizontal"
     android:padding="10dp">
 
     <TextView
         android:id="@+id/node_value"
-        android:textAllCaps="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:layout_width="match_parent"
-        android:textStyle="bold"
+        android:textAllCaps="true"
         android:textColor="#0053A3"
         android:textSize="20dp"
-        android:layout_height="wrap_content" />
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imgStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_down"
+        android:tag="0" />
 
 </LinearLayout>

@@ -1,12 +1,16 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -98,21 +102,22 @@ public class GerneralEventActivity extends AppCompatActivity {
                 }
             } else {
                 try {
+                    final JSONObject data = json.getJSONObject("data");
                     Glide
                             .with(GerneralEventActivity.this)
-                            .load(json.getString("ImageLink"))
+                            .load(data.getString("ImageLink"))
                             .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .into(banner);
-                    txtEventName.setText(json.getString("Name"));
-                    txtEventDate.setText(json.getString("Date"));
-                    txtEventContent.setText(json.getString("Description"));
+                    txtEventName.setText(data.getString("Name"));
+                    txtEventDate.setText(data.getString("Date"));
+                    txtEventContent.setText(data.getString("Description"));
                     imgFacebook.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
-                                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(json.getString("FaceBookLink")));
+                                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getString("FaceBookLink")));
                                 startActivity(facebookIntent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -123,7 +128,7 @@ public class GerneralEventActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(json.getString("FaceBookLink")));
+                                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getString("WebLink")));
                                 startActivity(facebookIntent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -134,8 +139,9 @@ public class GerneralEventActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(json.getString("FaceBookLink")));
-                                startActivity(facebookIntent);
+                                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                        "mailto", data.getString("Email"), null));
+                                startActivity(Intent.createChooser(emailIntent, "Send email..."));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -145,8 +151,17 @@ public class GerneralEventActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(json.getString("FaceBookLink")));
-                                startActivity(facebookIntent);
+                                if (ActivityCompat.checkSelfPermission(GerneralEventActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                                    Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + data.getString("Phone")));
+                                    startActivity(intentCall);
+                                } else {
+                                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        ActivityCompat.requestPermissions(GerneralEventActivity.this,
+                                                new String[]{Manifest.permission.CALL_PHONE},
+                                                1);
+                                    }
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -155,6 +170,20 @@ public class GerneralEventActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    imgPhone.performClick();
+                }
+                return;
             }
         }
     }

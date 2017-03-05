@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.phanluongha.myfirstapplication.impl.Animation;
 import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickListener;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
@@ -43,6 +44,8 @@ public class ListExhibitionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, EventCategoryChildClickListener {
     private ImageView btnDrawer;
     private DrawerLayout drawer;
+    private LinearLayout layoutCategotyAction;
+    private ImageView imgCategotyAction;
     private FancyCoverFlow fancyCoverFlow;
     private LinearLayout listExhibition;
     private FancyCoverFlowSampleAdapter adapter;
@@ -69,6 +72,20 @@ public class ListExhibitionActivity extends AppCompatActivity
         int fancyCoverHeight = 2 * metrics.widthPixels / 3 + pxFromDp(40);
         fancyCoverFlow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, fancyCoverHeight));
         listExhibition = (LinearLayout) findViewById(R.id.listExhibition);
+        layoutCategotyAction = (LinearLayout) findViewById(R.id.layoutCategotyAction);
+        imgCategotyAction = (ImageView) findViewById(R.id.imgCategotyAction);
+        layoutCategotyAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listExhibition.getVisibility() == View.GONE) {
+                    listExhibition.setVisibility(View.VISIBLE);
+                    imgCategotyAction.setImageResource(R.drawable.arrow_up);
+                } else {
+                    imgCategotyAction.setImageResource(R.drawable.arrow_down);
+                    listExhibition.setVisibility(View.GONE);
+                }
+            }
+        });
         getListEvent(0);
         new GetListEventCategory().execute();
 
@@ -143,6 +160,20 @@ public class ListExhibitionActivity extends AppCompatActivity
             view.setLayoutParams(new ViewGroup.LayoutParams(metrics.widthPixels, ViewGroup.LayoutParams.WRAP_CONTENT));
             TextView tvValue = (TextView) view.findViewById(R.id.node_value);
             tvValue.setText(value.getName());
+            final ImageView imgStatus = (ImageView) view.findViewById(R.id.imgStatus);
+            imgStatus.setImageResource(R.drawable.keyboard_arrow_down);
+            node.setClickListener(new TreeNode.TreeNodeClickListener() {
+                @Override
+                public void onClick(TreeNode node, Object value) {
+                    if (imgStatus.getTag() == "0") {
+                        imgStatus.setImageResource(R.drawable.keyboard_arrow_down);
+                        imgStatus.setTag("1");
+                    } else {
+                        imgStatus.setImageResource(R.drawable.keyboard_arrow_up);
+                        imgStatus.setTag("0");
+                    }
+                }
+            });
             return view;
         }
     }
@@ -190,7 +221,7 @@ public class ListExhibitionActivity extends AppCompatActivity
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?category_id=" + String.valueOf(category) : ""));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?idCategory=" + String.valueOf(category) : ""));
             return json;
         }
 

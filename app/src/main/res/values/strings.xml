@@ -15,4 +15,5 @@
     <string name="title_activity_gerneral_event">GerneralEventActivity</string>
     <string name="title_activity_list_exhibition_event">ListExhibitionEventActivity</string>
     <string name="txt_search">Search</string>
+    <string name="title_activity_detail_exhibition">DetailExhibitionActivity</string>
 </resources>
