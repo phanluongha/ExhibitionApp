@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_list_exhibition"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.phanluongha.myfirstapplication.ListExhibitionActivity"
+    tools:showIn="@layout/app_bar_list_exhibition">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <at.technikum.mti.fancycoverflow.FancyCoverFlow
+            android:id="@+id/fancyCoverFlow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#191919"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_blue_border"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/select_bussiness_area"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:id="@+id/listExhibition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+</ScrollView>
