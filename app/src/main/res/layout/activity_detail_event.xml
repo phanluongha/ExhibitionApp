@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context="com.example.phanluongha.myfirstapplication.DetailEventActivity">
 
+
+    
     <include
         layout="@layout/app_bar_detail_exhibition"
         android:layout_width="match_parent"
