@@ -7,3 +7,12 @@
 /build
 /captures
 .externalNativeBuild
+.idea/gradle.xml
+FancyCover/build/intermediates/blame/res/androidTest/debug/multi/values.json
+FancyCover/build/intermediates/blame/res/androidTest/debug/multi/values.json
+*.jar
+FancyCover/build/intermediates/classes/release/at/technikum/mti/fancycoverflow/FancyCoverFlow.class
+FancyCover/build/intermediates/incremental/mergeDebugAndroidTestResources/compile-file-map.properties
+FancyCover/build/intermediates/incremental/mergeDebugShaders/merger.xml
+FancyCover/build/intermediates/incremental/packageDebugResources/compile-file-map.properties
+FancyCover/build/intermediates/incremental/packageReleaseResources/merger.xml

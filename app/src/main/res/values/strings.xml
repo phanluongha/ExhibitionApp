@@ -17,4 +17,10 @@
     <string name="txt_search">Search</string>
     <string name="title_activity_detail_exhibition">DetailExhibitionActivity</string>
     <string name="title_activity_list_product_event">ListProductEventActivity</string>
+    <string name="add_favorite">Add favorite</string>
+    <string name="add_favorite_confirm">Are you sure you want to add this Exhibition to favorite list?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="title_activity_detail_product">DetailProductActivity</string>
+    <string name="description">Description</string>
 </resources>
