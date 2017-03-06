@@ -63,13 +63,4 @@ public class Exhibition {
         isFavorite = favorite;
     }
 
-    private boolean isShow = true;
-
-    public boolean isShow() {
-        return isShow;
-    }
-
-    public void setShow(boolean show) {
-        isShow = show;
-    }
 }

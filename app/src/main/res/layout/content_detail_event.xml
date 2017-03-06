@@ -39,10 +39,10 @@
                     android:id="@+id/txtAbout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#494F5D"
-                    android:drawableTop="@drawable/ic_about"
                     android:drawablePadding="5dp"
-                    android:text="@string/general_infomation" />
+                    android:drawableTop="@drawable/ic_about"
+                    android:text="@string/general_infomation"
+                    android:textColor="#494F5D" />
             </LinearLayout>
 
             <LinearLayout
@@ -61,10 +61,10 @@
                     android:id="@+id/txtExhibitor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#494F5D"
+                    android:drawablePadding="5dp"
                     android:drawableTop="@drawable/icon_exhibitors"
-                    android:drawablePadding="5dp"
-                    android:text="@string/exhibitor" />
+                    android:text="@string/exhibitor"
+                    android:textColor="#494F5D" />
             </LinearLayout>
         </LinearLayout>
 
@@ -86,12 +86,13 @@
                 android:paddingTop="30dp">
 
                 <TextView
+                    android:id="@+id/txtProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#494F5D"
+                    android:drawablePadding="5dp"
                     android:drawableTop="@drawable/icon_products"
-                    android:drawablePadding="5dp"
-                    android:text="@string/products" />
+                    android:text="@string/products"
+                    android:textColor="#494F5D" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,10 +110,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#494F5D"
-                    android:drawableTop="@drawable/icon_fring"
                     android:drawablePadding="5dp"
-                    android:text="@string/competition_activity" />
+                    android:drawableTop="@drawable/icon_fring"
+                    android:text="@string/competition_activity"
+                    android:textColor="#494F5D" />
             </LinearLayout>
         </LinearLayout>
 
@@ -136,10 +137,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#494F5D"
-                    android:drawableTop="@drawable/icon_conferences"
                     android:drawablePadding="5dp"
-                    android:text="@string/conferences" />
+                    android:drawableTop="@drawable/icon_conferences"
+                    android:text="@string/conferences"
+                    android:textColor="#494F5D" />
             </LinearLayout>
 
             <LinearLayout
@@ -157,10 +158,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#494F5D"
-                    android:drawableTop="@drawable/icon_floorplan"
                     android:drawablePadding="5dp"
-                    android:text="@string/floor_plan" />
+                    android:drawableTop="@drawable/icon_floorplan"
+                    android:text="@string/floor_plan"
+                    android:textColor="#494F5D" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

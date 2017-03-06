@@ -51,8 +51,8 @@ public class MapActivity extends AppCompatActivity {
         View v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_zoom, null, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         img = (MyImageView) v.findViewById(R.id.img);
-        oldWidth = img.getDrawable().getIntrinsicWidth();
-        oldHeight = img.getDrawable().getIntrinsicHeight();
+        oldWidth = get_view_width(R.drawable.map1);
+        oldHeight = get_view_height(R.drawable.map1);
         newWidth = metrics.widthPixels;
         newHeight = newWidth * oldHeight / oldWidth;
         img.setLayoutParams(new LinearLayout.LayoutParams(newWidth, newHeight));
@@ -79,23 +79,42 @@ public class MapActivity extends AppCompatActivity {
                 img.arrayNode[Integer.parseInt(path.getString("node0"))][Integer.parseInt(path.getString("node1"))] = path.getInt("cost");
                 img.arrayNode[Integer.parseInt(path.getString("node1"))][Integer.parseInt(path.getString("node0"))] = path.getInt("cost");
             }
-            for (int i = 0; i < nodes.length(); i++) {
-                JSONObject node = nodes.getJSONObject(i);
-                MapNode mn = new MapNode();
-//                int x = node.getInt("x") * newWidth / oldWidth;
-//                int y = node.getInt("y") * newHeight / oldHeight;
-                int x = node.getInt("x");
-                int y = node.getInt("y");
-
-                mn.setX(x);
-                mn.setY(y);
-                mn.setStore(node.getInt("isStore") == 1);
-                img.mapNodes.add(mn);
-            }
+//            for (int i = 0; i < nodes.length(); i++) {
+//                JSONObject node = nodes.getJSONObject(i);
+//                MapNode mn = new MapNode();
+////                int x = node.getInt("x") * newWidth / oldWidth;
+////                int y = node.getInt("y") * newHeight / oldHeight;
+//                int x = node.getInt("x");
+//                int y = node.getInt("y");
+//
+//                mn.setX(x);
+//                mn.setY(y);
+//                mn.setStore(node.getInt("isStore") == 1);
+//                img.mapNodes.add(mn);
+//            }
+            MapNode mn = new MapNode();
+            int x = 380 * newWidth / 650;
+            int y = 66 * newHeight / oldHeight;
+            mn.setX(x);
+            mn.setY(y);
+            mn.setStore(true);
+            img.mapNodes.add(mn);
             img.invalidate();
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public int get_view_width(int viewId) {
+        BitmapDrawable bd_horizontal_line = (BitmapDrawable) this
+                .getResources().getDrawable(viewId);
+        return bd_horizontal_line.getBitmap().getWidth();
+    }
+
+    public int get_view_height(int viewId) {
+        BitmapDrawable bd_horizontal_line = (BitmapDrawable) this
+                .getResources().getDrawable(viewId);
+        return bd_horizontal_line.getBitmap().getHeight();
     }
 
     String js = "{\n" +

@@ -29,11 +29,11 @@
             android:name=".ListExhibitionActivity"
             android:label="@string/title_activity_list_exhibition"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MapActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailEventActivity"
             android:screenOrientation="portrait"
@@ -51,6 +51,10 @@
         <activity
             android:name=".DetailExhibitionActivity"
             android:label="@string/title_activity_detail_exhibition"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListProductEventActivity"
+            android:label="@string/title_activity_list_product_event"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

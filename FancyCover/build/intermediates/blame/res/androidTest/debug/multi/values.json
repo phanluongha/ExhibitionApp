@@ -22,5 +22,29 @@
                 }
             }
         ]
+    },
+    {
+        "outputFile": "C:\\Users\\haphan\\StudioProjects\\ExhibitionApp\\FancyCover\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 462,
+                    "endColumn": 51,
+                    "endOffset": 509
+                },
+                "from": {
+                    "file": "C:\\Users\\haphan\\StudioProjects\\ExhibitionApp\\FancyCover\\build\\intermediates\\bundles\\debug\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 462,
+                        "endColumn": 51,
+                        "endOffset": 509
+                    }
+                }
+            }
+        ]
     }
 ]
