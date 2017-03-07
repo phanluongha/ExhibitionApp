@@ -3,19 +3,17 @@ package com.example.phanluongha.myfirstapplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,8 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
-import com.example.phanluongha.myfirstapplication.impl.Animation;
+import com.example.phanluongha.myfirstapplication.customview.BadgeView;
 import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickListener;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
@@ -42,9 +39,9 @@ import java.util.ArrayList;
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class ListExhibitionActivity extends DefaultActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, EventCategoryChildClickListener {
-    private ImageView btnDrawer;
+public class ListExhibitionActivity extends AppCompatActivity implements EventCategoryChildClickListener, View.OnClickListener {
+
+
     private DrawerLayout drawer;
     private LinearLayout layoutCategotyAction;
     private ImageView imgCategotyAction;
@@ -53,29 +50,43 @@ public class ListExhibitionActivity extends DefaultActivity
     private FancyCoverFlowSampleAdapter adapter;
     private ArrayList<Event> events;
     DisplayMetrics metrics;
+    BadgeView badgeView;
+    View imgCountNotification;
     private EventCategoryChildClickListener eventCategoryChildClickListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_list_exhibition);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        eventCategoryChildClickListener = this;
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        btnDrawer = (ImageView) findViewById(R.id.btnDrawer);
-        btnDrawer.setOnClickListener(this);
-        fancyCoverFlow = (FancyCoverFlow) this.findViewById(R.id.fancyCoverFlow);
-        int fancyCoverHeight = 2 * metrics.widthPixels / 3 + pxFromDp(40);
-        fancyCoverFlow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, fancyCoverHeight));
+        LinearLayout btnSignIn = (LinearLayout) findViewById(R.id.btnSignIn);
+        LinearLayout btnSuggest = (LinearLayout) findViewById(R.id.btnSuggest);
+        LinearLayout btnHotdeals = (LinearLayout) findViewById(R.id.btnHotdeals);
+        LinearLayout btnMyPlant = (LinearLayout) findViewById(R.id.btnMyPlant);
         listExhibition = (LinearLayout) findViewById(R.id.listExhibition);
         layoutCategotyAction = (LinearLayout) findViewById(R.id.layoutCategotyAction);
         imgCategotyAction = (ImageView) findViewById(R.id.imgCategotyAction);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        fancyCoverFlow = (FancyCoverFlow) this.findViewById(R.id.fancyCoverFlow);
+
+        metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        btnSignIn.setOnClickListener(this);
+        btnSuggest.setOnClickListener(this);
+        btnHotdeals.setOnClickListener(this);
+        btnMyPlant.setOnClickListener(this);
+        setSupportActionBar(toolbar);
+        eventCategoryChildClickListener = this;
+
+
+        int fancyCoverHeight = 2 * metrics.widthPixels / 3 + pxFromDp(40);
+        fancyCoverFlow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, fancyCoverHeight));
+
         layoutCategotyAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +102,7 @@ public class ListExhibitionActivity extends DefaultActivity
         getListEvent(0);
         new GetListEventCategory().execute();
 
+
     }
 
     private void getListEvent(int category) {
@@ -105,53 +117,47 @@ public class ListExhibitionActivity extends DefaultActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.list_exhibition, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        imgCountNotification = menu.findItem(R.id.actionNotifications).getActionView();
+        imgCountNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.openDrawer(Gravity.END);
+            }
+        });
+
+
         return true;
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-        drawer.closeDrawer(GravityCompat.END);
-        return true;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnDrawer:
-                drawer.openDrawer(GravityCompat.END);
-                break;
-        }
-    }
 
     @Override
     public void keyClickedIndex(int id) {
         getListEvent(id);
     }
 
-    public class EventCategoryHolder extends TreeNode.BaseNodeViewHolder<EventCategory> {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnHotdeals:
+                break;
+            case R.id.btnMyPlant:
+                break;
+            case R.id.btnSignIn:
+                startActivity(new Intent(this,SignInActivity.class));
+                break;
+            case R.id.btnSuggest:
+                break;
+        }
+    }
 
-        public EventCategoryHolder(Context context) {
+    private class EventCategoryHolder extends TreeNode.BaseNodeViewHolder<EventCategory> {
+
+        EventCategoryHolder(Context context) {
             super(context);
         }
 
@@ -180,9 +186,9 @@ public class ListExhibitionActivity extends DefaultActivity
         }
     }
 
-    public class EventCategoryHolderChild extends TreeNode.BaseNodeViewHolder<EventCategory> {
+    private class EventCategoryHolderChild extends TreeNode.BaseNodeViewHolder<EventCategory> {
 
-        public EventCategoryHolderChild(Context context) {
+        EventCategoryHolderChild(Context context) {
             super(context);
         }
 
@@ -203,12 +209,12 @@ public class ListExhibitionActivity extends DefaultActivity
         }
     }
 
-    public class GetListEvent extends AsyncTask<String, String, JSONObject> {
+    private class GetListEvent extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
         private int category;
 
-        public GetListEvent(int category) {
+        GetListEvent(int category) {
             this.category = category;
             progressDialog = new ProgressDialog(ListExhibitionActivity.this);
             progressDialog.setMessage("Loading...");
@@ -223,7 +229,7 @@ public class ListExhibitionActivity extends DefaultActivity
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?idCategory=" + String.valueOf(category) + "&token=" + ListExhibitionActivity.this.token : "?token=" + ListExhibitionActivity.this.token));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?idCategory=" + String.valueOf(category) : ""));
             return json;
         }
 
@@ -269,11 +275,11 @@ public class ListExhibitionActivity extends DefaultActivity
         }
     }
 
-    public class GetListEventCategory extends AsyncTask<String, String, JSONObject> {
+    private class GetListEventCategory extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
 
-        public GetListEventCategory() {
+        GetListEventCategory() {
             progressDialog = new ProgressDialog(ListExhibitionActivity.this);
             progressDialog.setMessage("Loading...");
         }
@@ -287,13 +293,20 @@ public class ListExhibitionActivity extends DefaultActivity
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist?token=" + ListExhibitionActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist");
             return json;
         }
 
         @Override
         protected void onPostExecute(JSONObject json) {
             progressDialog.dismiss();
+            if (badgeView == null) {
+                badgeView = new BadgeView(ListExhibitionActivity.this, imgCountNotification);
+                badgeView.setBadgePosition(BadgeView.POSITION_TOP_LEFT);
+
+            }
+            badgeView.setText("10");
+            badgeView.show();
             if (json.has("error")) {
                 try {
                     Toast.makeText(ListExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
