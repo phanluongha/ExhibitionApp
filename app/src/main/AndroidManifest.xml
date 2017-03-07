@@ -59,7 +59,10 @@
         <activity
             android:name=".ListActivityEventActivity"
             android:label="@string/title_activity_list_activity_event"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SignInActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
 </manifest>
