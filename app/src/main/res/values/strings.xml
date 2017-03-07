@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
     <string name="events">Events</string>
+    <string name="note">Note</string>
     <string name="select_bussiness_area">Please select bussiness area</string>
     <string name="general_infomation">General Infomation</string>
     <string name="exhibitor">Exhibitor</string>
@@ -25,4 +26,5 @@
     <string name="no">No</string>
     <string name="title_activity_detail_product">DetailProductActivity</string>
     <string name="description">Description</string>
+    <string name="title_activity_note">NoteActivity</string>
 </resources>

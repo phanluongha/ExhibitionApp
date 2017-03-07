@@ -51,14 +51,26 @@
         <activity
             android:name=".DetailExhibitionActivity"
             android:label="@string/title_activity_detail_exhibition"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListProductEventActivity"
             android:label="@string/title_activity_list_product_event"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListActivityEventActivity"
             android:label="@string/title_activity_list_activity_event"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailProductActivity"
+            android:label="@string/title_activity_detail_product"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NoteActivity"
+            android:label="@string/title_activity_note"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

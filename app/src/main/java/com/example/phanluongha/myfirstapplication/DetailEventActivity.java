@@ -12,12 +12,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
 
 public class DetailEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtAbout;
     private TextView txtExhibitor;
     private TextView txtProduct;
+    private  TextView txtActivity;
     private ImageView banner;
     DisplayMetrics metrics;
     private int id;
@@ -47,6 +49,8 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtExhibitor.setOnClickListener(this);
         txtProduct = (TextView) findViewById(R.id.txtProduct);
         txtProduct.setOnClickListener(this);
+        txtActivity = (TextView)findViewById(R.id.txtActivity);
+        txtActivity.setOnClickListener(this);
     }
 
     @Override
@@ -66,6 +70,11 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
                 Intent product = new Intent(DetailEventActivity.this, ListProductEventActivity.class);
                 product.putExtra("id", id);
                 startActivity(product);
+                break;
+            case R.id.txtActivity:
+                Intent activity = new Intent(DetailEventActivity.this, ListActivityEventActivity.class);
+                activity.putExtra("id", id);
+                startActivity(activity);
                 break;
         }
     }
