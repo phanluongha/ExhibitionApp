@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickLi
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.AnimationShowHideView;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -41,7 +43,8 @@ import fancycoverflow.FancyCoverFlowSampleAdapter;
 
 public class ListExhibitionActivity extends AppCompatActivity implements EventCategoryChildClickListener, View.OnClickListener {
 
-
+    private ImageView imgShowHidePlant;
+    private LinearLayout layoutChildMyPlant;
     private DrawerLayout drawer;
     private LinearLayout layoutCategotyAction;
     private ImageView imgCategotyAction;
@@ -67,6 +70,16 @@ public class ListExhibitionActivity extends AppCompatActivity implements EventCa
         LinearLayout btnSuggest = (LinearLayout) findViewById(R.id.btnSuggest);
         LinearLayout btnHotdeals = (LinearLayout) findViewById(R.id.btnHotdeals);
         LinearLayout btnMyPlant = (LinearLayout) findViewById(R.id.btnMyPlant);
+
+        LinearLayout btnMyCalendar = (LinearLayout) findViewById(R.id.btnMyCalendar);
+        LinearLayout btnMyFavorites = (LinearLayout) findViewById(R.id.btnMyFavorites);
+        LinearLayout btnMyInbox = (LinearLayout) findViewById(R.id.btnMyInbox);
+        LinearLayout btnMyNote = (LinearLayout) findViewById(R.id.btnMyNote);
+
+        layoutChildMyPlant = (LinearLayout) findViewById(R.id.layoutChildMyPlant);
+
+        imgShowHidePlant = (ImageView) findViewById(R.id.imgShowHidePlant);
+
         listExhibition = (LinearLayout) findViewById(R.id.listExhibition);
         layoutCategotyAction = (LinearLayout) findViewById(R.id.layoutCategotyAction);
         imgCategotyAction = (ImageView) findViewById(R.id.imgCategotyAction);
@@ -80,6 +93,13 @@ public class ListExhibitionActivity extends AppCompatActivity implements EventCa
         btnSuggest.setOnClickListener(this);
         btnHotdeals.setOnClickListener(this);
         btnMyPlant.setOnClickListener(this);
+
+        btnMyCalendar.setOnClickListener(this);
+        btnMyFavorites.setOnClickListener(this);
+        btnMyInbox.setOnClickListener(this);
+        btnMyNote.setOnClickListener(this);
+
+
         setSupportActionBar(toolbar);
         eventCategoryChildClickListener = this;
 
@@ -142,15 +162,39 @@ public class ListExhibitionActivity extends AppCompatActivity implements EventCa
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnHotdeals:
+                Toast.makeText(this, "hot deals", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnMyPlant:
+
+                if (imgShowHidePlant.getDrawable().getConstantState().equals
+                        (ContextCompat.getDrawable(this, R.drawable.ic_up).getConstantState())) {
+                    imgShowHidePlant.setImageResource(R.drawable.ic_down);
+                    AnimationShowHideView.collapse(layoutChildMyPlant);
+
+                } else {
+                    imgShowHidePlant.setImageResource(R.drawable.ic_up);
+                    AnimationShowHideView.expand(layoutChildMyPlant);
+                }
                 break;
             case R.id.btnSignIn:
-                startActivity(new Intent(this,SignInActivity.class));
+                startActivity(new Intent(this, SignInActivity.class));
                 break;
             case R.id.btnSuggest:
+                Toast.makeText(this, "btnSuggest", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btnMyNote:
+                Toast.makeText(this, "btnMyNote", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btnMyCalendar:
+                Toast.makeText(this, "btnMyCalendar", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btnMyFavorites:
+                Toast.makeText(this, "btnMyFavorites", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btnMyInbox:
+                Toast.makeText(this, "btnMyInbox", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

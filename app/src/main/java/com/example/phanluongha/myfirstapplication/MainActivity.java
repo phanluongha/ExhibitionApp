@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent listExhibition = new Intent(MainActivity.this, ListExhibitionActivity.class);
                     startActivity(listExhibition);
                 }
-            }, 3000);
+            }, 500);
         } else {
             String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
