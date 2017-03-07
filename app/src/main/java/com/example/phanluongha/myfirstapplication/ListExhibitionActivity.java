@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.customview.BadgeView;
 import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickListener;
 import com.example.phanluongha.myfirstapplication.model.Event;
@@ -41,7 +43,7 @@ import java.util.ArrayList;
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class ListExhibitionActivity extends AppCompatActivity implements EventCategoryChildClickListener, View.OnClickListener {
+public class ListExhibitionActivity extends DefaultActivity implements EventCategoryChildClickListener, View.OnClickListener {
 
     private ImageView imgShowHidePlant;
     private LinearLayout layoutChildMyPlant;
@@ -273,7 +275,8 @@ public class ListExhibitionActivity extends AppCompatActivity implements EventCa
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?idCategory=" + String.valueOf(category) : ""));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idCategory=" + String.valueOf(category) : ""));
+            Log.e("T","http://188.166.241.242/api/geteventlist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idCategory=" + String.valueOf(category) : ""));
             return json;
         }
 
@@ -337,7 +340,7 @@ public class ListExhibitionActivity extends AppCompatActivity implements EventCa
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist");
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
             return json;
         }
 

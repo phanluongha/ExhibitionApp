@@ -115,7 +115,6 @@ public class DetailExhibitionActivity extends DefaultActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.e("T", json.toString());
                     JSONObject ex = json.getJSONObject("data");
                     Glide
                             .with(DetailExhibitionActivity.this)
@@ -160,7 +159,7 @@ public class DetailExhibitionActivity extends DefaultActivity {
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
             JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
-            Log.e("T","http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
+            Log.e("T", "http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
             return json;
         }
 
@@ -185,6 +184,9 @@ public class DetailExhibitionActivity extends DefaultActivity {
                         productChild.setName(product.getString("Name"));
                         productChild.setId(product.getInt("idProduct"));
                         productChild.setImage(product.getString("ImageLink"));
+                        productChild.setDescription(product.getString("Description"));
+                        productChild.setFavorite(product.getBoolean("isFavorite"));
+                        productChild.setIdEvent(product.getInt("idEvent"));
                         TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
                         nodeCat.addChildren(nodeCatChild);
                         root.addChild(nodeCat);
@@ -251,7 +253,14 @@ public class DetailExhibitionActivity extends DefaultActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent detailExhibition = new Intent(DetailExhibitionActivity.this, DetailProductActivity.class);
+                    detailExhibition.putExtra("id", value.getId());
+                    detailExhibition.putExtra("name", value.getName());
+                    detailExhibition.putExtra("description", value.getDescription());
+                    detailExhibition.putExtra("favorite", value.isFavorite());
+                    detailExhibition.putExtra("image", value.getImage());
+                    detailExhibition.putExtra("idEvent", value.getIdEvent());
+                    startActivity(detailExhibition);
                 }
             });
             return view;

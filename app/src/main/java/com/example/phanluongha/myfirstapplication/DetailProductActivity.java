@@ -2,6 +2,7 @@ package com.example.phanluongha.myfirstapplication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -41,6 +42,7 @@ public class DetailProductActivity extends DefaultActivity {
     private TextView txtDescription;
     private LinearLayout layoutExhibition;
     DisplayMetrics metrics;
+    private int idEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,8 @@ public class DetailProductActivity extends DefaultActivity {
                     .crossFade()
                     .into(banner);
             txtDescription.setText(b.getString("description"));
-            new GetExhibitionOfProduct(b.getInt("id"), b.getInt("idEvent")).execute();
+            idEvent = b.getInt("idEvent");
+            new GetExhibitionOfProduct(b.getInt("id"), idEvent).execute();
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +126,7 @@ public class DetailProductActivity extends DefaultActivity {
                     for (int i = 0; i < exhibitions.length(); i++) {
                         JSONObject exhibition = exhibitions.getJSONObject(i);
                         Exhibition ex = new Exhibition();
+                        ex.setId(exhibition.getInt("idExhibitor"));
                         ex.setName(exhibition.getString("Name"));
                         TreeNode nodeCat = new TreeNode(ex).setViewHolder(new ExhibitionHolder(DetailProductActivity.this));
                         root.addChild(nodeCat);
@@ -143,12 +147,21 @@ public class DetailProductActivity extends DefaultActivity {
         }
 
         @Override
-        public View createNodeView(TreeNode node, Exhibition value) {
+        public View createNodeView(TreeNode node, final Exhibition value) {
             final LayoutInflater inflater = LayoutInflater.from(context);
             final View view = inflater.inflate(R.layout.exhibition_detail_product_node, null, false);
             view.setLayoutParams(new ViewGroup.LayoutParams(metrics.widthPixels, ViewGroup.LayoutParams.WRAP_CONTENT));
             TextView node_value = (TextView) view.findViewById(R.id.node_value);
             node_value.setText(value.getName());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent detailExhibition = new Intent(DetailProductActivity.this, DetailExhibitionActivity.class);
+                    detailExhibition.putExtra("id", value.getId());
+                    detailExhibition.putExtra("idEvent", idEvent);
+                    startActivity(detailExhibition);
+                }
+            });
             return view;
         }
     }

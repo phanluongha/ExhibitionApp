@@ -93,16 +93,7 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
                                     DialogInterface dialog,
                                     int id) {
                                 Exhibition ex = arrayExhibition.get(position);
-                                JSONObject jsonObject = new JSONObject();
-                                try {
-                                    jsonObject.put("idExhibitor", ex.getId());
-                                    jsonObject.put("idDevice", ListExhibitionEventActivity.this.idDevice);
-                                    jsonObject.put("token", ListExhibitionEventActivity.this.token);
-                                    Log.e("T", jsonObject.toString());
-                                    new AddFavoriteExhibition(position, jsonObject).execute();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                new AddFavoriteExhibition(position, ex.getId()).execute();
                             }
                         })
 
@@ -205,12 +196,12 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
     public class AddFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
-        private JSONObject jsonObject;
         private int position;
+        private int idExhibitor;
 
-        public AddFavoriteExhibition(int position, JSONObject jsonObject) {
+        public AddFavoriteExhibition(int position, int idExhibitor) {
             this.position = position;
-            this.jsonObject = jsonObject;
+            this.idExhibitor = idExhibitor;
             progressDialog = new ProgressDialog(ListExhibitionEventActivity.this);
             progressDialog.setMessage("Loading...");
         }
@@ -224,7 +215,7 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/getfavorexhibitor", jsonObject);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getfavorexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&idDevice=" + ListExhibitionEventActivity.this.idDevice + "&token=" + ListExhibitionEventActivity.this.token);
             return json;
         }
 
