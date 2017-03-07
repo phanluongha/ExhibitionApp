@@ -190,7 +190,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
                 startActivity(new Intent(this, NotepadActivity.class));
                 break;
             case R.id.btnMyCalendar:
-                Toast.makeText(this, "btnMyCalendar", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MyCalendarActivity.class));
                 break;
             case R.id.btnMyFavorites:
                 Toast.makeText(this, "btnMyFavorites", Toast.LENGTH_SHORT).show();

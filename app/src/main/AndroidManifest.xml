@@ -27,7 +27,6 @@
         </activity>
         <activity
             android:name=".ListExhibitionActivity"
-            android:label="@string/title_activity_list_exhibition"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -40,36 +39,32 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".GerneralEventActivity"
-            android:label="@string/title_activity_gerneral_event"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListExhibitionEventActivity"
-            android:label="@string/title_activity_list_exhibition_event"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailExhibitionActivity"
-            android:label="@string/title_activity_detail_exhibition"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListProductEventActivity"
-            android:label="@string/title_activity_list_product_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailProductActivity"
-            android:label="@string/title_activity_detail_product"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListActivityEventActivity"
-            android:label="@string/title_activity_list_activity_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignInActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".NotepadActivity"
-            android:label="@string/title_activity_notepad"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MyCalendarActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
