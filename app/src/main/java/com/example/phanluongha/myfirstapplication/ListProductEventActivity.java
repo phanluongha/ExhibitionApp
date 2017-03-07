@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.adapter.ListExhibitionAdapter;
 import com.example.phanluongha.myfirstapplication.adapter.ListProductAdapter;
+import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.model.Product;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
@@ -28,7 +30,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ListProductEventActivity extends AppCompatActivity {
+public class ListProductEventActivity extends DefaultActivity {
 
     private ListView listView;
     private ArrayList<Product> arrayExhibition;
@@ -50,14 +52,19 @@ public class ListProductEventActivity extends AppCompatActivity {
 
         final Bundle b = getIntent().getExtras();
         if (b != null) {
-            getListProduct(b.getInt("id"));
+            final int idEvent = b.getInt("id");
+            getListProduct(idEvent);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position,
                                         long id) {
-                    Intent detailExhibition = new Intent(ListProductEventActivity.this, DetailExhibitionActivity.class);
+                    Intent detailExhibition = new Intent(ListProductEventActivity.this, DetailProductActivity.class);
                     detailExhibition.putExtra("id", listProductAdapter.getItem(position).getId());
-                    detailExhibition.putExtra("idEvent", b.getInt("id"));
+                    detailExhibition.putExtra("name", listProductAdapter.getItem(position).getName());
+                    detailExhibition.putExtra("description", listProductAdapter.getItem(position).getDescription());
+                    detailExhibition.putExtra("favorite", listProductAdapter.getItem(position).isFavorite());
+                    detailExhibition.putExtra("image", listProductAdapter.getItem(position).getImage());
+                    detailExhibition.putExtra("idEvent", idEvent);
                     startActivity(detailExhibition);
                 }
             });
@@ -90,9 +97,7 @@ public class ListProductEventActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListProductEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitorlist?idEvent=" + String.valueOf(idEvent) + "&idDevice=1");
-
-
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + ListProductEventActivity.this.idDevice + "&token=" + ListProductEventActivity.this.token);
             return json;
         }
 
@@ -116,6 +121,7 @@ public class ListProductEventActivity extends AppCompatActivity {
                         e.setName(eh.getString("Name"));
                         e.setBoot_no(eh.getString("BoothNo"));
                         e.setDescription(eh.getString("Description"));
+                        e.setFavorite(eh.getBoolean("isFavorite"));
                         arrayExhibition.add(e);
                     }
                     listProductAdapter.notifyDataSetChanged();

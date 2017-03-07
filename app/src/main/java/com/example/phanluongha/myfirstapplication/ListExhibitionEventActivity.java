@@ -1,6 +1,8 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.adapter.ListExhibitionAdapter;
+import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.impl.ExhibitionFavoriteClickListener;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
@@ -31,7 +35,7 @@ import java.util.ArrayList;
 
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class ListExhibitionEventActivity extends AppCompatActivity {
+public class ListExhibitionEventActivity extends DefaultActivity implements ExhibitionFavoriteClickListener {
 
     private ListView listView;
     private ArrayList<Exhibition> arrayExhibition;
@@ -72,6 +76,54 @@ public class ListExhibitionEventActivity extends AppCompatActivity {
         new GetListExhibition(id).execute();
     }
 
+    @Override
+    public void keyClickedIndex(final int position) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        alertDialogBuilder.setTitle(this
+                .getString(R.string.add_favorite));
+        alertDialogBuilder
+                .setMessage(
+                        getString(R.string.add_favorite_confirm))
+                .setCancelable(false)
+                .setPositiveButton(
+                        getString(R.string.yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int id) {
+                                Exhibition ex = arrayExhibition.get(position);
+                                JSONObject jsonObject = new JSONObject();
+                                try {
+                                    jsonObject.put("idExhibitor", ex.getId());
+                                    jsonObject.put("idDevice", ListExhibitionEventActivity.this.idDevice);
+                                    jsonObject.put("token", ListExhibitionEventActivity.this.token);
+                                    Log.e("T", jsonObject.toString());
+                                    new AddFavoriteExhibition(position, jsonObject).execute();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+
+                .setNegativeButton(
+                        getString(R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int id) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder
+                .create();
+        alertDialog.show();
+
+
+    }
+
     public class GetListExhibition extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
@@ -92,9 +144,7 @@ public class ListExhibitionEventActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitorlist?idEvent=" + String.valueOf(idEvent));
-
-
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitorlist?idEvent=" + String.valueOf(idEvent) + "&token=" + ListExhibitionEventActivity.this.token);
             return json;
         }
 
@@ -118,6 +168,7 @@ public class ListExhibitionEventActivity extends AppCompatActivity {
                         e.setName(eh.getString("Name"));
                         e.setBoot_no(eh.getString("BoothNo"));
                         e.setDescription(eh.getString("Description"));
+                        e.setFavorite(eh.getBoolean("isFavorite"));
                         arrayExhibition.add(e);
                     }
                     listExhibitionAdapter.notifyDataSetChanged();
@@ -148,6 +199,53 @@ public class ListExhibitionEventActivity extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
             lAdapter.getFilter().filter(s.toString().toLowerCase());
+        }
+    }
+
+    public class AddFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+        private JSONObject jsonObject;
+        private int position;
+
+        public AddFavoriteExhibition(int position, JSONObject jsonObject) {
+            this.position = position;
+            this.jsonObject = jsonObject;
+            progressDialog = new ProgressDialog(ListExhibitionEventActivity.this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
+            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/getfavorexhibitor", jsonObject);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(ListExhibitionEventActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.e("T", json.toString());
+                    JSONObject a = json.getJSONObject("data");
+//                    listExhibitionAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

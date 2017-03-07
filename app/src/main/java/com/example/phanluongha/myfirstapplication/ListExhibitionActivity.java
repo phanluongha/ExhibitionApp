@@ -3,6 +3,7 @@ package com.example.phanluongha.myfirstapplication;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -23,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.impl.Animation;
 import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickListener;
 import com.example.phanluongha.myfirstapplication.model.Event;
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class ListExhibitionActivity extends AppCompatActivity
+public class ListExhibitionActivity extends DefaultActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, EventCategoryChildClickListener {
     private ImageView btnDrawer;
     private DrawerLayout drawer;
@@ -221,7 +223,7 @@ public class ListExhibitionActivity extends AppCompatActivity
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?idCategory=" + String.valueOf(category) : ""));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + (category > 0 ? "?idCategory=" + String.valueOf(category) + "&token=" + ListExhibitionActivity.this.token : "?token=" + ListExhibitionActivity.this.token));
             return json;
         }
 
@@ -285,7 +287,7 @@ public class ListExhibitionActivity extends AppCompatActivity
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist");
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist?token=" + ListExhibitionActivity.this.token);
             return json;
         }
 

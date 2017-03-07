@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class ListActivityEventActivity extends DefaultA {
+public class ListActivityEventActivity extends AppCompatActivity {
 
     private ViewPager pagerpager;
     @Override
@@ -17,7 +17,7 @@ public class ListActivityEventActivity extends DefaultA {
         setContentView(R.layout.activity_list_activity_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        pager =
+        //pager =
     }
 
 }

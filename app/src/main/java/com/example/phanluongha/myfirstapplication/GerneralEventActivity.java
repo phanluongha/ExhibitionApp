@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
 import com.unnamed.b.atv.model.TreeNode;
@@ -32,7 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class GerneralEventActivity extends AppCompatActivity {
+public class GerneralEventActivity extends DefaultActivity {
 
     private int id;
     private ImageView banner;
@@ -87,7 +88,7 @@ public class GerneralEventActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(GerneralEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventdetail?idEvent=" + String.valueOf(id));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventdetail?idEvent=" + String.valueOf(id)+"&token=" + GerneralEventActivity.this.token);
             return json;
         }
 

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.customview.CircleImageView;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
@@ -40,7 +41,7 @@ import java.util.Objects;
 
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class DetailExhibitionActivity extends AppCompatActivity {
+public class DetailExhibitionActivity extends DefaultActivity {
 
     private ImageView banner;
     private ImageView imgFavorite;
@@ -99,7 +100,7 @@ public class DetailExhibitionActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token);
             return json;
         }
 
@@ -158,7 +159,8 @@ public class DetailExhibitionActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&idDevice=1&idEvent=" + String.valueOf(idEvent));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
+            Log.e("T","http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
             return json;
         }
 
@@ -173,16 +175,20 @@ public class DetailExhibitionActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    JSONObject product = json.getJSONObject("data");
+                    Log.e("T", json.toString());
+                    JSONArray products = json.getJSONArray("data");
                     TreeNode root = TreeNode.root();
                     TreeNode nodeCat = new TreeNode(null).setViewHolder(new DetailExhibitionActivity.ProductCategoryHolder(DetailExhibitionActivity.this));
-                    Product productChild = new Product();
-                    productChild.setName(product.getString("Name"));
-                    productChild.setId(product.getInt("idProduct"));
-                    productChild.setImage(product.getString("ImageLink"));
-                    TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
-                    nodeCat.addChildren(nodeCatChild);
-                    root.addChild(nodeCat);
+                    for (int i = 0; i < products.length(); i++) {
+                        JSONObject product = products.getJSONObject(i);
+                        Product productChild = new Product();
+                        productChild.setName(product.getString("Name"));
+                        productChild.setId(product.getInt("idProduct"));
+                        productChild.setImage(product.getString("ImageLink"));
+                        TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
+                        nodeCat.addChildren(nodeCatChild);
+                        root.addChild(nodeCat);
+                    }
                     AndroidTreeView tView = new AndroidTreeView(DetailExhibitionActivity.this, root);
                     layoutProduct.addView(tView.getView());
                 }

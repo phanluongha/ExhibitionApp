@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.R;
+import com.example.phanluongha.myfirstapplication.impl.ExhibitionFavoriteClickListener;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 
 import java.util.ArrayList;
@@ -24,11 +25,13 @@ public class ListExhibitionAdapter extends ArrayAdapter<Exhibition> {
     private ArrayList<Exhibition> arrayExhibition;
     private ArrayList<Exhibition> filteredItems;
     private ItemFilter mFilter = new ItemFilter();
+    private ExhibitionFavoriteClickListener favoriteClickListener;
 
     public ListExhibitionAdapter(Context context, int textViewResourceId,
                                  ArrayList<Exhibition> arrayExhibition) {
         super(context, textViewResourceId, arrayExhibition);
         this.context = context;
+        this.favoriteClickListener = (ExhibitionFavoriteClickListener) context;
         this.textViewResourceId = textViewResourceId;
         this.arrayExhibition = arrayExhibition;
         this.filteredItems = arrayExhibition;
@@ -74,6 +77,12 @@ public class ListExhibitionAdapter extends ArrayAdapter<Exhibition> {
                 imgFavotite.setImageResource(R.drawable.love_fill);
             } else {
                 imgFavotite.setImageResource(R.drawable.love_empty);
+                imgFavotite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        favoriteClickListener.keyClickedIndex(position);
+                    }
+                });
             }
 
 
