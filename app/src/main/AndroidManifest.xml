@@ -57,6 +57,10 @@
             android:label="@string/title_activity_list_product_event"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".DetailProductActivity"
+            android:label="@string/title_activity_detail_product"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".ListActivityEventActivity"
             android:label="@string/title_activity_list_activity_event"
             android:theme="@style/AppTheme.NoActionBar" />
