@@ -18,6 +18,7 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
     private TextView txtAbout;
     private TextView txtExhibitor;
     private TextView txtProduct;
+    private TextView txtPlace;
     private ImageView banner;
     DisplayMetrics metrics;
     private int id;
@@ -47,6 +48,8 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtExhibitor.setOnClickListener(this);
         txtProduct = (TextView) findViewById(R.id.txtProduct);
         txtProduct.setOnClickListener(this);
+        txtPlace = (TextView) findViewById(R.id.txtPlace);
+        txtPlace.setOnClickListener(this);
     }
 
     @Override
@@ -66,6 +69,11 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
                 Intent product = new Intent(DetailEventActivity.this, ListProductEventActivity.class);
                 product.putExtra("id", id);
                 startActivity(product);
+                break;
+            case R.id.txtPlace:
+                Intent map = new Intent(DetailEventActivity.this, MapActivity.class);
+                map.putExtra("id", id);
+                startActivity(map);
                 break;
         }
     }

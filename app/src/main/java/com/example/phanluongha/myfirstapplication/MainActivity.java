@@ -26,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String token = sharedpreferences.getString("token", "");
         String idDevice = sharedpreferences.getString("idDevice", "");
         if (token.length() > 0 && idDevice.length() > 0) {
