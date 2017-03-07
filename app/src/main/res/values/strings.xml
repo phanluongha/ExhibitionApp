@@ -10,6 +10,7 @@
     <string name="exhibitor">Exhibitor</string>
     <string name="products">Products</string>
     <string name="competition_activity">Competitions/Activities</string>
+    <string name="activity">Activities</string>
     <string name="conferences">Conferences</string>
     <string name="floor_plan">Floorplan</string>
     <string name="title_activity_gerneral_event">GerneralEventActivity</string>
@@ -17,4 +18,5 @@
     <string name="txt_search">Search</string>
     <string name="title_activity_detail_exhibition">DetailExhibitionActivity</string>
     <string name="title_activity_list_product_event">ListProductEventActivity</string>
+    <string name="title_activity_list_activity_event">ListActivityEventActivity</string>
 </resources>
