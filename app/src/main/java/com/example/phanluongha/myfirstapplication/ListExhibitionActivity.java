@@ -66,7 +66,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
 
 
         setContentView(R.layout.activity_list_exhibition);
-
+        setTitle("");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         LinearLayout btnSignIn = (LinearLayout) findViewById(R.id.btnSignIn);
         LinearLayout btnSuggest = (LinearLayout) findViewById(R.id.btnSuggest);

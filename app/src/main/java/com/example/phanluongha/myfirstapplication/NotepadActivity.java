@@ -1,5 +1,6 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,19 +12,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class NotepadActivity extends AppCompatActivity {
+import com.example.phanluongha.myfirstapplication.customview.LinedEditText;
 
+import es.dmoral.toasty.Toasty;
+
+public class NotepadActivity extends AppCompatActivity {
+    SharedPreferences sharedPreferences;
+    LinedEditText edNotepad;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        edNotepad = (LinedEditText) findViewById(R.id.edNotepad);
         setSupportActionBar(toolbar);
-
+        setTitle("");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        sharedPreferences= getSharedPreferences("note",MODE_PRIVATE);
+        String resultNotepad = sharedPreferences.getString("my_note","");
+        edNotepad.setText(resultNotepad);
+
     }
 
     @Override
@@ -40,8 +52,16 @@ public class NotepadActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.action:
-                Toast.makeText(this, "plus", Toast.LENGTH_SHORT).show();
+            case R.id.action_save:
+                if(edNotepad.getText().toString().trim().length() > 0){
+                    SharedPreferences.Editor editor = sharedPreferences.edit() ;
+                    editor.putString("my_note",edNotepad.getText().toString());
+                    editor.apply();
+                    Toasty.success(this, "Save complete", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toasty.error(this, "Please check content again", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
         return super.onOptionsItemSelected(item);
