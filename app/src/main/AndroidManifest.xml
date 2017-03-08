@@ -68,10 +68,22 @@
             android:label="@string/title_activity_detail_product"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
-            android:name=".NoteActivity"
+            android:name=".MyCalendarActivity"
             android:label="@string/title_activity_note"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".NotepadActivity"
+            android:label="@string/title_activity_note"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".SignInActivity"
+            android:label="@string/title_activity_note"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
 </manifest>
