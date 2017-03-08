@@ -69,8 +69,9 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtProduct = (TextView) findViewById(R.id.txtProduct);
         txtProduct.setOnClickListener(this);
         txtActivity = (TextView)findViewById(R.id.txtActivity);
-        txtActivity = (TextView) findViewById(R.id.txtActivity);
         txtActivity.setOnClickListener(this);
+        txtPlace = (TextView)findViewById(R.id.txtPlace);
+        txtPlace.setOnClickListener(this);
     }
 
     @Override
