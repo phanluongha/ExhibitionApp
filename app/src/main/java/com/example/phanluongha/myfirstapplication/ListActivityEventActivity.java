@@ -24,6 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -43,16 +47,6 @@ public class ListActivityEventActivity extends DefaultActivity {
         setSupportActionBar(toolbar);
         pager = (ViewPager) findViewById(R.id.pager);
         days = new ArrayList<DayActivity>();
-//        for (int i = 0; i < 3; i++) {
-//            DayActivity d = new DayActivity();
-//            d.setDay("sdsđsd");
-//            for (int j = 0; j < 3; j++) {
-//                Activity a = new Activity();
-//                a.setName("dfdfdf");
-//                d.activities.add(a);
-//            }
-//            days.add(d);
-//        }
         adapter = new ListActivityEventAdapter(this, days);
         pager.setAdapter(adapter);
         Bundle b = getIntent().getExtras();
@@ -107,6 +101,19 @@ public class ListActivityEventActivity extends DefaultActivity {
                             JSONObject activity = activities.getJSONObject(j);
                             Activity a = new Activity();
                             a.setName(activity.getString("Title"));
+                            a.setPlace(activity.getString("Place"));
+                            if (activity.has("isFavorite"))
+                                a.setFavorite(activity.getBoolean("isFavorite"));
+                            else
+                                a.setFavorite(false);
+                            String str_date = activity.getString("Time");
+                            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+                            try {
+                                Date date = (Date) formatter.parse(str_date);
+                                a.setTime(date.getTime());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             d.activities.add(a);
                         }
                         days.add(d);

@@ -274,8 +274,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idCategory=" + String.valueOf(category) : ""));
-            Log.e("T","http://188.166.241.242/api/geteventlist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idCategory=" + String.valueOf(category) : ""));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idChildCategory=" + String.valueOf(category) : ""));
             return json;
         }
 

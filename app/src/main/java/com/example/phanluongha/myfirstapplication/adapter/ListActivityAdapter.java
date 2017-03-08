@@ -5,13 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.example.phanluongha.myfirstapplication.R;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListActivityAdapter extends ArrayAdapter<Activity> {
 
@@ -35,6 +39,21 @@ public class ListActivityAdapter extends ArrayAdapter<Activity> {
         if (activity != null) {
             TextView txtName = (TextView) v.findViewById(R.id.txtName);
             txtName.setText(activity.getName());
+            TextView txtBooth = (TextView) v.findViewById(R.id.txtBooth);
+            txtBooth.setText(activity.getPlace());
+            TextView txtTime = (TextView) v.findViewById(R.id.txtTime);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
+            Date date = new Date(activity.getTime());
+            txtTime.setText(simpleDateFormat.format(date));
+            ImageView imgFavotite = (ImageView) v.findViewById(R.id.imgFavotite);
+            if (!activity.isFavorite()) {
+                imgFavotite.setImageResource(R.drawable.activity_empty_stick);
+            } else {
+                imgFavotite.setImageResource(R.drawable.activitu_fill_stick);
+            }
+
+
         }
         return v;
     }
