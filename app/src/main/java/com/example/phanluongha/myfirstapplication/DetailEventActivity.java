@@ -21,7 +21,6 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
     private TextView txtAbout;
     private TextView txtExhibitor;
     private TextView txtProduct;
-    private  TextView txtActivity;
     private TextView txtActivity;
     private TextView txtPlace;
     private ImageView banner;
