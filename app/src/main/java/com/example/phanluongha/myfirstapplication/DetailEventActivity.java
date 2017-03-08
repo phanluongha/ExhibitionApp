@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,13 +12,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
 
 public class DetailEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView txtAbout;
     private TextView txtExhibitor;
     private TextView txtProduct;
-    private TextView txtPlace;
+    private  TextView txtActivity;
     private ImageView banner;
     DisplayMetrics metrics;
     private int id;
@@ -29,13 +28,6 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_event);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);setTitle("");
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         banner = (ImageView) findViewById(R.id.banner);
@@ -51,25 +43,16 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
                     .crossFade()
                     .into(banner);
         }
-
         txtAbout = (TextView) findViewById(R.id.txtAbout);
         txtAbout.setOnClickListener(this);
         txtExhibitor = (TextView) findViewById(R.id.txtExhibitor);
         txtExhibitor.setOnClickListener(this);
         txtProduct = (TextView) findViewById(R.id.txtProduct);
         txtProduct.setOnClickListener(this);
-        txtPlace = (TextView) findViewById(R.id.txtPlace);
-        txtPlace.setOnClickListener(this);
+        txtActivity = (TextView)findViewById(R.id.txtActivity);
+        txtActivity.setOnClickListener(this);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -88,10 +71,10 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
                 product.putExtra("id", id);
                 startActivity(product);
                 break;
-            case R.id.txtPlace:
-                Intent map = new Intent(DetailEventActivity.this, MapActivity.class);
-                map.putExtra("id", id);
-                startActivity(map);
+            case R.id.txtActivity:
+                Intent activity = new Intent(DetailEventActivity.this, ListActivityEventActivity.class);
+                activity.putExtra("id", id);
+                startActivity(activity);
                 break;
         }
     }
