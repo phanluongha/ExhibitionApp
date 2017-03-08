@@ -3,6 +3,8 @@ package com.example.phanluongha.myfirstapplication.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -17,8 +19,7 @@ public class ListActivityEventAdapter extends PagerAdapter {
     Context context;
     ArrayList<DayActivity> days;
 
-    public ListActivityEventAdapter(Context context,
-                                    ArrayList<DayActivity> days) {
+    public ListActivityEventAdapter(Context context, ArrayList<DayActivity> days) {
         this.context = context;
         this.days = days;
     }
@@ -33,9 +34,9 @@ public class ListActivityEventAdapter extends PagerAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.event_activity_list, null);
-        ListView listView = (ListView) v.findViewById(R.id.listView);
-        ListActivityAdapter adapter = new ListActivityAdapter(context, R.layout.item_activity, days.get(position).activities);
-        listView.setAdapter(adapter);
+        RecyclerView rcvActivityEvent = (RecyclerView) v.findViewById(R.id.rcvActivityEvent);
+        rcvActivityEvent.setLayoutManager(new LinearLayoutManager(context));
+        rcvActivityEvent.setAdapter(new ActivityEventAdapter(context, days.get(position).activities));
         ((ViewPager) collection).addView(v);
         return v;
     }

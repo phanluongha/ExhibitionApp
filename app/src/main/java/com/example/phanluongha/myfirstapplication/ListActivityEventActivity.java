@@ -1,37 +1,29 @@
 package com.example.phanluongha.myfirstapplication;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 import com.example.phanluongha.myfirstapplication.model.DayActivity;
-import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
-
-import fancycoverflow.FancyCoverFlowSampleAdapter;
 
 public class ListActivityEventActivity extends DefaultActivity {
 
@@ -45,8 +37,14 @@ public class ListActivityEventActivity extends DefaultActivity {
         setContentView(R.layout.activity_list_activity_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         pager = (ViewPager) findViewById(R.id.pager);
-        days = new ArrayList<DayActivity>();
+        days = new ArrayList<>();
         adapter = new ListActivityEventAdapter(this, days);
         pager.setAdapter(adapter);
         Bundle b = getIntent().getExtras();
@@ -54,7 +52,15 @@ public class ListActivityEventActivity extends DefaultActivity {
             new GetListActivity(b.getInt("id")).execute();
         }
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     public class GetListActivity extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
