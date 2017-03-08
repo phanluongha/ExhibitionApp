@@ -50,6 +50,7 @@
             android:id="@+id/layoutInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
             android:layout_above="@+id/layoutAction"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
