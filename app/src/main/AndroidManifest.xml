@@ -60,28 +60,23 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListActivityEventActivity"
-            android:label="@string/title_activity_list_activity_event"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailProductActivity"
-            android:label="@string/title_activity_detail_product"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".MyCalendarActivity"
-            android:label="@string/title_activity_note"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".NotepadActivity"
-            android:label="@string/title_activity_note"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SignInActivity"
-            android:label="@string/title_activity_note"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
