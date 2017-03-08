@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -60,6 +61,11 @@ public class DetailExhibitionActivity extends DefaultActivity {
         setContentView(R.layout.activity_detail_exhibition);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         banner = (ImageView) findViewById(R.id.banner);
@@ -78,6 +84,16 @@ public class DetailExhibitionActivity extends DefaultActivity {
             new GetDetailExhibition(b.getInt("id")).execute();
             new GetProductOfExhibition(b.getInt("id"), b.getInt("idEvent")).execute();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public class GetDetailExhibition extends AsyncTask<String, String, JSONObject> {
@@ -115,7 +131,6 @@ public class DetailExhibitionActivity extends DefaultActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Log.e("T", json.toString());
                     JSONObject ex = json.getJSONObject("data");
                     Glide
                             .with(DetailExhibitionActivity.this)
@@ -160,7 +175,7 @@ public class DetailExhibitionActivity extends DefaultActivity {
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
             JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
-            Log.e("T","http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
+            Log.e("T", "http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
             return json;
         }
 
@@ -185,6 +200,9 @@ public class DetailExhibitionActivity extends DefaultActivity {
                         productChild.setName(product.getString("Name"));
                         productChild.setId(product.getInt("idProduct"));
                         productChild.setImage(product.getString("ImageLink"));
+                        productChild.setDescription(product.getString("Description"));
+                        productChild.setFavorite(product.getBoolean("isFavorite"));
+                        productChild.setIdEvent(product.getInt("idEvent"));
                         TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
                         nodeCat.addChildren(nodeCatChild);
                         root.addChild(nodeCat);
@@ -251,7 +269,14 @@ public class DetailExhibitionActivity extends DefaultActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent detailExhibition = new Intent(DetailExhibitionActivity.this, DetailProductActivity.class);
+                    detailExhibition.putExtra("id", value.getId());
+                    detailExhibition.putExtra("name", value.getName());
+                    detailExhibition.putExtra("description", value.getDescription());
+                    detailExhibition.putExtra("favorite", value.isFavorite());
+                    detailExhibition.putExtra("image", value.getImage());
+                    detailExhibition.putExtra("idEvent", value.getIdEvent());
+                    startActivity(detailExhibition);
                 }
             });
             return view;

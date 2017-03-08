@@ -9,20 +9,24 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.phanluongha.myfirstapplication.adapter.ListExhibitionAdapter;
+import com.example.phanluongha.myfirstapplication.adapter.ExhibitionAdapter;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
-import com.example.phanluongha.myfirstapplication.impl.ExhibitionFavoriteClickListener;
+import com.example.phanluongha.myfirstapplication.impl.RcvExhibitionClick;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
@@ -35,41 +39,67 @@ import java.util.ArrayList;
 
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class ListExhibitionEventActivity extends DefaultActivity implements ExhibitionFavoriteClickListener {
+public class ListExhibitionEventActivity extends DefaultActivity implements RcvExhibitionClick {
 
-    private ListView listView;
+
+    private RecyclerView rcvExhibitors;
+
     private ArrayList<Exhibition> arrayExhibition;
-    private ListExhibitionAdapter listExhibitionAdapter;
+    private ExhibitionAdapter exhibitionAdapter;
     private EditText txtSearch;
+
+
+    private int idPrivate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_exhibition_event);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        rcvExhibitors = (RecyclerView) findViewById(R.id.rcvExhibitors);
+
         setSupportActionBar(toolbar);
+        setTitle("");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         txtSearch = (EditText) findViewById(R.id.txtSearch);
-        listView = (ListView) findViewById(R.id.listView);
         arrayExhibition = new ArrayList<Exhibition>();
-        listExhibitionAdapter = new ListExhibitionAdapter(this,
-                R.layout.item_exhibition, arrayExhibition);
-        listView.setAdapter(listExhibitionAdapter);
+
+        rcvExhibitors.setLayoutManager(new LinearLayoutManager(this));
+        exhibitionAdapter = new ExhibitionAdapter(this, arrayExhibition, this);
+        rcvExhibitors.setAdapter(exhibitionAdapter);
 
         final Bundle b = getIntent().getExtras();
         if (b != null) {
-            getListExhibition(b.getInt("id"));
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> a, View v, int position,
-                                        long id) {
-                    Intent detailExhibition = new Intent(ListExhibitionEventActivity.this, DetailExhibitionActivity.class);
-                    detailExhibition.putExtra("id", listExhibitionAdapter.getItem(position).getId());
-                    detailExhibition.putExtra("idEvent", b.getInt("id"));
-                    startActivity(detailExhibition);
-                }
-            });
+            idPrivate = b.getInt("id");
         }
-        txtSearch.addTextChangedListener(new SearchTextWatcher(listExhibitionAdapter));
+        getListExhibition(b.getInt("id"));
+        txtSearch.addTextChangedListener(new SearchTextWatcher(exhibitionAdapter));
+
+    }
+
+    public void onItemExhibitionClick(int id) {
+
+        Intent detailExhibition = new Intent(ListExhibitionEventActivity.this, DetailExhibitionActivity.class);
+        detailExhibition.putExtra("id", id);
+        detailExhibition.putExtra("idEvent", idPrivate);
+        startActivity(detailExhibition);
+
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getListExhibition(int id) {
@@ -93,16 +123,7 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
                                     DialogInterface dialog,
                                     int id) {
                                 Exhibition ex = arrayExhibition.get(position);
-                                JSONObject jsonObject = new JSONObject();
-                                try {
-                                    jsonObject.put("idExhibitor", ex.getId());
-                                    jsonObject.put("idDevice", ListExhibitionEventActivity.this.idDevice);
-                                    jsonObject.put("token", ListExhibitionEventActivity.this.token);
-                                    Log.e("T", jsonObject.toString());
-                                    new AddFavoriteExhibition(position, jsonObject).execute();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                new AddFavoriteExhibition(position, ex.getId()).execute();
                             }
                         })
 
@@ -171,7 +192,7 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
                         e.setFavorite(eh.getBoolean("isFavorite"));
                         arrayExhibition.add(e);
                     }
-                    listExhibitionAdapter.notifyDataSetChanged();
+                    exhibitionAdapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -180,9 +201,9 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
     }
 
     public class SearchTextWatcher implements TextWatcher {
-        private ListExhibitionAdapter lAdapter;
+        private ExhibitionAdapter lAdapter;
 
-        public SearchTextWatcher(ListExhibitionAdapter lAdapter) {
+        public SearchTextWatcher(ExhibitionAdapter lAdapter) {
             this.lAdapter = lAdapter;
         }
 
@@ -205,12 +226,12 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
     public class AddFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
-        private JSONObject jsonObject;
         private int position;
+        private int idExhibitor;
 
-        public AddFavoriteExhibition(int position, JSONObject jsonObject) {
+        public AddFavoriteExhibition(int position, int idExhibitor) {
             this.position = position;
-            this.jsonObject = jsonObject;
+            this.idExhibitor = idExhibitor;
             progressDialog = new ProgressDialog(ListExhibitionEventActivity.this);
             progressDialog.setMessage("Loading...");
         }
@@ -224,7 +245,7 @@ public class ListExhibitionEventActivity extends DefaultActivity implements Exhi
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/getfavorexhibitor", jsonObject);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getfavorexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&idDevice=" + ListExhibitionEventActivity.this.idDevice + "&token=" + ListExhibitionEventActivity.this.token);
             return json;
         }
 

@@ -62,4 +62,14 @@ public class Product {
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
     }
+
+    private int idEvent;
+
+    public int getIdEvent() {
+        return idEvent;
+    }
+
+    public void setIdEvent(int idEvent) {
+        this.idEvent = idEvent;
+    }
 }

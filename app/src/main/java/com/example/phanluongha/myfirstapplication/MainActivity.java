@@ -21,11 +21,17 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String token = sharedpreferences.getString("token", "");
         String idDevice = sharedpreferences.getString("idDevice", "");
         if (token.length() > 0 && idDevice.length() > 0) {
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent listExhibition = new Intent(MainActivity.this, ListExhibitionActivity.class);
                     startActivity(listExhibition);
                 }
-            }, 3000);
+            }, 500);
         } else {
             String android_id = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                     Settings.Secure.ANDROID_ID);

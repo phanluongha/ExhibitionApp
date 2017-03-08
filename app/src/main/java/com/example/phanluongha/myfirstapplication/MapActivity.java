@@ -11,8 +11,10 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,19 +42,35 @@ public class MapActivity extends AppCompatActivity {
     int oldHeight;
     int newWidth;
     int newHeight;
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle("");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         contentLayout = (LinearLayout) findViewById(R.id.content_map);
         View v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_zoom, null, false);
         v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         img = (MyImageView) v.findViewById(R.id.img);
-        oldWidth = get_view_width(R.drawable.map1);
-        oldHeight = get_view_height(R.drawable.map1);
+        oldWidth = 650;
+        oldHeight = 594;
         newWidth = metrics.widthPixels;
         newHeight = newWidth * oldHeight / oldWidth;
         img.setLayoutParams(new LinearLayout.LayoutParams(newWidth, newHeight));
@@ -79,42 +97,20 @@ public class MapActivity extends AppCompatActivity {
                 img.arrayNode[Integer.parseInt(path.getString("node0"))][Integer.parseInt(path.getString("node1"))] = path.getInt("cost");
                 img.arrayNode[Integer.parseInt(path.getString("node1"))][Integer.parseInt(path.getString("node0"))] = path.getInt("cost");
             }
-//            for (int i = 0; i < nodes.length(); i++) {
-//                JSONObject node = nodes.getJSONObject(i);
-//                MapNode mn = new MapNode();
-////                int x = node.getInt("x") * newWidth / oldWidth;
-////                int y = node.getInt("y") * newHeight / oldHeight;
-//                int x = node.getInt("x");
-//                int y = node.getInt("y");
-//
-//                mn.setX(x);
-//                mn.setY(y);
-//                mn.setStore(node.getInt("isStore") == 1);
-//                img.mapNodes.add(mn);
-//            }
-            MapNode mn = new MapNode();
-            int x = 380 * newWidth / 650;
-            int y = 66 * newHeight / oldHeight;
-            mn.setX(x);
-            mn.setY(y);
-            mn.setStore(true);
-            img.mapNodes.add(mn);
+            for (int i = 0; i < nodes.length(); i++) {
+                JSONObject node = nodes.getJSONObject(i);
+                MapNode mn = new MapNode();
+                int x = node.getInt("x") * newWidth / oldWidth;
+                int y = node.getInt("y") * newHeight / oldHeight;
+                mn.setX(x);
+                mn.setY(y);
+                mn.setStore(node.getInt("isStore") == 1);
+                img.mapNodes.add(mn);
+            }
             img.invalidate();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    public int get_view_width(int viewId) {
-        BitmapDrawable bd_horizontal_line = (BitmapDrawable) this
-                .getResources().getDrawable(viewId);
-        return bd_horizontal_line.getBitmap().getWidth();
-    }
-
-    public int get_view_height(int viewId) {
-        BitmapDrawable bd_horizontal_line = (BitmapDrawable) this
-                .getResources().getDrawable(viewId);
-        return bd_horizontal_line.getBitmap().getHeight();
     }
 
     String js = "{\n" +
