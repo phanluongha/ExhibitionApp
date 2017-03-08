@@ -162,7 +162,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         getListEvent(id);
     }
 
-
+    boolean isCollapse = false;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -170,12 +170,10 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
                 Toast.makeText(this, "hot deals", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnMyPlant:
-
-                if (imgShowHidePlant.getDrawable().getConstantState().equals
-                        (ContextCompat.getDrawable(this, R.drawable.ic_up).getConstantState())) {
+                isCollapse = !isCollapse;
+                if (isCollapse) {
                     imgShowHidePlant.setImageResource(R.drawable.ic_down);
                     AnimationShowHideView.collapse(layoutChildMyPlant);
-
                 } else {
                     imgShowHidePlant.setImageResource(R.drawable.ic_up);
                     AnimationShowHideView.expand(layoutChildMyPlant);
