@@ -1,8 +1,10 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -58,7 +60,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
     BadgeView badgeView;
     View imgCountNotification;
     private EventCategoryChildClickListener eventCategoryChildClickListener;
-
+    LinearLayout btnSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         setContentView(R.layout.activity_list_exhibition);
         setTitle("");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        LinearLayout btnSignIn = (LinearLayout) findViewById(R.id.btnSignIn);
+        btnSignIn = (LinearLayout) findViewById(R.id.btnSignIn);
         LinearLayout btnSuggest = (LinearLayout) findViewById(R.id.btnSuggest);
         LinearLayout btnHotdeals = (LinearLayout) findViewById(R.id.btnHotdeals);
         LinearLayout btnMyPlant = (LinearLayout) findViewById(R.id.btnMyPlant);
@@ -90,6 +92,11 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
 
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("check_login",MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("is_login",false)){
+            btnSignIn.setVisibility(View.GONE);
+        }
 
         btnSignIn.setOnClickListener(this);
         btnSuggest.setOnClickListener(this);
@@ -163,6 +170,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
     }
 
     boolean isCollapse = false;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -180,7 +188,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
                 }
                 break;
             case R.id.btnSignIn:
-                startActivity(new Intent(this, SignInActivity.class));
+                startActivityForResult(new Intent(this, SignInActivity.class), 1000);
                 break;
             case R.id.btnSuggest:
                 Toast.makeText(this, "btnSuggest", Toast.LENGTH_SHORT).show();
@@ -197,6 +205,20 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
             case R.id.btnMyInbox:
                 Toast.makeText(this, "btnMyInbox", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                if(btnSignIn!=null){
+                    btnSignIn.setVisibility(View.GONE);
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+            }
         }
     }
 
@@ -274,7 +296,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idChildCategory=" + String.valueOf(category) : ""));
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idChildCategory=" + String.valueOf(category) : ""));
             return json;
         }
 
@@ -338,7 +360,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist"+ "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
             return json;
         }
 
