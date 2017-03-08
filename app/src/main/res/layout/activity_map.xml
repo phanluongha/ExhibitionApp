@@ -11,7 +11,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:background="@android:color/white"
         tools:context="com.example.phanluongha.myfirstapplication.DetailEventActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -44,7 +44,6 @@
             android:id="@+id/content_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
