@@ -111,6 +111,7 @@
                     android:id="@+id/txtActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:drawablePadding="5dp"
                     android:drawableTop="@drawable/icon_fring"
                     android:text="@string/competition_activity"

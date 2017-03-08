@@ -21,7 +21,6 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
     private TextView txtAbout;
     private TextView txtExhibitor;
     private TextView txtProduct;
-    private  TextView txtActivity;
     private TextView txtActivity;
     private TextView txtPlace;
     private ImageView banner;
@@ -72,6 +71,10 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtActivity = (TextView)findViewById(R.id.txtActivity);
         txtActivity = (TextView) findViewById(R.id.txtActivity);
         txtActivity.setOnClickListener(this);
+        txtPlace = (TextView) findViewById(R.id.txtPlace);
+        txtPlace.setOnClickListener(this);
+
+
     }
 
     @Override

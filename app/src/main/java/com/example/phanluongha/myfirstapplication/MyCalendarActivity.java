@@ -34,7 +34,6 @@ public class MyCalendarActivity extends AppCompatActivity {
     private List<Event> getEvents() {
         return Arrays.asList(new Event(Color.argb(255, 169, 68, 65), 1488692537390L, "Event 1" + new Date(1488692537390L))
                 ,new Event(Color.argb(255, 169, 68, 65), 1489642535000L, "Event 1" + new Date(1489642535000L)));
-                ,new Event(Color.argb(255, 169, 68, 65), 1492320935000L, "Event 1" + new Date(1492320935000L)));
     }
 
     @Override
