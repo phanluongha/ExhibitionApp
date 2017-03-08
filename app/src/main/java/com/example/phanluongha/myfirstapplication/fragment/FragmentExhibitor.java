@@ -49,7 +49,7 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_exhibitor,container,false);
+        View v = inflater.inflate(R.layout.fragment_exhibitor, container, false);
         rcvExhibitors = (RecyclerView) v.findViewById(R.id.rcvExhibitors);
         return v;
     }
@@ -66,7 +66,7 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
     }
 
     @Override
-    public void onItemExhibitionClick(int id) {
+    public void onItemExhibitionClick(int id, boolean isFavorite) {
 
     }
 
@@ -94,7 +94,7 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(getActivity());
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getlistfavoritedexhibitor?idDevice="+deviceId+"&token="+token);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getlistfavoritedexhibitor?idDevice=" + deviceId + "&token=" + token);
             return json;
         }
 

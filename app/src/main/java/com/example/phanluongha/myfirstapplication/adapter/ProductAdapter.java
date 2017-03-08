@@ -78,6 +78,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Exhibiti
         } else {
             holder.imgFavotite.setImageResource(R.drawable.love_empty);
         }
+        holder.imgFavotite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rcvProductClick.onItemFavoriteProductClick(position);
+            }
+        });
     }
 
     public class ExhibitionHolder extends RecyclerView.ViewHolder {

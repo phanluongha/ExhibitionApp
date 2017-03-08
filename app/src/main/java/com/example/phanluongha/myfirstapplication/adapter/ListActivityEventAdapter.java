@@ -18,6 +18,7 @@ public class ListActivityEventAdapter extends PagerAdapter {
 
     Context context;
     ArrayList<DayActivity> days;
+    public ActivityEventAdapter adapter;
 
     public ListActivityEventAdapter(Context context, ArrayList<DayActivity> days) {
         this.context = context;
@@ -36,7 +37,8 @@ public class ListActivityEventAdapter extends PagerAdapter {
         View v = inflater.inflate(R.layout.event_activity_list, null);
         RecyclerView rcvActivityEvent = (RecyclerView) v.findViewById(R.id.rcvActivityEvent);
         rcvActivityEvent.setLayoutManager(new LinearLayoutManager(context));
-        rcvActivityEvent.setAdapter(new ActivityEventAdapter(context, days.get(position).activities));
+        adapter = new ActivityEventAdapter(context, days.get(position).activities, position);
+        rcvActivityEvent.setAdapter(adapter);
         ((ViewPager) collection).addView(v);
         return v;
     }
@@ -49,5 +51,10 @@ public class ListActivityEventAdapter extends PagerAdapter {
     @Override
     public boolean isViewFromObject(View view, Object object) {
         return view == object;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }

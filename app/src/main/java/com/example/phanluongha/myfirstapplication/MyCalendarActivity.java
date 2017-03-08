@@ -24,16 +24,14 @@ import java.util.Locale;
 public class MyCalendarActivity extends AppCompatActivity {
 
     TextView tvDate;
-    DateFormat dateFormatForMonth = new SimpleDateFormat("MM/dd/yyyy");
+    DateFormat dateFormatForMonth = new SimpleDateFormat("dd/MM/yyyy");
     private CompactCalendarView compactCalendarView;
-    private java.util.Calendar currentCalender = java.util.Calendar.getInstance(Locale.getDefault());
-
-
+    private Date currentDay = new Date();
 
 
     private List<Event> getEvents() {
-        return Arrays.asList(new Event(Color.argb(255, 169, 68, 65), 1488692537390L, "Event 1" + new Date(1488692537390L))
-                ,new Event(Color.argb(255, 169, 68, 65), 1489642535000L, "Event 1" + new Date(1489642535000L)));
+        return Arrays.asList(new Event(Color.argb(255, 169, 68, 65), 1488692537390L)
+                , new Event(Color.argb(255, 169, 68, 65), 1489642535000L));
     }
 
     @Override
@@ -54,7 +52,7 @@ public class MyCalendarActivity extends AppCompatActivity {
         tvDate = (TextView) findViewById(R.id.tvDate);
 
         compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
-        tvDate.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth()));
+        tvDate.setText(dateFormatForMonth.format(currentDay.getTime()));
 
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
@@ -64,10 +62,12 @@ public class MyCalendarActivity extends AppCompatActivity {
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                tvDate.setText(dateFormatForMonth.format(firstDayOfNewMonth));
+                if (currentDay.getMonth() != firstDayOfNewMonth.getMonth() || currentDay.getYear() != firstDayOfNewMonth.getYear())
+                    tvDate.setText(dateFormatForMonth.format(firstDayOfNewMonth));
+                else
+                    tvDate.setText(dateFormatForMonth.format(currentDay));
             }
         });
-
 
 
         List<Event> events = getEvents();

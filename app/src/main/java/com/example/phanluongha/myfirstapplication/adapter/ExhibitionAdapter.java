@@ -26,15 +26,15 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Ex
     private ArrayList<Exhibition> filteredItems;
     private RcvExhibitionClick rcvExhibitionClick;
     private ExhibitionAdapter.ItemFilter mFilter = new ExhibitionAdapter.ItemFilter();
+
     public ExhibitionAdapter(Context context,
-                             ArrayList<Exhibition> arrayExhibition,RcvExhibitionClick rcvExhibitionClick) {
+                             ArrayList<Exhibition> arrayExhibition, RcvExhibitionClick rcvExhibitionClick) {
         this.context = context;
         this.arrayExhibition = arrayExhibition;
         this.filteredItems = arrayExhibition;
 
         this.rcvExhibitionClick = rcvExhibitionClick;
     }
-
 
 
     @Override
@@ -72,13 +72,13 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Ex
             holder.imgFavotite.setImageResource(R.drawable.love_fill);
         } else {
             holder.imgFavotite.setImageResource(R.drawable.love_empty);
-            holder.imgFavotite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rcvExhibitionClick.keyClickedIndex(position);
-                }
-            });
         }
+        holder.imgFavotite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rcvExhibitionClick.keyClickedIndex(position);
+            }
+        });
     }
 
     public class ExhibitionHolder extends RecyclerView.ViewHolder {
@@ -91,20 +91,21 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Ex
 
         public ExhibitionHolder(View v) {
             super(v);
-             img = (ImageView) v.findViewById(R.id.img);
-             txtName = (TextView) v.findViewById(R.id.txtName);
-             txtBooth = (TextView) v.findViewById(R.id.txtBooth);
-             txtDescription = (TextView) v.findViewById(R.id.txtDescription);
-             imgFavotite = (ImageView) v.findViewById(R.id.imgFavotite);
+            img = (ImageView) v.findViewById(R.id.img);
+            txtName = (TextView) v.findViewById(R.id.txtName);
+            txtBooth = (TextView) v.findViewById(R.id.txtBooth);
+            txtDescription = (TextView) v.findViewById(R.id.txtDescription);
+            imgFavotite = (ImageView) v.findViewById(R.id.imgFavotite);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rcvExhibitionClick.onItemExhibitionClick(arrayExhibition.get(getAdapterPosition()).getId());
+                    rcvExhibitionClick.onItemExhibitionClick(arrayExhibition.get(getAdapterPosition()).getId(), arrayExhibition.get(getAdapterPosition()).isFavorite());
                 }
             });
 
         }
     }
+
     private class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

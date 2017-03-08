@@ -21,6 +21,7 @@ public class ExhibitionFavouriteAdapter extends RecyclerView.Adapter<ExhibitionF
     private Context context;
     private ArrayList<Exhibition> arrayExhibition;
     private RcvExhibitionClick rcvExhibitionClick;
+
     public ExhibitionFavouriteAdapter(Context context,
                                       ArrayList<Exhibition> arrayExhibition, RcvExhibitionClick rcvExhibitionClick) {
         this.context = context;
@@ -28,7 +29,6 @@ public class ExhibitionFavouriteAdapter extends RecyclerView.Adapter<ExhibitionF
 
         this.rcvExhibitionClick = rcvExhibitionClick;
     }
-
 
 
     @Override
@@ -85,15 +85,15 @@ public class ExhibitionFavouriteAdapter extends RecyclerView.Adapter<ExhibitionF
 
         public ExhibitionHolder(View v) {
             super(v);
-             img = (ImageView) v.findViewById(R.id.img);
-             txtName = (TextView) v.findViewById(R.id.txtName);
-             txtBooth = (TextView) v.findViewById(R.id.txtBooth);
-             txtDescription = (TextView) v.findViewById(R.id.txtDescription);
-             imgFavotite = (ImageView) v.findViewById(R.id.imgFavotite);
+            img = (ImageView) v.findViewById(R.id.img);
+            txtName = (TextView) v.findViewById(R.id.txtName);
+            txtBooth = (TextView) v.findViewById(R.id.txtBooth);
+            txtDescription = (TextView) v.findViewById(R.id.txtDescription);
+            imgFavotite = (ImageView) v.findViewById(R.id.imgFavotite);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rcvExhibitionClick.onItemExhibitionClick(arrayExhibition.get(getAdapterPosition()).getId());
+                    rcvExhibitionClick.onItemExhibitionClick(arrayExhibition.get(getAdapterPosition()).getId(), arrayExhibition.get(getAdapterPosition()).isFavorite());
                 }
             });
 

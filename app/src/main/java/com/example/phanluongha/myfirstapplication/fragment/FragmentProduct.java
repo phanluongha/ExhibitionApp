@@ -71,6 +71,11 @@ public class FragmentProduct extends Fragment implements RcvProductClick {
 
     }
 
+    @Override
+    public void onItemFavoriteProductClick(int position) {
+
+    }
+
     public class GetListProductFavourites extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;

@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.model.Product;
@@ -84,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    String token = json.getString("data");
+                    JSONObject data = json.getJSONObject("data");
                     sharedpreferences.edit().clear()
-                            .putString("token", token).putString("idDevice", idDevice).commit();
+                            .putString("token", data.getString("token")).putString("idDevice", data.getString("idDevice")).commit();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {

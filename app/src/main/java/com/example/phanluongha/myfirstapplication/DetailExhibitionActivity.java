@@ -1,7 +1,10 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -41,8 +44,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import fancycoverflow.FancyCoverFlowSampleAdapter;
+import okhttp3.MultipartBody;
 
-public class DetailExhibitionActivity extends DefaultActivity {
+public class DetailExhibitionActivity extends DefaultActivity implements View.OnClickListener {
 
     private ImageView banner;
     private ImageView imgFavorite;
@@ -54,6 +58,10 @@ public class DetailExhibitionActivity extends DefaultActivity {
     private TextView txtEmail;
     private LinearLayout layoutProduct;
     DisplayMetrics metrics;
+    private int idEvent;
+    private int idExhibitor;
+    private boolean isFavorite;
+    private boolean change = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +89,17 @@ public class DetailExhibitionActivity extends DefaultActivity {
         layoutProduct = (LinearLayout) findViewById(R.id.layoutProduct);
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            new GetDetailExhibition(b.getInt("id")).execute();
-            new GetProductOfExhibition(b.getInt("id"), b.getInt("idEvent")).execute();
+            idEvent = b.getInt("idEvent");
+            idExhibitor = b.getInt("id");
+            isFavorite = b.getBoolean("isFavorite");
+            if (isFavorite) {
+                imgFavorite.setImageResource(R.drawable.fill_stick);
+            } else {
+                imgFavorite.setImageResource(R.drawable.empty_stick);
+            }
+            imgFavorite.setOnClickListener(DetailExhibitionActivity.this);
+            new GetDetailExhibition(idExhibitor).execute();
+            new GetProductOfExhibition(idExhibitor, idEvent).execute();
         }
     }
 
@@ -94,6 +111,101 @@ public class DetailExhibitionActivity extends DefaultActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (change) {
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        } else {
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgFavorite:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        this);
+                if (!isFavorite) {
+                    alertDialogBuilder.setTitle(this
+                            .getString(R.string.add_favorite));
+                    alertDialogBuilder
+                            .setMessage(
+                                    getString(R.string.add_favorite_confirm))
+                            .setCancelable(false)
+                            .setPositiveButton(
+                                    getString(R.string.yes),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int id) {
+                                            MultipartBody.Builder m = new MultipartBody.Builder();
+                                            m.setType(MultipartBody.FORM);
+                                            m.addFormDataPart("type", "exhibitor");
+                                            m.addFormDataPart("idExhibitor", String.valueOf(idExhibitor));
+                                            m.addFormDataPart("idDevice", DetailExhibitionActivity.this.idDevice);
+                                            m.addFormDataPart("token", DetailExhibitionActivity.this.token);
+                                            new AddFavoriteExhibition(m).execute();
+
+                                        }
+                                    })
+
+                            .setNegativeButton(
+                                    getString(R.string.no),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int id) {
+
+                                            dialog.cancel();
+                                        }
+                                    });
+                } else {
+                    alertDialogBuilder.setTitle(this
+                            .getString(R.string.remove_favorite));
+                    alertDialogBuilder
+                            .setMessage(
+                                    getString(R.string.remove_favorite_confirm))
+                            .setCancelable(false)
+                            .setPositiveButton(
+                                    getString(R.string.yes),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int id) {
+                                            MultipartBody.Builder m = new MultipartBody.Builder();
+                                            m.setType(MultipartBody.FORM);
+                                            m.addFormDataPart("type", "exhibitor");
+                                            m.addFormDataPart("idExhibitor", String.valueOf(idExhibitor));
+                                            m.addFormDataPart("idDevice", DetailExhibitionActivity.this.idDevice);
+                                            m.addFormDataPart("token", DetailExhibitionActivity.this.token);
+                                            new RemoveFavoriteExhibition(m).execute();
+                                        }
+                                    })
+
+                            .setNegativeButton(
+                                    getString(R.string.no),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int id) {
+
+                                            dialog.cancel();
+                                        }
+                                    });
+                }
+
+                AlertDialog alertDialog = alertDialogBuilder
+                        .create();
+                alertDialog.show();
+                break;
+        }
     }
 
     public class GetDetailExhibition extends AsyncTask<String, String, JSONObject> {
@@ -116,7 +228,8 @@ public class DetailExhibitionActivity extends DefaultActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice);
+            Log.e("T", json.toString());
             return json;
         }
 
@@ -175,7 +288,6 @@ public class DetailExhibitionActivity extends DefaultActivity {
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
             JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
-            Log.e("T", "http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
             return json;
         }
 
@@ -280,6 +392,100 @@ public class DetailExhibitionActivity extends DefaultActivity {
                 }
             });
             return view;
+        }
+    }
+
+    public class AddFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+        private MultipartBody.Builder m;
+
+        public AddFavoriteExhibition(MultipartBody.Builder m) {
+            this.m = m;
+            progressDialog = new ProgressDialog(DetailExhibitionActivity.this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
+            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(DetailExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (json.getInt("code") == 200) {
+                        change = true;
+                        isFavorite = true;
+                        imgFavorite.setImageResource(R.drawable.fill_stick);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class RemoveFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+        private MultipartBody.Builder m;
+
+        public RemoveFavoriteExhibition(MultipartBody.Builder m) {
+            this.m = m;
+            progressDialog = new ProgressDialog(DetailExhibitionActivity.this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
+            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(DetailExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (json.getInt("code") == 200) {
+                        change = true;
+                        isFavorite = false;
+                        imgFavorite.setImageResource(R.drawable.empty_stick);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

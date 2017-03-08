@@ -93,8 +93,8 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("check_login",MODE_PRIVATE);
-        if(sharedPreferences.getBoolean("is_login",false)){
+        SharedPreferences sharedPreferences = getSharedPreferences("check_login", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("is_login", false)) {
             btnSignIn.setVisibility(View.GONE);
         }
 
@@ -213,7 +213,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
 
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
-                if(btnSignIn!=null){
+                if (btnSignIn != null) {
                     btnSignIn.setVisibility(View.GONE);
                 }
             }

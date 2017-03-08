@@ -22,10 +22,12 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
     private TextView txtExhibitor;
     private TextView txtProduct;
     private TextView txtActivity;
+    private TextView txtConference;
     private TextView txtPlace;
     private ImageView banner;
     DisplayMetrics metrics;
     private int id;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -35,6 +37,7 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +71,11 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtExhibitor.setOnClickListener(this);
         txtProduct = (TextView) findViewById(R.id.txtProduct);
         txtProduct.setOnClickListener(this);
-        txtActivity = (TextView)findViewById(R.id.txtActivity);
+        txtActivity = (TextView) findViewById(R.id.txtActivity);
         txtActivity = (TextView) findViewById(R.id.txtActivity);
         txtActivity.setOnClickListener(this);
+        txtConference = (TextView) findViewById(R.id.txtConference);
+        txtConference.setOnClickListener(this);
         txtPlace = (TextView) findViewById(R.id.txtPlace);
         txtPlace.setOnClickListener(this);
 
@@ -98,7 +103,14 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
             case R.id.txtActivity:
                 Intent activity = new Intent(DetailEventActivity.this, ListActivityEventActivity.class);
                 activity.putExtra("id", id);
+                activity.putExtra("idTypeActivities", 1);
                 startActivity(activity);
+                break;
+            case R.id.txtConference:
+                Intent conference = new Intent(DetailEventActivity.this, ListActivityEventActivity.class);
+                conference.putExtra("id", id);
+                conference.putExtra("idTypeActivities", 2);
+                startActivity(conference);
                 break;
             case R.id.txtPlace:
                 Intent map = new Intent(DetailEventActivity.this, MapActivity.class);

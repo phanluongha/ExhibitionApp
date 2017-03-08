@@ -6,8 +6,6 @@ import com.example.phanluongha.myfirstapplication.model.Product;
  * Created by ng.hoang.minh095gmail.com on 3/8/17.
  */
 
-public interface RcvProductClick {
-    void onItemProductClick(Product product);
-
-    void onItemFavoriteProductClick(int position);
+public interface RcvActivityClick {
+    void onItemFavoriteProductClick(int positionParent, int position);
 }

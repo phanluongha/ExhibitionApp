@@ -2,9 +2,11 @@ package com.example.phanluongha.myfirstapplication.request;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -19,6 +21,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 public class JsonParser {
 
@@ -57,6 +60,86 @@ public class JsonParser {
         RequestBody body = RequestBody.create(JSON, jsonobj.toString());
         Request request = new Request.Builder().url(url)
                 .post(body).build();
+        jObj = null;
+        try {
+            Response response = client.newCall(request).execute();
+            try {
+                jObj = new JSONObject(response.body().string());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            if (e instanceof ConnectTimeoutException) {
+                try {
+                    jObj = new JSONObject("{\"error\":{\"code\":651,\"msg\":\""
+                            + "Hết thời gian kết nối"
+                            + "\"},\"status\":false}");
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            } else if (e instanceof SocketTimeoutException) {
+                try {
+                    jObj = new JSONObject("{\"error\":{\"code\":651,\"msg\":\""
+                            + "Hết thời gian kết nối"
+                            + "\"},\"status\":false}");
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+        }
+        if (jObj == null)
+            try {
+                jObj = new JSONObject("{\"error\":{\"code\":651,\"msg\":\""
+                        + "Lỗi kết nối"
+                        + "\"},\"status\":false}");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return jObj;
+    }
+
+    public JSONObject getPostJSONFromUrl(String url, MultipartBody.Builder m) {
+        // end check internet connection
+        if (context != null) {
+            Boolean flag = isNetworkAvailable();
+            if (!flag) {
+                try {
+                    return new JSONObject("{\"error\":{\"code\":651,\"msg\":\""
+                            + "Không có kết nối mạng"
+                            + "\"},\"status\":false}");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        // end check location and timezone
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(HTTP_TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(HTTP_TIMEOUT, TimeUnit.MILLISECONDS)
+                .readTimeout(HTTP_TIMEOUT, TimeUnit.MILLISECONDS).build();
+//        RequestBody body = RequestBody.create(JSON, jsonobj.toString());
+//        RequestBody.
+//        RequestBody body =
+//        m = new MultipartBody.Builder();
+//        m.setType(MultipartBody.FORM);
+//        Iterator<String> keys = jsonobj.keys();
+////        m.addFormDataPart("type", "exhibitor");
+////        m.addFormDataPart("idExhibitor", "1");
+////        m.addFormDataPart("idDevice", "12");
+////        m.addFormDataPart("token", "Y2MzNWRjNWY3NjhkNDgzNg==");
+//        while (keys.hasNext()) {
+//            try {
+//                String key = (String) keys.next();
+//                m.addFormDataPart(key, jsonobj.getString(key));
+//                Log.e(key, jsonobj.getString(key));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        Request request = new Request.Builder().url(url)
+                .post(m.build()).build();
         jObj = null;
         try {
             Response response = client.newCall(request).execute();

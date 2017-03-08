@@ -4,6 +4,16 @@ package com.example.phanluongha.myfirstapplication.model;
  * Created by haphan on 3/7/2017.
  */
 public class Activity {
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String name;
 
     public String getName() {

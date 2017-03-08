@@ -19,6 +19,7 @@ import es.dmoral.toasty.Toasty;
 public class NotepadActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     LinedEditText edNotepad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +33,10 @@ public class NotepadActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        sharedPreferences= getSharedPreferences("note",MODE_PRIVATE);
-        String resultNotepad = sharedPreferences.getString("my_note","");
+        sharedPreferences = getSharedPreferences("note", MODE_PRIVATE);
+        String resultNotepad = sharedPreferences.getString("my_note", "");
         edNotepad.setText(resultNotepad);
+        edNotepad.setSelection(resultNotepad.length());
 
     }
 
@@ -53,12 +55,12 @@ public class NotepadActivity extends AppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.action_save:
-                if(edNotepad.getText().toString().trim().length() > 0){
-                    SharedPreferences.Editor editor = sharedPreferences.edit() ;
-                    editor.putString("my_note",edNotepad.getText().toString());
+                if (edNotepad.getText().toString().trim().length() > 0) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("my_note", edNotepad.getText().toString());
                     editor.apply();
                     Toasty.success(this, "Save complete", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toasty.error(this, "Please check content again", Toast.LENGTH_SHORT).show();
                 }
 
