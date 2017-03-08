@@ -15,12 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
             <TextView
 
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="Exhibitor Name"
                 android:textColor="@android:color/white"
@@ -30,12 +31,37 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:textSize="20sp"
+            android:padding="16dp"
+            android:background="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center|left"
+            android:drawableRight="@drawable/ic_calendar"
+            android:layout_width="match_parent"
+            android:id="@+id/tvDate"
+            android:layout_height="wrap_content" />
 
-    </FrameLayout>
+        <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            android:id="@+id/compactcalendar_view"
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:compactCalendarBackgroundColor="@android:color/white"
+            app:compactCalendarCurrentDayBackgroundColor="#86C0FD"
+            app:compactCalendarCurrentSelectedDayBackgroundColor="#8086C0FD"
+            app:compactCalendarMultiEventIndicatorColor="#F44336"
+            app:compactCalendarTargetHeight="250dp"
+            app:compactCalendarTextColor="@android:color/black"
+            app:compactCalendarTextSize="12sp"
 
-
+            />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

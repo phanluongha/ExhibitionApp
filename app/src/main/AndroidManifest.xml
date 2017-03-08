@@ -71,6 +71,8 @@
             android:name=".MyCalendarActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+
        <activity
             android:name=".NotepadActivity"
             android:screenOrientation="portrait"
