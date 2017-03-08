@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +29,13 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_event);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);setTitle("");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         banner = (ImageView) findViewById(R.id.banner);
@@ -42,6 +51,7 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
                     .crossFade()
                     .into(banner);
         }
+
         txtAbout = (TextView) findViewById(R.id.txtAbout);
         txtAbout.setOnClickListener(this);
         txtExhibitor = (TextView) findViewById(R.id.txtExhibitor);
@@ -51,7 +61,15 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtPlace = (TextView) findViewById(R.id.txtPlace);
         txtPlace.setOnClickListener(this);
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

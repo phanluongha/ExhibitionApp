@@ -12,35 +12,25 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary" />
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:clickable="true"
-                android:orientation="horizontal">
-
+                android:background="@color/colorPrimary" >
                 <TextView
                     android:id="@+id/txtProductName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
+            </android.support.v7.widget.Toolbar>
 
-            </LinearLayout>
-        </RelativeLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 

@@ -162,6 +162,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         getListEvent(id);
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

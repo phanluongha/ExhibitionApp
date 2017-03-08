@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -60,6 +61,11 @@ public class DetailExhibitionActivity extends DefaultActivity {
         setContentView(R.layout.activity_detail_exhibition);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("");
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         banner = (ImageView) findViewById(R.id.banner);
@@ -78,6 +84,16 @@ public class DetailExhibitionActivity extends DefaultActivity {
             new GetDetailExhibition(b.getInt("id")).execute();
             new GetProductOfExhibition(b.getInt("id"), b.getInt("idEvent")).execute();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public class GetDetailExhibition extends AsyncTask<String, String, JSONObject> {
