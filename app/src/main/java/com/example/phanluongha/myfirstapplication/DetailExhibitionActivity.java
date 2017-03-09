@@ -114,6 +114,16 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                new GetProductOfExhibition(idExhibitor, idEvent).execute();
+            }
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (change) {
             Intent returnIntent = new Intent();
@@ -304,6 +314,7 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
                 } else {
                     Log.e("T", json.toString());
                     JSONArray products = json.getJSONArray("data");
+                    layoutProduct.removeAllViews();
                     TreeNode root = TreeNode.root();
                     TreeNode nodeCat = new TreeNode(null).setViewHolder(new DetailExhibitionActivity.ProductCategoryHolder(DetailExhibitionActivity.this));
                     for (int i = 0; i < products.length(); i++) {
@@ -385,10 +396,10 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
                     detailExhibition.putExtra("id", value.getId());
                     detailExhibition.putExtra("name", value.getName());
                     detailExhibition.putExtra("description", value.getDescription());
-                    detailExhibition.putExtra("favorite", value.isFavorite());
+                    detailExhibition.putExtra("isFavorite", value.isFavorite());
                     detailExhibition.putExtra("image", value.getImage());
                     detailExhibition.putExtra("idEvent", value.getIdEvent());
-                    startActivity(detailExhibition);
+                    startActivityForResult(detailExhibition, 1);
                 }
             });
             return view;

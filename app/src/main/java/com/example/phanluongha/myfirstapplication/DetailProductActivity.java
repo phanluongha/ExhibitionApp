@@ -116,6 +116,16 @@ public class DetailProductActivity extends DefaultActivity implements View.OnCli
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                new GetExhibitionOfProduct(idProduct, idEvent).execute();
+            }
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (change) {
             Intent returnIntent = new Intent();
@@ -249,12 +259,14 @@ public class DetailProductActivity extends DefaultActivity implements View.OnCli
                 } else {
                     Log.e("T", json.toString());
                     JSONArray exhibitions = json.getJSONArray("data");
+                    layoutExhibition.removeAllViews();
                     TreeNode root = TreeNode.root();
                     for (int i = 0; i < exhibitions.length(); i++) {
                         JSONObject exhibition = exhibitions.getJSONObject(i);
                         Exhibition ex = new Exhibition();
                         ex.setId(exhibition.getInt("idExhibitor"));
                         ex.setName(exhibition.getString("Name"));
+                        ex.setFavorite(exhibition.getBoolean("isFavorite"));
                         TreeNode nodeCat = new TreeNode(ex).setViewHolder(new ExhibitionHolder(DetailProductActivity.this));
                         root.addChild(nodeCat);
                     }
@@ -286,7 +298,8 @@ public class DetailProductActivity extends DefaultActivity implements View.OnCli
                     Intent detailExhibition = new Intent(DetailProductActivity.this, DetailExhibitionActivity.class);
                     detailExhibition.putExtra("id", value.getId());
                     detailExhibition.putExtra("idEvent", idEvent);
-                    startActivity(detailExhibition);
+                    detailExhibition.putExtra("isFavorite", value.isFavorite());
+                    startActivityForResult(detailExhibition, 1);
                 }
             });
             return view;
