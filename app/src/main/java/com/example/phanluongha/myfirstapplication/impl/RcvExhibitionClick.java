@@ -7,5 +7,7 @@ package com.example.phanluongha.myfirstapplication.impl;
 public interface RcvExhibitionClick {
     void onItemExhibitionClick(int id, boolean isFavorite);
 
+    void onItemExhibitionClick(int position);
+
     void keyClickedIndex(int position);
 }

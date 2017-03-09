@@ -26,7 +26,6 @@ public class ExhibitionFavouriteAdapter extends RecyclerView.Adapter<ExhibitionF
                                       ArrayList<Exhibition> arrayExhibition, RcvExhibitionClick rcvExhibitionClick) {
         this.context = context;
         this.arrayExhibition = arrayExhibition;
-
         this.rcvExhibitionClick = rcvExhibitionClick;
     }
 
@@ -66,13 +65,13 @@ public class ExhibitionFavouriteAdapter extends RecyclerView.Adapter<ExhibitionF
             holder.imgFavotite.setImageResource(R.drawable.love_fill);
         } else {
             holder.imgFavotite.setImageResource(R.drawable.love_empty);
-            holder.imgFavotite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rcvExhibitionClick.keyClickedIndex(position);
-                }
-            });
         }
+        holder.imgFavotite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rcvExhibitionClick.keyClickedIndex(position);
+            }
+        });
     }
 
     public class ExhibitionHolder extends RecyclerView.ViewHolder {
@@ -93,7 +92,7 @@ public class ExhibitionFavouriteAdapter extends RecyclerView.Adapter<ExhibitionF
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rcvExhibitionClick.onItemExhibitionClick(arrayExhibition.get(getAdapterPosition()).getId(), arrayExhibition.get(getAdapterPosition()).isFavorite());
+                    rcvExhibitionClick.onItemExhibitionClick(getAdapterPosition());
                 }
             });
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,11 +23,15 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.customview.BadgeView;
 import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickListener;
@@ -58,9 +64,13 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
     private ArrayList<Event> events;
     DisplayMetrics metrics;
     BadgeView badgeView;
+    private FrameLayout layoutNoti;
+    private TextView txtInbox;
     View imgCountNotification;
     private EventCategoryChildClickListener eventCategoryChildClickListener;
     LinearLayout btnSignIn;
+    private ImageView imgAd;
+    private TextView txtAdvertise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +99,8 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         imgCategotyAction = (ImageView) findViewById(R.id.imgCategotyAction);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         fancyCoverFlow = (FancyCoverFlow) this.findViewById(R.id.fancyCoverFlow);
+        txtInbox = (TextView) findViewById(R.id.txtInbox);
+        layoutNoti = (FrameLayout) findViewById(R.id.layoutNoti);
 
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -128,8 +140,12 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
                 }
             }
         });
+        imgAd = (ImageView) findViewById(R.id.imgAd);
+        imgAd.setLayoutParams(new RelativeLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels / 3));
+        txtAdvertise = (TextView) findViewById(R.id.txtAdvertise);
         getListEvent(0);
         new GetListEventCategory().execute();
+        new GetAd().execute();
 
 
     }
@@ -163,6 +179,11 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new GetNumberNoti().execute();
+    }
 
     @Override
     public void keyClickedIndex(int id) {
@@ -367,13 +388,6 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         @Override
         protected void onPostExecute(JSONObject json) {
             progressDialog.dismiss();
-            if (badgeView == null) {
-                badgeView = new BadgeView(ListExhibitionActivity.this, imgCountNotification);
-                badgeView.setBadgePosition(BadgeView.POSITION_TOP_LEFT);
-
-            }
-            badgeView.setText("10");
-            badgeView.show();
             if (json.has("error")) {
                 try {
                     Toast.makeText(ListExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
@@ -407,6 +421,107 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    private class GetNumberNoti extends AsyncTask<String, String, JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getnumberofnotificationnotread" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            if (json.has("error")) {
+                try {
+                    Toast.makeText(ListExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    int number = json.getJSONObject("data").getInt("numberNotRead");
+                    if (badgeView == null) {
+                        badgeView = new BadgeView(ListExhibitionActivity.this, imgCountNotification);
+                        badgeView.setBadgePosition(BadgeView.POSITION_TOP_LEFT);
+
+                    }
+                    if (number > 0) {
+                        badgeView.setText(String.valueOf(number));
+                        txtInbox.setText(String.valueOf(number));
+                        badgeView.show();
+                        layoutNoti.setVisibility(View.VISIBLE);
+                    } else {
+                        badgeView.hide();
+                        layoutNoti.setVisibility(View.INVISIBLE);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public class GetAd extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+
+        public GetAd() {
+            progressDialog = new ProgressDialog(ListExhibitionActivity.this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getadvertisedetail?idAdvertise=2&token=" + ListExhibitionActivity.this.token + "&idDevice=" + ListExhibitionActivity.this.idDevice);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(ListExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    JSONObject data = json.getJSONArray("data").getJSONObject(0);
+                    Glide
+                            .with(ListExhibitionActivity.this)
+                            .load(data.getString("Image"))
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .crossFade()
+                            .into(imgAd);
+                    txtAdvertise.setText(Html.fromHtml(data.getString("Description")));
+                    final String link = data.getString("Link");
+                    if (link.length() > 0) {
+                        imgAd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                                startActivity(browserIntent);
+                            }
+                        });
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }

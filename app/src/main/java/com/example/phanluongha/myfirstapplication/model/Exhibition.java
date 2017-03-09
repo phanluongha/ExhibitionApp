@@ -63,4 +63,13 @@ public class Exhibition {
         isFavorite = favorite;
     }
 
+    private int idEvent;
+
+    public int getIdEvent() {
+        return idEvent;
+    }
+
+    public void setIdEvent(int idEvent) {
+        this.idEvent = idEvent;
+    }
 }

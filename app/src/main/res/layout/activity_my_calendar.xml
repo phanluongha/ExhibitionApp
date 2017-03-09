@@ -31,37 +31,47 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:textSize="20sp"
-            android:padding="16dp"
-            android:background="@android:color/white"
-            android:textStyle="bold"
-            android:gravity="center|left"
-            android:drawableRight="@drawable/ic_calendar"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/tvDate"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <com.github.sundeepk.compactcalendarview.CompactCalendarView
-            android:id="@+id/compactcalendar_view"
-            android:layout_width="fill_parent"
-            android:layout_height="250dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            app:compactCalendarBackgroundColor="@android:color/white"
-            app:compactCalendarCurrentDayBackgroundColor="#86C0FD"
-            app:compactCalendarCurrentSelectedDayBackgroundColor="#8086C0FD"
-            app:compactCalendarMultiEventIndicatorColor="#F44336"
-            app:compactCalendarTargetHeight="250dp"
-            app:compactCalendarTextColor="@android:color/black"
-            app:compactCalendarTextSize="12sp"
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:drawableRight="@drawable/ic_calendar"
+                android:gravity="center|left"
+                android:padding="16dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            />
-    </LinearLayout>
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView
+                android:id="@+id/compactcalendar_view"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:compactCalendarBackgroundColor="@android:color/white"
+                app:compactCalendarCurrentDayBackgroundColor="#86C0FD"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="@android:color/holo_red_light"
+                app:compactCalendarMultiEventIndicatorColor="#F44336"
+                app:compactCalendarTargetHeight="200dp"
+                app:compactCalendarTextColor="@android:color/black"
+                app:compactCalendarTextSize="12sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcvMyCalendar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
