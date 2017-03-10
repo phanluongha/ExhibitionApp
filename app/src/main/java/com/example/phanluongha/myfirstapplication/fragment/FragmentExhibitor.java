@@ -1,6 +1,9 @@
 package com.example.phanluongha.myfirstapplication.fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.phanluongha.myfirstapplication.DetailExhibitionActivity;
 import com.example.phanluongha.myfirstapplication.adapter.ExhibitionFavouriteAdapter;
 import com.example.phanluongha.myfirstapplication.ListExhibitionEventActivity;
 import com.example.phanluongha.myfirstapplication.R;
@@ -25,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.MultipartBody;
 
 /**
  * Created by minhnguyen2 on 3/8/2017.
@@ -71,8 +77,92 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
     }
 
     @Override
-    public void keyClickedIndex(int position) {
+    public void onItemExhibitionClick(int position) {
+        Exhibition e = arrayExhibition.get(position);
+        Intent detailExhibition = new Intent(getActivity(), DetailExhibitionActivity.class);
+        detailExhibition.putExtra("id", e.getId());
+        detailExhibition.putExtra("idEvent", e.getIdEvent());
+        detailExhibition.putExtra("isFavorite", e.isFavorite());
+        startActivity(detailExhibition);
+    }
 
+    @Override
+    public void keyClickedIndex(final int position) {
+        final Exhibition ex = arrayExhibition.get(position);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+        if (!ex.isFavorite()) {
+            alertDialogBuilder.setTitle(this
+                    .getString(R.string.add_favorite));
+            alertDialogBuilder
+                    .setMessage(
+                            getString(R.string.add_favorite_confirm))
+                    .setCancelable(false)
+                    .setPositiveButton(
+                            getString(R.string.yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog,
+                                        int id) {
+                                    MultipartBody.Builder m = new MultipartBody.Builder();
+                                    m.setType(MultipartBody.FORM);
+                                    m.addFormDataPart("type", "exhibitor");
+                                    m.addFormDataPart("idExhibitor", String.valueOf(ex.getId()));
+                                    m.addFormDataPart("idDevice", deviceId);
+                                    m.addFormDataPart("token", token);
+                                    new AddFavoriteExhibition(position, m).execute();
+
+                                }
+                            })
+
+                    .setNegativeButton(
+                            getString(R.string.no),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog,
+                                        int id) {
+
+                                    dialog.cancel();
+                                }
+                            });
+        } else {
+            alertDialogBuilder.setTitle(this
+                    .getString(R.string.remove_favorite));
+            alertDialogBuilder
+                    .setMessage(
+                            getString(R.string.remove_favorite_confirm))
+                    .setCancelable(false)
+                    .setPositiveButton(
+                            getString(R.string.yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog,
+                                        int id) {
+                                    MultipartBody.Builder m = new MultipartBody.Builder();
+                                    m.setType(MultipartBody.FORM);
+                                    m.addFormDataPart("type", "exhibitor");
+                                    m.addFormDataPart("idExhibitor", String.valueOf(ex.getId()));
+                                    m.addFormDataPart("idDevice", deviceId);
+                                    m.addFormDataPart("token", token);
+                                    new RemoveFavoriteExhibition(position, m).execute();
+                                }
+                            })
+
+                    .setNegativeButton(
+                            getString(R.string.no),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(
+                                        DialogInterface dialog,
+                                        int id) {
+
+                                    dialog.cancel();
+                                }
+                            });
+        }
+
+        AlertDialog alertDialog = alertDialogBuilder
+                .create();
+        alertDialog.show();
     }
 
 
@@ -102,7 +192,6 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
         protected void onPostExecute(JSONObject json) {
             progressDialog.dismiss();
             try {
-                //Log.d("minh","exhibitor "+ json.toString());
                 if (json.length() > 0 && json.has("error")) {
                     try {
                         Toast.makeText(getActivity(), json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
@@ -120,9 +209,106 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
                         e.setBoot_no(eh.getString("BoothNo"));
                         e.setDescription(eh.getString("Description"));
                         e.setFavorite(eh.getBoolean("isFavorite"));
+                        e.setIdEvent(eh.getInt("idEvent"));
                         arrayExhibition.add(e);
                     }
                     exhibitionFavouriteAdapter.notifyDataSetChanged();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class AddFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+        private int position;
+        private MultipartBody.Builder m;
+
+        public AddFavoriteExhibition(int position, MultipartBody.Builder m) {
+            this.position = position;
+            this.m = m;
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(getActivity());
+            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(getActivity(), json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (json.getInt("code") == 200) {
+                        arrayExhibition.get(position).setFavorite(true);
+                        exhibitionFavouriteAdapter.notifyDataSetChanged();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class RemoveFavoriteExhibition extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+        private int position;
+        private MultipartBody.Builder m;
+
+        public RemoveFavoriteExhibition(int position, MultipartBody.Builder m) {
+            this.position = position;
+            this.m = m;
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(getActivity());
+            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(getActivity(), json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (json.getInt("code") == 200) {
+                        arrayExhibition.get(position).setFavorite(false);
+                        exhibitionFavouriteAdapter.notifyDataSetChanged();
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

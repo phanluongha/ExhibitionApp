@@ -105,6 +105,11 @@ public class ListExhibitionEventActivity extends DefaultActivity implements RcvE
 
     }
 
+    @Override
+    public void onItemExhibitionClick(int position) {
+
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

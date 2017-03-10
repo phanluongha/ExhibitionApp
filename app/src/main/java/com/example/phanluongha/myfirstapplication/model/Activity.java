@@ -53,4 +53,14 @@ public class Activity {
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
     }
+
+    private String day;
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 }

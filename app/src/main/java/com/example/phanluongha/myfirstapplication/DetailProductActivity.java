@@ -257,7 +257,6 @@ public class DetailProductActivity extends DefaultActivity implements View.OnCli
                         e.printStackTrace();
                     }
                 } else {
-                    Log.e("T", json.toString());
                     JSONArray exhibitions = json.getJSONArray("data");
                     layoutExhibition.removeAllViews();
                     TreeNode root = TreeNode.root();

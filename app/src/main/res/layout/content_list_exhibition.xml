@@ -6,13 +6,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.phanluongha.myfirstapplication.ListExhibitionActivity"
-    >
+    tools:context="com.example.phanluongha.myfirstapplication.ListExhibitionActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgAd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtAdvertise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
 
         <at.technikum.mti.fancycoverflow.FancyCoverFlow
             android:id="@+id/fancyCoverFlow"
@@ -36,9 +55,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textSize="18dp"
                 android:text="@string/select_bussiness_area"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
 
             <ImageView
                 android:id="@+id/imgCategotyAction"
