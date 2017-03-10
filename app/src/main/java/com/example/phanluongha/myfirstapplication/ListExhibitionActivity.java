@@ -224,7 +224,7 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
                 startActivity(new Intent(this, MyFavouritesActivity.class));
                 break;
             case R.id.btnMyInbox:
-                Toast.makeText(this, "btnMyInbox", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, MyInboxActivity.class));
                 break;
         }
     }

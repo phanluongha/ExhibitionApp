@@ -81,7 +81,11 @@
         <activity
             android:name=".MyFavouritesActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MyInboxActivity"
+            android:label="@string/title_activity_my_inbox"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -228,7 +228,6 @@ public class MyCalendarActivity extends DefaultActivity implements RcvMyCalendar
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MyCalendarActivity.this);
             JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getlistfavoritedactivitiesbydate?token=" + MyCalendarActivity.this.token + "&idDevice=" + MyCalendarActivity.this.idDevice);
-            Log.e("T", "http://188.166.241.242/api/getlistfavoritedactivitiesbydate?token=" + MyCalendarActivity.this.token + "&idDevice=" + MyCalendarActivity.this.idDevice);
             return json;
         }
 

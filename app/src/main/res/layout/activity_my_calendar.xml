@@ -18,12 +18,11 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Exhibitor Name"
+                android:text="My Calendar"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />

@@ -31,4 +31,9 @@
     <string name="title_activity_note">NoteActivity</string>
     <string name="title_activity_my_favourites">MyFavouritesActivity</string>
     <string name="skip">Skip</string>
+    <string name="title_activity_my_inbox">MyInboxActivity</string>
+    <string name="my_inbox">Inbox</string>
+    <string name="txt_now">now</string>
+    <string name="txt_mins"> mins</string>
+    <string name="txt_hrs"> hrs</string>
 </resources>
