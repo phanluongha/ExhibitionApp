@@ -74,6 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Forgot password ?"
+                    android:visibility="invisible"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white" />
 
@@ -111,6 +112,7 @@
                         android:layout_marginTop="16dp"
                         android:gravity="center"
                         android:id="@+id/btnSignUp"
+                        android:visibility="invisible"
                         android:text="Don't have account ? Sign up"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="16sp" />

@@ -3,8 +3,10 @@ package com.example.phanluongha.myfirstapplication;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -91,6 +93,14 @@ public class ListActivityEventActivity extends DefaultActivity implements View.O
         }
         txtPre.setOnClickListener(this);
         txtNext.setOnClickListener(this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ListActivityEventActivity.this, NotepadActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

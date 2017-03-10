@@ -101,6 +101,14 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
             new GetDetailExhibition(idExhibitor).execute();
             new GetProductOfExhibition(idExhibitor, idEvent).execute();
         }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailExhibitionActivity.this, NotepadActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

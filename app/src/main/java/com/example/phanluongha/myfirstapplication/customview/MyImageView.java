@@ -45,11 +45,11 @@ public class MyImageView extends ImageView {
         super(context, attrs);
         this.context = context;
 
-        iconStoreNormal = BitmapFactory.decodeResource(getResources(), R.drawable.icon_exhibitors);
+        iconStoreNormal = BitmapFactory.decodeResource(getResources(), R.drawable.icon_marker_nomal);
         iconStoreNormalWidth = iconStoreNormal.getWidth();
         iconStoreNormalHeight = iconStoreNormal.getHeight();
 
-        iconStoreActive = BitmapFactory.decodeResource(getResources(), R.drawable.icon_floorplan);
+        iconStoreActive = BitmapFactory.decodeResource(getResources(), R.drawable.icon_marker_active);
         iconStoreActiveWidth = iconStoreActive.getWidth();
         iconStoreActiveHeight = iconStoreActive.getHeight();
 
@@ -76,11 +76,11 @@ public class MyImageView extends ImageView {
             if (mn.isStore()) {
                 if (!mn.isActive()) {
                     float x = mn.getX() - iconStoreNormalWidth / 2;
-                    float y = mn.getY() - iconStoreNormalHeight / 2;
+                    float y = mn.getY() - iconStoreNormalHeight;
                     canvas.drawBitmap(iconStoreNormal, x, y, paintNormal);
                 } else {
                     float x = mn.getX() - iconStoreActiveWidth / 2;
-                    float y = mn.getY() - iconStoreActiveWidth / 2;
+                    float y = mn.getY() - iconStoreActiveWidth;
                     canvas.drawBitmap(iconStoreActive, x, y, paintNormal);
                 }
             }
@@ -172,7 +172,7 @@ public class MyImageView extends ImageView {
                     float mnY;
                     if (mn.isActive()) {
                         mnX = mn.getX() - iconStoreNormalWidth / 2;
-                        mnY = mn.getY() - iconStoreNormalHeight / 2;
+                        mnY = mn.getY() - iconStoreNormalHeight;
                         if (x >= mnX && x <= mnX + iconStoreNormalWidth && y >= mnY && y <= mnY + iconStoreNormalHeight) {
                             mn.setActive(false);
                             if (first == i) {
@@ -187,7 +187,7 @@ public class MyImageView extends ImageView {
                         }
                     } else {
                         mnX = mn.getX() - iconStoreActiveWidth / 2;
-                        mnY = mn.getY() - iconStoreActiveHeight / 2;
+                        mnY = mn.getY() - iconStoreActiveHeight;
                         if (x >= mnX && x <= mnX + iconStoreActiveWidth && y >= mnY && y <= mnY + iconStoreActiveHeight) {
                             mn.setActive(true);
                             if (first == -1) {
