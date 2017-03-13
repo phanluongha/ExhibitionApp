@@ -1,29 +1,18 @@
 package com.example.phanluongha.myfirstapplication;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,13 +21,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
-import com.example.phanluongha.myfirstapplication.customview.BadgeView;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickListener;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
-import com.example.phanluongha.myfirstapplication.utils.AnimationShowHideView;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -51,11 +38,8 @@ import java.util.ArrayList;
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 
-public class ListExhibitionActivity extends DefaultActivity implements EventCategoryChildClickListener, View.OnClickListener {
+public class ListExhibitionActivity extends NavigationActivity implements EventCategoryChildClickListener {
 
-    private ImageView imgShowHidePlant;
-    private LinearLayout layoutChildMyPlant;
-    private DrawerLayout drawer;
     private LinearLayout layoutCategotyAction;
     private ImageView imgCategotyAction;
     private FancyCoverFlow fancyCoverFlow;
@@ -63,12 +47,9 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
     private FancyCoverFlowSampleAdapter adapter;
     private ArrayList<Event> events;
     DisplayMetrics metrics;
-    BadgeView badgeView;
-    private FrameLayout layoutNoti;
-    private TextView txtInbox;
-    View imgCountNotification;
+
+
     private EventCategoryChildClickListener eventCategoryChildClickListener;
-    LinearLayout btnSignIn;
     private ImageView imgAd;
     private TextView txtAdvertise;
 
@@ -76,52 +57,20 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_list_exhibition);
         setTitle("");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        btnSignIn = (LinearLayout) findViewById(R.id.btnSignIn);
-        LinearLayout btnSuggest = (LinearLayout) findViewById(R.id.btnSuggest);
-        LinearLayout btnHotdeals = (LinearLayout) findViewById(R.id.btnHotdeals);
-        LinearLayout btnMyPlant = (LinearLayout) findViewById(R.id.btnMyPlant);
-
-        LinearLayout btnMyCalendar = (LinearLayout) findViewById(R.id.btnMyCalendar);
-        LinearLayout btnMyFavorites = (LinearLayout) findViewById(R.id.btnMyFavorites);
-        LinearLayout btnMyInbox = (LinearLayout) findViewById(R.id.btnMyInbox);
-        LinearLayout btnMyNote = (LinearLayout) findViewById(R.id.btnMyNote);
-
-        layoutChildMyPlant = (LinearLayout) findViewById(R.id.layoutChildMyPlant);
-
-        imgShowHidePlant = (ImageView) findViewById(R.id.imgShowHidePlant);
+        setSupportActionBar(toolbar);
 
         listExhibition = (LinearLayout) findViewById(R.id.listExhibition);
         layoutCategotyAction = (LinearLayout) findViewById(R.id.layoutCategotyAction);
         imgCategotyAction = (ImageView) findViewById(R.id.imgCategotyAction);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         fancyCoverFlow = (FancyCoverFlow) this.findViewById(R.id.fancyCoverFlow);
-        txtInbox = (TextView) findViewById(R.id.txtInbox);
-        layoutNoti = (FrameLayout) findViewById(R.id.layoutNoti);
 
         metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("check_login", MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("is_login", false)) {
-            btnSignIn.setVisibility(View.GONE);
-        }
-
-        btnSignIn.setOnClickListener(this);
-        btnSuggest.setOnClickListener(this);
-        btnHotdeals.setOnClickListener(this);
-        btnMyPlant.setOnClickListener(this);
-
-        btnMyCalendar.setOnClickListener(this);
-        btnMyFavorites.setOnClickListener(this);
-        btnMyInbox.setOnClickListener(this);
-        btnMyNote.setOnClickListener(this);
-
-
-        setSupportActionBar(toolbar);
         eventCategoryChildClickListener = this;
 
 
@@ -143,6 +92,8 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         imgAd = (ImageView) findViewById(R.id.imgAd);
         imgAd.setLayoutParams(new RelativeLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels / 3));
         txtAdvertise = (TextView) findViewById(R.id.txtAdvertise);
+
+        initNavigation();
         getListEvent(0);
         new GetListEventCategory().execute();
         new GetAd().execute();
@@ -155,93 +106,10 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.END)) {
-            drawer.closeDrawer(GravityCompat.END);
-        }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        imgCountNotification = menu.findItem(R.id.actionNotifications).getActionView();
-        imgCountNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.openDrawer(Gravity.END);
-            }
-        });
-
-
-        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        new GetNumberNoti().execute();
-    }
-
-    @Override
     public void keyClickedIndex(int id) {
         getListEvent(id);
     }
 
-    boolean isCollapse = false;
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnHotdeals:
-                Toast.makeText(this, "hot deals", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.btnMyPlant:
-                isCollapse = !isCollapse;
-                if (isCollapse) {
-                    imgShowHidePlant.setImageResource(R.drawable.ic_down);
-                    AnimationShowHideView.collapse(layoutChildMyPlant);
-                } else {
-                    imgShowHidePlant.setImageResource(R.drawable.ic_up);
-                    AnimationShowHideView.expand(layoutChildMyPlant);
-                }
-                break;
-            case R.id.btnSignIn:
-                startActivityForResult(new Intent(this, SignInActivity.class), 1000);
-                break;
-            case R.id.btnSuggest:
-                Toast.makeText(this, "btnSuggest", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.btnMyNote:
-                startActivity(new Intent(this, NotepadActivity.class));
-                break;
-            case R.id.btnMyCalendar:
-                startActivity(new Intent(this, MyCalendarActivity.class));
-                break;
-            case R.id.btnMyFavorites:
-                startActivity(new Intent(this, MyFavouritesActivity.class));
-                break;
-            case R.id.btnMyInbox:
-                startActivity(new Intent(this, MyInboxActivity.class));
-                break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1000) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (btnSignIn != null) {
-                    btnSignIn.setVisibility(View.GONE);
-                }
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-            }
-        }
-    }
 
     private class EventCategoryHolder extends TreeNode.BaseNodeViewHolder<EventCategory> {
 
@@ -425,47 +293,6 @@ public class ListExhibitionActivity extends DefaultActivity implements EventCate
         }
     }
 
-    private class GetNumberNoti extends AsyncTask<String, String, JSONObject> {
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-            JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getnumberofnotificationnotread" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
-            return json;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject json) {
-            if (json.has("error")) {
-                try {
-                    Toast.makeText(ListExhibitionActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    int number = json.getJSONObject("data").getInt("numberNotRead");
-                    if (badgeView == null) {
-                        badgeView = new BadgeView(ListExhibitionActivity.this, imgCountNotification);
-                        badgeView.setBadgePosition(BadgeView.POSITION_TOP_LEFT);
-
-                    }
-                    if (number > 0) {
-                        badgeView.setText(String.valueOf(number));
-                        txtInbox.setText(String.valueOf(number));
-                        badgeView.show();
-                        layoutNoti.setVisibility(View.VISIBLE);
-                    } else {
-                        badgeView.hide();
-                        layoutNoti.setVisibility(View.INVISIBLE);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     public class GetAd extends AsyncTask<String, String, JSONObject> {
 

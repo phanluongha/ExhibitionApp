@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.model.Product;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
@@ -40,7 +41,7 @@ import java.util.Objects;
 
 import okhttp3.MultipartBody;
 
-public class DetailProductActivity extends DefaultActivity implements View.OnClickListener {
+public class DetailProductActivity extends NavigationActivity implements View.OnClickListener {
 
     private TextView txtProductName;
     private ImageView banner;
@@ -103,6 +104,7 @@ public class DetailProductActivity extends DefaultActivity implements View.OnCli
                 startActivity(intent);
             }
         });
+        initNavigation();
     }
 
     @Override
@@ -117,7 +119,7 @@ public class DetailProductActivity extends DefaultActivity implements View.OnCli
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 new GetExhibitionOfProduct(idProduct, idEvent).execute();

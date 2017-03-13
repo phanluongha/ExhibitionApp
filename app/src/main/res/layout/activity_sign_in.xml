@@ -29,7 +29,6 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:singleLine="true"
                 android:id="@+id/edUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,12 +38,12 @@
                 android:drawablePadding="20dp"
                 android:hint="ID"
                 android:padding="16dp"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="18sp" />
 
             <EditText
-                android:singleLine="true"
                 android:id="@+id/edPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,6 +54,7 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="16dp"
+                android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="18sp" />
@@ -74,17 +74,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Forgot password ?"
-                    android:visibility="invisible"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white" />
 
                 <Button
+                    android:id="@+id/btnSignIn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#2196F3"
                     android:text="Sign in"
-                    android:id="@+id/btnSignIn"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white" />
             </LinearLayout>
@@ -107,12 +106,11 @@
                         android:background="@android:color/darker_gray" />
 
                     <TextView
+                        android:id="@+id/btnSignUp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
                         android:gravity="center"
-                        android:id="@+id/btnSignUp"
-                        android:visibility="invisible"
+                        android:padding="10dp"
                         android:text="Don't have account ? Sign up"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="16sp" />

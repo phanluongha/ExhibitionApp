@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.adapter.ProductAdapter;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.impl.RcvProductClick;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.model.Product;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 
 import okhttp3.MultipartBody;
 
-public class ListProductEventActivity extends DefaultActivity implements RcvProductClick {
+public class ListProductEventActivity extends NavigationActivity implements RcvProductClick {
 
     private RecyclerView rcvProduct;
     private ArrayList<Product> arrayProduct;
@@ -72,6 +73,7 @@ public class ListProductEventActivity extends DefaultActivity implements RcvProd
             getListProduct(idEvent);
         }
         txtSearch.addTextChangedListener(new SearchTextWatcher(productAdapter));
+        initNavigation();
 
     }
 
@@ -91,7 +93,7 @@ public class ListProductEventActivity extends DefaultActivity implements RcvProd
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 getListProduct(idEvent);

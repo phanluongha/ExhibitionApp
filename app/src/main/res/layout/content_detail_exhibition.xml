@@ -135,14 +135,36 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="5dp"
-                            android:textColor="#9B9B9B" />
+                            android:textColor="#9B9B9B"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/txtEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="5dp"
-                            android:textColor="#4A90E2" />
+                            android:textColor="#4A90E2"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/btnLogin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawableLeft="@drawable/ic_signin"
+                                android:drawablePadding="5dp"
+                                android:text="SIGN IN"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
 

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.customview.MyImageView;
 import com.example.phanluongha.myfirstapplication.customview.TouchImageView;
 import com.example.phanluongha.myfirstapplication.customview.ZoomView;
@@ -47,7 +48,7 @@ import java.util.Iterator;
 import static android.R.attr.bitmap;
 import static android.R.attr.measureAllChildren;
 
-public class MapActivity extends DefaultActivity {
+public class MapActivity extends NavigationActivity {
 
     private LinearLayout contentLayout;
     private ZoomView zoomView;
@@ -87,6 +88,7 @@ public class MapActivity extends DefaultActivity {
         if (b != null) {
             new GetMap(b.getInt("id")).execute();
         }
+        initNavigation();
     }
 
     public class GetMap extends AsyncTask<String, String, JSONObject> {

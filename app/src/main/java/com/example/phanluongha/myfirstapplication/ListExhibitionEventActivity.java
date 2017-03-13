@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.adapter.ExhibitionAdapter;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.impl.RcvExhibitionClick;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
@@ -43,7 +44,7 @@ import fancycoverflow.FancyCoverFlowSampleAdapter;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class ListExhibitionEventActivity extends DefaultActivity implements RcvExhibitionClick {
+public class ListExhibitionEventActivity extends NavigationActivity implements RcvExhibitionClick {
 
 
     private RecyclerView rcvExhibitors;
@@ -82,12 +83,13 @@ public class ListExhibitionEventActivity extends DefaultActivity implements RcvE
             getListExhibition(idPrivate);
         }
         txtSearch.addTextChangedListener(new SearchTextWatcher(exhibitionAdapter));
+        initNavigation();
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 getListExhibition(idPrivate);

@@ -15,8 +15,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 
-public class DetailEventActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailEventActivity extends NavigationActivity implements View.OnClickListener {
 
     private TextView txtAbout;
     private TextView txtExhibitor;
@@ -78,8 +79,7 @@ public class DetailEventActivity extends AppCompatActivity implements View.OnCli
         txtConference.setOnClickListener(this);
         txtPlace = (TextView) findViewById(R.id.txtPlace);
         txtPlace.setOnClickListener(this);
-
-
+        initNavigation();
     }
 
     @Override

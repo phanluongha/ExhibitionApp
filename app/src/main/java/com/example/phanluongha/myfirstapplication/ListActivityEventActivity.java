@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.impl.RcvActivityClick;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 import com.example.phanluongha.myfirstapplication.model.DayActivity;
@@ -35,7 +36,7 @@ import java.util.Iterator;
 
 import okhttp3.MultipartBody;
 
-public class ListActivityEventActivity extends DefaultActivity implements View.OnClickListener, RcvActivityClick {
+public class ListActivityEventActivity extends NavigationActivity implements View.OnClickListener, RcvActivityClick {
 
     private TextView txtDate;
     private TextView txtMonth;
@@ -101,6 +102,7 @@ public class ListActivityEventActivity extends DefaultActivity implements View.O
                 startActivity(intent);
             }
         });
+        initNavigation();
     }
 
     @Override

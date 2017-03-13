@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
+import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.customview.CircleImageView;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
@@ -46,7 +48,7 @@ import java.util.Objects;
 import fancycoverflow.FancyCoverFlowSampleAdapter;
 import okhttp3.MultipartBody;
 
-public class DetailExhibitionActivity extends DefaultActivity implements View.OnClickListener {
+public class DetailExhibitionActivity extends NavigationActivity implements View.OnClickListener {
 
     private ImageView banner;
     private ImageView imgFavorite;
@@ -54,6 +56,7 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
     private TextView txtBooth;
     private TextView txtPlace;
     private TextView txtDescription;
+    private LinearLayout btnLogin;
     private TextView txtContact;
     private TextView txtEmail;
     private LinearLayout layoutProduct;
@@ -87,6 +90,14 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
         txtContact = (TextView) findViewById(R.id.txtContact);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
         layoutProduct = (LinearLayout) findViewById(R.id.layoutProduct);
+        btnLogin = (LinearLayout) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(this);
+        SharedPreferences sharedPreferences = getSharedPreferences("check_login", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("is_login", false)) {
+            btnLogin.setVisibility(View.GONE);
+            txtContact.setVisibility(View.VISIBLE);
+            txtEmail.setVisibility(View.VISIBLE);
+        }
         Bundle b = getIntent().getExtras();
         if (b != null) {
             idEvent = b.getInt("idEvent");
@@ -109,6 +120,7 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
                 startActivity(intent);
             }
         });
+        initNavigation();
     }
 
     @Override
@@ -123,10 +135,16 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 new GetProductOfExhibition(idExhibitor, idEvent).execute();
+            }
+        } else if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                btnLogin.setVisibility(View.GONE);
+                txtContact.setVisibility(View.VISIBLE);
+                txtEmail.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -147,6 +165,9 @@ public class DetailExhibitionActivity extends DefaultActivity implements View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btnLogin:
+                startActivityForResult(new Intent(DetailExhibitionActivity.this, SignInActivity.class), 1000);
+                break;
             case R.id.imgFavorite:
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         this);
