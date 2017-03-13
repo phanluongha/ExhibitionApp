@@ -1,8 +1,5 @@
 <resources>
-    <string name="app_name">MyFirstApplication</string>
-    <string name="title_activity_list_exhibition">ListExhibitionActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="app_name">Vietnam Trade Exhibition</string>
     <string name="action_settings">Settings</string>
     <string name="events">Events</string>
     <string name="note">Note</string>
@@ -14,24 +11,16 @@
     <string name="activity">Activities</string>
     <string name="conferences">Conferences</string>
     <string name="floor_plan">Floorplan</string>
-    <string name="title_activity_gerneral_event">GerneralEventActivity</string>
-    <string name="title_activity_list_exhibition_event">ListExhibitionEventActivity</string>
     <string name="txt_search">Search</string>
-    <string name="title_activity_detail_exhibition">DetailExhibitionActivity</string>
-    <string name="title_activity_list_product_event">ListProductEventActivity</string>
-    <string name="title_activity_list_activity_event">ListActivityEventActivity</string>
     <string name="add_favorite">Add favorite</string>
     <string name="add_favorite_confirm">Are you sure you want to add this to favorite list?</string>
     <string name="remove_favorite">Remove favorite</string>
     <string name="remove_favorite_confirm">Are you sure you want to remove this to favorite list?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="title_activity_detail_product">DetailProductActivity</string>
     <string name="description">Description</string>
     <string name="title_activity_note">NoteActivity</string>
-    <string name="title_activity_my_favourites">MyFavouritesActivity</string>
     <string name="skip">Skip</string>
-    <string name="title_activity_my_inbox">MyInboxActivity</string>
     <string name="my_inbox">Inbox</string>
     <string name="txt_now">now</string>
     <string name="txt_mins"> mins</string>
