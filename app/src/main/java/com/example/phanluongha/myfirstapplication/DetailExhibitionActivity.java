@@ -357,8 +357,8 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                         productChild.setIdEvent(product.getInt("idEvent"));
                         TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
                         nodeCat.addChildren(nodeCatChild);
-                        root.addChild(nodeCat);
                     }
+                    root.addChild(nodeCat);
                     AndroidTreeView tView = new AndroidTreeView(DetailExhibitionActivity.this, root);
                     layoutProduct.addView(tView.getView());
                 }
