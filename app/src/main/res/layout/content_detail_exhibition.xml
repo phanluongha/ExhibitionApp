@@ -98,7 +98,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -135,19 +136,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="5dp"
-                            android:textColor="#9B9B9B"
-                            android:visibility="gone" />
+                            android:textColor="#9B9B9B" />
 
                         <TextView
                             android:id="@+id/txtEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="5dp"
-                            android:textColor="#4A90E2"
-                            android:visibility="gone" />
+                            android:textColor="#4A90E2" />
 
                         <LinearLayout
                             android:id="@+id/btnLogin"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"

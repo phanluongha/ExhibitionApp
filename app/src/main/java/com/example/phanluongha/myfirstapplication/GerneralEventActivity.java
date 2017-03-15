@@ -121,7 +121,7 @@ public class GerneralEventActivity extends NavigationActivity {
                     final JSONObject data = json.getJSONObject("data");
                     Glide
                             .with(GerneralEventActivity.this)
-                            .load(data.getString("ImageLink"))
+                            .load(data.getString("ImageLink2"))
                             .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()

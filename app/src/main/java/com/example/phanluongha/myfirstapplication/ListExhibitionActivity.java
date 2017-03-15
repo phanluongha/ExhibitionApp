@@ -210,6 +210,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                         JSONObject ev = datas.getJSONObject(i);
                         Event e = new Event();
                         e.setImage(ev.getString("ImageLink"));
+                        e.setImage2(ev.getString("ImageLink2"));
                         e.setId(ev.getInt("idEvent"));
                         events.add(e);
                     }
@@ -220,7 +221,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Intent detailEvent = new Intent(ListExhibitionActivity.this, DetailEventActivity.class);
                             detailEvent.putExtra("id", events.get(position).getId());
-                            detailEvent.putExtra("banner", events.get(position).getImage());
+                            detailEvent.putExtra("banner", events.get(position).getImage2());
                             startActivity(detailEvent);
                         }
                     });

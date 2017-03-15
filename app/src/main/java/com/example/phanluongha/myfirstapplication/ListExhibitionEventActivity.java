@@ -244,19 +244,21 @@ public class ListExhibitionEventActivity extends NavigationActivity implements R
                     }
                 } else {
                     JSONArray datas = json.getJSONArray("data");
-                    arrayExhibition.clear();
-                    for (int i = 0; i < datas.length(); i++) {
-                        JSONObject eh = datas.getJSONObject(i);
-                        Exhibition e = new Exhibition();
-                        e.setId(eh.getInt("idExhibitor"));
-                        e.setImage(eh.getString("ImageLink"));
-                        e.setName(eh.getString("Name"));
-                        e.setBoot_no(eh.getString("BoothNo"));
-                        e.setDescription(eh.getString("Description"));
-                        e.setFavorite(eh.getBoolean("isFavorite"));
-                        arrayExhibition.add(e);
-                    }
-                    exhibitionAdapter.notifyDataSetChanged();
+                    Log.e("T",String.valueOf(datas.length()));
+//                    arrayExhibition.clear();
+//                    for (int i = 0; i < datas.length(); i++) {
+//                        JSONObject eh = datas.getJSONObject(i).getJSONObject(String.valueOf(i));
+//                        Exhibition e = new Exhibition();
+//                        e.setId(eh.getInt("idExhibitor"));
+//                        e.setImage(eh.getString("ImageLink"));
+//                        e.setName(eh.getString("Name"));
+//                        e.setBoot_no(eh.getString("BoothNo"));
+//                        e.setDescription(eh.getString("Description"));
+//                        e.setFavorite(eh.getBoolean("isFavorite"));
+//                        e.setAddress(eh.getString("Address"));
+//                        arrayExhibition.add(e);
+//                    }
+//                    exhibitionAdapter.notifyDataSetChanged();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

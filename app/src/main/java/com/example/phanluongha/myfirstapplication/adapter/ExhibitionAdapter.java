@@ -67,7 +67,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Ex
 
         holder.txtName.setText(ex.getName());
         holder.txtBooth.setText(ex.getBoot_no());
-        holder.txtDescription.setText(ex.getDescription());
+        holder.txtDescription.setText(ex.getAddress());
         if (ex.isFavorite()) {
             holder.imgFavotite.setImageResource(R.drawable.love_fill);
         } else {

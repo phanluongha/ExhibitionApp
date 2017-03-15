@@ -65,9 +65,9 @@ public class NavigationActivity extends DefaultActivity {
         layoutNoti = (FrameLayout) findViewById(R.id.layoutNoti);
 
         SharedPreferences sharedPreferences = getSharedPreferences("check_login", MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("is_login", false)) {
-            btnSignIn.setVisibility(View.GONE);
-        }
+//        if (sharedPreferences.getBoolean("is_login", false)) {
+//            btnSignIn.setVisibility(View.GONE);
+//        }
         txtUsername.setText(sharedPreferences.getString("username", "GUEST"));
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {

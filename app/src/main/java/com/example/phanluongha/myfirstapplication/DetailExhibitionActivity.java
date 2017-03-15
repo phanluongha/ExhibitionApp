@@ -93,11 +93,11 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         btnLogin = (LinearLayout) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
         SharedPreferences sharedPreferences = getSharedPreferences("check_login", MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("is_login", false)) {
-            btnLogin.setVisibility(View.GONE);
-            txtContact.setVisibility(View.VISIBLE);
-            txtEmail.setVisibility(View.VISIBLE);
-        }
+//        if (sharedPreferences.getBoolean("is_login", false)) {
+//            btnLogin.setVisibility(View.GONE);
+//            txtContact.setVisibility(View.VISIBLE);
+//            txtEmail.setVisibility(View.VISIBLE);
+//        }
         Bundle b = getIntent().getExtras();
         if (b != null) {
             idEvent = b.getInt("idEvent");

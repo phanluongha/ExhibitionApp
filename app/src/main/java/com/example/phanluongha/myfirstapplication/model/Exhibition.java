@@ -72,4 +72,14 @@ public class Exhibition {
     public void setIdEvent(int idEvent) {
         this.idEvent = idEvent;
     }
+
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 }
