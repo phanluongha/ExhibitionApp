@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1.5"
-                    android:text="MY PLANT"
+                    android:text="MY PLANNER"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -145,7 +145,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <FrameLayout
                         android:layout_width="0dp"
@@ -275,16 +276,15 @@
             </LinearLayout>
 
             <LinearLayout
-
                 android:id="@+id/btnHotdeals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -319,7 +319,6 @@
             </LinearLayout>
 
             <LinearLayout
-
                 android:id="@+id/btnSuggest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -327,7 +326,8 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -368,7 +368,8 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="0dp"

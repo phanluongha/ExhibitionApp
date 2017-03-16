@@ -252,8 +252,8 @@ public class ListExhibitionEventActivity extends NavigationActivity implements R
                         e.setImage(eh.getString("ImageLink"));
                         e.setName(eh.getString("Name"));
                         e.setBoot_no(eh.getString("BoothNo"));
-                        e.setDescription(eh.getString("Description"));
                         e.setFavorite(eh.getBoolean("isFavorite"));
+                        e.setAddress(eh.getString("Address"));
                         arrayExhibition.add(e);
                     }
                     exhibitionAdapter.notifyDataSetChanged();

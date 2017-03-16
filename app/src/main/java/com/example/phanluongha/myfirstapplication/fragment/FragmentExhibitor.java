@@ -207,7 +207,7 @@ public class FragmentExhibitor extends Fragment implements RcvExhibitionClick {
                         e.setImage(eh.getString("ImageLink"));
                         e.setName(eh.getString("Name"));
                         e.setBoot_no(eh.getString("BoothNo"));
-                        e.setDescription(eh.getString("Description"));
+                        e.setAddress(eh.getString("Address"));
                         e.setFavorite(eh.getBoolean("isFavorite"));
                         e.setIdEvent(eh.getInt("idEvent"));
                         arrayExhibition.add(e);
