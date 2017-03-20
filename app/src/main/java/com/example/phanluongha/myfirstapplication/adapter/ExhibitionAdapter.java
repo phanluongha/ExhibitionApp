@@ -60,7 +60,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Ex
         Glide
                 .with(context)
                 .load(ex.getImage())
-                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into(holder.img);

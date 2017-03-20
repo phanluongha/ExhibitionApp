@@ -19,6 +19,7 @@ import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 
 public class DetailEventActivity extends NavigationActivity implements View.OnClickListener {
 
+    private TextView txtEventName;
     private TextView txtAbout;
     private TextView txtExhibitor;
     private TextView txtProduct;
@@ -55,6 +56,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         banner = (ImageView) findViewById(R.id.banner);
         banner.setLayoutParams(new LinearLayout.LayoutParams(metrics.widthPixels, 2 * metrics.widthPixels / 3));
+        txtEventName = (TextView) findViewById(R.id.txtEventName);
         Bundle b = getIntent().getExtras();
         if (b != null) {
             id = b.getInt("id");
@@ -65,6 +67,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .crossFade()
                     .into(banner);
+            txtEventName.setText(b.getString("name"));
         }
         txtAbout = (TextView) findViewById(R.id.txtAbout);
         txtAbout.setOnClickListener(this);

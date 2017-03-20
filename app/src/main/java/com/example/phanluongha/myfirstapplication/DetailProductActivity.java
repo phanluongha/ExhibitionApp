@@ -80,7 +80,6 @@ public class DetailProductActivity extends NavigationActivity implements View.On
             Glide
                     .with(DetailProductActivity.this)
                     .load(b.getString("image"))
-                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .crossFade()
                     .into(banner);

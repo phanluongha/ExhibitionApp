@@ -122,7 +122,6 @@ public class GerneralEventActivity extends NavigationActivity {
                     Glide
                             .with(GerneralEventActivity.this)
                             .load(data.getString("ImageLink2"))
-                            .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .into(banner);

@@ -33,4 +33,14 @@ public class Event {
     public void setImage2(String image2) {
         this.image2 = image2;
     }
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         final String token = sharedpreferences.getString("token", "");
         final String idDevice = sharedpreferences.getString("idDevice", "");
-        if (token.length() > 0 && idDevice.length() > 0) {
+        if (token.length() > 0 && idDevice.length() > 0 && !token.equalsIgnoreCase("null") && !idDevice.equalsIgnoreCase("null")) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

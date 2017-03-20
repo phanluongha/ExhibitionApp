@@ -127,9 +127,10 @@ public class MapActivity extends NavigationActivity {
                     }
                 } else {
                     JSONObject data = json.getJSONObject("data");
-                    JSONArray JsonMap = data.getJSONArray("JsonMap");
-                    oldWidth = JsonMap.getJSONObject(1).getInt("width");
-                    oldHeight = JsonMap.getJSONObject(1).getInt("height");
+                    JSONObject JsonMap = data.getJSONObject("JsonMap");
+                    JSONObject mapSize = JsonMap.getJSONObject("mapSize");
+                    oldWidth = mapSize.getInt("width");
+                    oldHeight = mapSize.getInt("height");
                     newWidth = metrics.widthPixels;
                     newHeight = newWidth * oldHeight / oldWidth;
                     View v = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.layout_zoom, null, false);
@@ -139,7 +140,6 @@ public class MapActivity extends NavigationActivity {
                     Glide
                             .with(MapActivity.this)
                             .load(data.getString("ImageLink"))
-                            .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .into(img);
@@ -147,14 +147,14 @@ public class MapActivity extends NavigationActivity {
                     zoomView.addView(v);
                     contentLayout.addView(zoomView);
                     zoomView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    JSONArray nodes = JsonMap.getJSONArray(2);
+                    JSONArray nodes = JsonMap.getJSONArray("nodes");
                     img.arrayNode = new int[nodes.length()][nodes.length()];
                     for (int i = 0; i < nodes.length(); i++) {
                         for (int j = 0; j < nodes.length(); j++) {
                             img.arrayNode[i][j] = 0;
                         }
                     }
-                    JSONArray paths = JsonMap.getJSONArray(3);
+                    JSONArray paths = JsonMap.getJSONArray("paths");
                     for (int i = 0; i < paths.length(); i++) {
                         JSONObject path = paths.getJSONObject(i);
                         img.arrayNode[Integer.parseInt(path.getString("node0"))][Integer.parseInt(path.getString("node1"))] = path.getInt("cost");

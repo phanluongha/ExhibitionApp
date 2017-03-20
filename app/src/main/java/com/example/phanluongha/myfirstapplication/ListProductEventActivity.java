@@ -213,6 +213,7 @@ public class ListProductEventActivity extends NavigationActivity implements RcvP
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListProductEventActivity.this);
             JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.idDevice + "&token=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.token);
+            Log.e("T","http://188.166.241.242/api/getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.idDevice + "&token=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.token);
             return json;
         }
 
@@ -235,7 +236,7 @@ public class ListProductEventActivity extends NavigationActivity implements RcvP
                         e.setId(eh.getInt("idProduct"));
                         e.setImage(eh.getString("ImageLink"));
                         e.setName(eh.getString("Name"));
-                        e.setBoot_no(eh.getString("BoothNo"));
+//                        e.setBoot_no(eh.getString("BoothNo"));
                         e.setDescription(eh.getString("Description"));
                         e.setFavorite(eh.getBoolean("isFavorite"));
                         arrayProduct.add(e);

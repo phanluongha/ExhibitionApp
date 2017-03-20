@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,11 +207,14 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                         events.clear();
                     }
                     JSONArray datas = json.getJSONArray("data");
+                    Log.e("T", json.toString());
+
                     for (int i = 0; i < datas.length(); i++) {
                         JSONObject ev = datas.getJSONObject(i);
                         Event e = new Event();
                         e.setImage(ev.getString("ImageLink"));
                         e.setImage2(ev.getString("ImageLink2"));
+                        e.setName(ev.getString("Name"));
                         e.setId(ev.getInt("idEvent"));
                         events.add(e);
                     }
@@ -222,6 +226,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                             Intent detailEvent = new Intent(ListExhibitionActivity.this, DetailEventActivity.class);
                             detailEvent.putExtra("id", events.get(position).getId());
                             detailEvent.putExtra("banner", events.get(position).getImage2());
+                            detailEvent.putExtra("name", events.get(position).getName());
                             startActivity(detailEvent);
                         }
                     });
@@ -332,7 +337,6 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                     Glide
                             .with(ListExhibitionActivity.this)
                             .load(data.getString("Image"))
-                            .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .into(imgAd);

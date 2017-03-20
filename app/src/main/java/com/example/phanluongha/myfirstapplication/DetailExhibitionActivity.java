@@ -275,6 +275,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         @Override
         protected void onPostExecute(JSONObject json) {
             progressDialog.dismiss();
+            Log.e("T",json.toString());
             try {
                 if (json.length() > 0 && json.has("error")) {
                     try {
@@ -287,14 +288,13 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                     Glide
                             .with(DetailExhibitionActivity.this)
                             .load(ex.getString("ImageLink"))
-                            .centerCrop()
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
                             .into(banner);
                     txtName.setText(ex.getString("Name"));
                     txtBooth.setText(ex.getString("BoothNo"));
                     txtPlace.setText(ex.getString("Address"));
-                    txtDescription.setText(ex.getString("Description"));
+//                    txtDescription.setText(ex.getString("Description"));
                     txtContact.setText(ex.getString("Phone"));
                     txtEmail.setText(ex.getString("Email"));
                 }
@@ -414,7 +414,6 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
             Glide
                     .with(DetailExhibitionActivity.this)
                     .load(value.getImage())
-                    .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .crossFade()
                     .into(img);

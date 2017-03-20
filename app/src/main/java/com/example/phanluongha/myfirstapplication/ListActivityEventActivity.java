@@ -56,7 +56,6 @@ public class ListActivityEventActivity extends NavigationActivity {
     private int idEvent;
     private TouchImageView img;
     DisplayMetrics metrics;
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

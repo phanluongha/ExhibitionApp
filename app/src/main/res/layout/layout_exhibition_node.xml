@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:padding="10dp">
 
     <TextView

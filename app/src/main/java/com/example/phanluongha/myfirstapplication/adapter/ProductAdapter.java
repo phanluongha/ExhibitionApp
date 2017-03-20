@@ -63,15 +63,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Exhibiti
         Glide
                 .with(context)
                 .load(ex.getImage())
-                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .crossFade()
                 .into(holder.img);
 
         holder.txtName.setText(ex.getName());
 
-        holder.txtBooth.setText(ex.getBoot_no());
-
+//        holder.txtBooth.setText(ex.getBoot_no());
+        holder.txtBooth.setVisibility(View.GONE);
         holder.txtDescription.setText(ex.getDescription());
         if (ex.isFavorite()) {
             holder.imgFavotite.setImageResource(R.drawable.love_fill);
