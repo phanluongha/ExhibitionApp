@@ -1,80 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_list_exhibition"
+    android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.phanluongha.myfirstapplication.ListExhibitionActivity">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/content_list_exhibition"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imgAd"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/txtAdvertise"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imgAd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txtAdvertise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+
+            <at.technikum.mti.fancycoverflow.FancyCoverFlow
+                android:id="@+id/fancyCoverFlow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#191919"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutCategotyAction"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_blue_border"
                 android:gravity="center"
-                android:textColor="@android:color/white"
-                android:textSize="20sp" />
-        </RelativeLayout>
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/select_bussiness_area"
+                    android:textColor="@android:color/white"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/imgCategotyAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_down" />
+            </LinearLayout>
 
 
-        <at.technikum.mti.fancycoverflow.FancyCoverFlow
-            android:id="@+id/fancyCoverFlow"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#191919"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp" />
-
-        <LinearLayout
-            android:id="@+id/layoutCategotyAction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/background_blue_border"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/listExhibition"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:text="@string/select_bussiness_area"
-                android:textColor="@android:color/white"
-                android:textSize="18dp" />
+                android:orientation="vertical"
+                android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/imgCategotyAction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/arrow_down" />
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/listExhibition"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone" />
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

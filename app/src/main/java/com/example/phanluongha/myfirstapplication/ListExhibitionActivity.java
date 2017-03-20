@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,6 +43,7 @@ import fancycoverflow.FancyCoverFlowSampleAdapter;
 
 public class ListExhibitionActivity extends NavigationActivity implements EventCategoryChildClickListener {
 
+    private SwipeRefreshLayout swipeLayout;
     private LinearLayout layoutCategotyAction;
     private ImageView imgCategotyAction;
     private FancyCoverFlow fancyCoverFlow;
@@ -93,11 +96,46 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
         imgAd = (ImageView) findViewById(R.id.imgAd);
         imgAd.setLayoutParams(new RelativeLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels / 3));
         txtAdvertise = (TextView) findViewById(R.id.txtAdvertise);
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLayout);
+        fancyCoverFlow.setOnTouchListener(new View.OnTouchListener() {
+            float oldTouchValueX = 0;
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN: {
+                        swipeLayout.setEnabled(false);
+                        oldTouchValueX = event.getX();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_MOVE: {
+                        float currentX = event.getX();
+                        if (Math.abs(oldTouchValueX - currentX) > 30) {
+                            swipeLayout.setEnabled(false);
+                        } else {
+                            swipeLayout.setEnabled(true);
+                        }
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
         initNavigation();
         getListEvent(0);
         new GetListEventCategory().execute();
         new GetAd().execute();
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(false);
+                getListEvent(0);
+                new GetListEventCategory().execute();
+            }
+        });
 
 
     }
@@ -271,6 +309,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
             } else {
                 try {
                     JSONArray cats = json.getJSONObject("data").getJSONArray("cat");
+                    listExhibition.removeAllViews();
                     TreeNode root = TreeNode.root();
                     for (int i = 0; i < cats.length(); i++) {
                         JSONObject cat = cats.getJSONObject(i);
