@@ -268,14 +268,14 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
             JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice);
-            Log.e("T", json.toString());
+//            Log.e("T", json.toString());
             return json;
         }
 
         @Override
         protected void onPostExecute(JSONObject json) {
             progressDialog.dismiss();
-            Log.e("T",json.toString());
+//            Log.e("T",json.toString());
             try {
                 if (json.length() > 0 && json.has("error")) {
                     try {
@@ -341,7 +341,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                         e.printStackTrace();
                     }
                 } else {
-                    Log.e("T", json.toString());
+//                    Log.e("T12121", json.toString());
                     JSONArray products = json.getJSONArray("data");
                     layoutProduct.removeAllViews();
                     TreeNode root = TreeNode.root();
@@ -354,7 +354,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                         productChild.setImage(product.getString("ImageLink"));
                         productChild.setDescription(product.getString("Description"));
                         productChild.setFavorite(product.getBoolean("isFavorite"));
-                        productChild.setIdEvent(product.getInt("idEvent"));
+                        productChild.setIdEvent(idEvent);
                         TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
                         nodeCat.addChildren(nodeCatChild);
                     }
