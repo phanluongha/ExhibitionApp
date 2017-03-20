@@ -53,7 +53,8 @@ public class GerneralEventActivity extends NavigationActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerneral_event);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);setTitle("");
+        setSupportActionBar(toolbar);
+        setTitle("");
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -76,6 +77,7 @@ public class GerneralEventActivity extends NavigationActivity {
         initNavigation();
         new GetDetailEvent().execute();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -85,6 +87,7 @@ public class GerneralEventActivity extends NavigationActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public class GetDetailEvent extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
@@ -103,7 +106,7 @@ public class GerneralEventActivity extends NavigationActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(GerneralEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventdetail?idEvent=" + String.valueOf(id)+"&token=" + GerneralEventActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventdetail?idEvent=" + String.valueOf(id) + "&token=" + GerneralEventActivity.this.token);
             return json;
         }
 
@@ -154,9 +157,8 @@ public class GerneralEventActivity extends NavigationActivity {
                         @Override
                         public void onClick(View v) {
                             try {
-                                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                                        "mailto", data.getString("Email"), null));
-                                startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                                Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getString("Email")));
+                                startActivity(emailIntent);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
