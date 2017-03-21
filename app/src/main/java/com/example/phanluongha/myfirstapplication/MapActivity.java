@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,7 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.customview.MyImageView;
@@ -34,6 +37,12 @@ import com.example.phanluongha.myfirstapplication.model.Activity;
 import com.example.phanluongha.myfirstapplication.model.DayActivity;
 import com.example.phanluongha.myfirstapplication.model.MapNode;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +67,8 @@ public class MapActivity extends NavigationActivity {
     int oldHeight;
     int newWidth;
     int newHeight;
+    ImageLoader imageLoader = ImageLoader.getInstance();
+    DisplayImageOptions defaultOptions;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -137,12 +148,29 @@ public class MapActivity extends NavigationActivity {
                     v.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     img = (MyImageView) v.findViewById(R.id.img);
                     img.setLayoutParams(new LinearLayout.LayoutParams(newWidth, newHeight));
-                    Glide
-                            .with(MapActivity.this)
-                            .load(data.getString("ImageLink"))
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .crossFade()
-                            .into(img);
+                    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                            MapActivity.this).defaultDisplayImageOptions(
+                            defaultOptions).build();
+                    imageLoader.init(config);
+                    defaultOptions = new DisplayImageOptions.Builder().imageScaleType(ImageScaleType.NONE).build();
+                    final ProgressDialog spinner = new ProgressDialog(MapActivity.this);
+                    spinner.setMessage("Loading...");
+                    imageLoader.displayImage(data.getString("ImageLink"), img, defaultOptions, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            spinner.show();
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            spinner.dismiss();
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            spinner.dismiss();
+                        }
+                    });
                     zoomView = new ZoomView(MapActivity.this);
                     zoomView.addView(v);
                     contentLayout.addView(zoomView);
