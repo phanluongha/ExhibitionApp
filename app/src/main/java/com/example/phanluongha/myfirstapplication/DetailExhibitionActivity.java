@@ -354,7 +354,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                         productChild.setImage(product.getString("ImageLink"));
                         productChild.setDescription(product.getString("Description"));
                         productChild.setFavorite(product.getBoolean("isFavorite"));
-                        productChild.setIdEvent(product.getInt("idEvent"));
+                        productChild.setIdEvent(idEvent);
                         TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
                         nodeCat.addChildren(nodeCatChild);
                     }
