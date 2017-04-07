@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.phanluongha.myfirstapplication.R;
-import com.example.phanluongha.myfirstapplication.impl.RcvActivityClick;
 import com.example.phanluongha.myfirstapplication.impl.RcvMyCalendarClick;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 

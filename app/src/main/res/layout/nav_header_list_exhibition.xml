@@ -163,8 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:orientation="horizontal">
 
                     <FrameLayout
                         android:layout_width="0dp"
@@ -185,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1.5"
-                        android:text="My Calendar"
+                        android:text="@string/my_calendar"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 

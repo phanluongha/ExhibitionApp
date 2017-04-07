@@ -272,9 +272,10 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                                 detailEvent.putExtra("banner", events.get(position).getImage2());
                                 detailEvent.putExtra("name", events.get(position).getName());
                                 startActivity(detailEvent);
-                            } else if (events.get(position).getWebLink().length() > 0) {
-                                Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(events.get(position).getWebLink()));
-                                startActivity(web);
+                            } else {
+                                Intent general = new Intent(ListExhibitionActivity.this, GerneralEventActivity.class);
+                                general.putExtra("id", events.get(position).getId());
+                                startActivity(general);
                             }
                         }
                     });

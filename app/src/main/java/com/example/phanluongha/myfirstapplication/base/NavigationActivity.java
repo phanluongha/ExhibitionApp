@@ -1,12 +1,14 @@
 package com.example.phanluongha.myfirstapplication.base;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +35,8 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
+import okhttp3.MultipartBody;
+
 /**
  * Created by haphan on 3/13/2017.
  */
@@ -49,6 +53,8 @@ public class NavigationActivity extends DefaultActivity {
     BadgeView badgeView;
     private ImageView flagEN;
     private ImageView flagVN;
+    AlphaAnimation alphaDimly;
+    AlphaAnimation alphaClearly;
 
 
     protected void initNavigation() {
@@ -129,14 +135,15 @@ public class NavigationActivity extends DefaultActivity {
         });
         flagEN = (ImageView) findViewById(R.id.flagEN);
         flagVN = (ImageView) findViewById(R.id.flagVN);
-        String laguage = sharedpreferences.getString("language", "en");
-        final AlphaAnimation alphaDimly = new AlphaAnimation(0.3F, 0.3F);
+        alphaDimly = new AlphaAnimation(0.3F, 0.3F);
         alphaDimly.setDuration(0);
         alphaDimly.setFillAfter(true);
 
-        final AlphaAnimation alphaClearly = new AlphaAnimation(1F, 1F);
+        alphaClearly = new AlphaAnimation(1F, 1F);
         alphaClearly.setDuration(0);
         alphaClearly.setFillAfter(true);
+
+        String laguage = sharedpreferences.getString("language", "en");
         if (laguage.equalsIgnoreCase("vi")) {
             flagEN.setEnabled(true);
             flagEN.startAnimation(alphaClearly);
@@ -153,41 +160,103 @@ public class NavigationActivity extends DefaultActivity {
         flagEN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Configuration config = new Configuration(getResources().getConfiguration());
-                config.locale = new Locale("en");
-                getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                flagEN.setEnabled(false);
-                flagEN.startAnimation(alphaDimly);
-                flagVN.setEnabled(true);
-                flagVN.startAnimation(alphaClearly);
-                sharedpreferences.edit().putString("language", "en").commit();
-                Intent intent = getIntent();
-                overridePendingTransition(0, 0);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                finish();
-                overridePendingTransition(0, 0);
-                startActivity(intent);
+                MultipartBody.Builder m = new MultipartBody.Builder();
+                m.setType(MultipartBody.FORM);
+                m.addFormDataPart("lang", "2");
+                m.addFormDataPart("idDevice", NavigationActivity.this.idDevice);
+                m.addFormDataPart("token", NavigationActivity.this.token);
+                new ChangeLanguage("en", m).execute();
             }
         });
         flagVN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Configuration config = new Configuration(getResources().getConfiguration());
-                config.locale = new Locale("vi");
-                getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                flagEN.setEnabled(true);
-                flagEN.startAnimation(alphaClearly);
-                flagVN.setEnabled(false);
-                flagVN.startAnimation(alphaDimly);
-                sharedpreferences.edit().putString("language", "vi").commit();
-                Intent intent = getIntent();
-                overridePendingTransition(0, 0);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                finish();
-                overridePendingTransition(0, 0);
-                startActivity(intent);
+                MultipartBody.Builder m = new MultipartBody.Builder();
+                m.setType(MultipartBody.FORM);
+                m.addFormDataPart("lang", "1");
+                m.addFormDataPart("idDevice", NavigationActivity.this.idDevice);
+                m.addFormDataPart("token", NavigationActivity.this.token);
+                new ChangeLanguage("vi", m).execute();
             }
         });
+    }
+
+    public class ChangeLanguage extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+        private String language;
+        private MultipartBody.Builder m;
+
+        public ChangeLanguage(String language, MultipartBody.Builder m) {
+            this.language = language;
+            this.m = m;
+            progressDialog = new ProgressDialog(NavigationActivity.this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(NavigationActivity.this);
+            JSONObject json = jParser.getPostJSONFromUrl(" http://188.166.241.242/api/changeLangCode", m);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            Log.e("T",json.toString());
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(NavigationActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    if (json.getInt("code") == 200) {
+                        if (language.equalsIgnoreCase("en")) {
+                            Configuration config = new Configuration(getResources().getConfiguration());
+                            config.locale = new Locale("en");
+                            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+                            flagEN.setEnabled(false);
+                            flagEN.startAnimation(alphaDimly);
+                            flagVN.setEnabled(true);
+                            flagVN.startAnimation(alphaClearly);
+                            sharedpreferences.edit().putString("language", "en").commit();
+                            Intent intent = getIntent();
+                            overridePendingTransition(0, 0);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(intent);
+                        } else {
+                            Configuration config = new Configuration(getResources().getConfiguration());
+                            config.locale = new Locale("vi");
+                            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+                            flagEN.setEnabled(true);
+                            flagEN.startAnimation(alphaClearly);
+                            flagVN.setEnabled(false);
+                            flagVN.startAnimation(alphaDimly);
+                            sharedpreferences.edit().putString("language", "vi").commit();
+                            Intent intent = getIntent();
+                            overridePendingTransition(0, 0);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            finish();
+                            overridePendingTransition(0, 0);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

@@ -14,7 +14,7 @@
     <string name="floor_plan">Floorplan</string>
     <string name="txt_search">Search</string>
     <string name="add_favorite">Add favorite</string>
-    <string name="add_favorite_confirm">Are you sure you want to add this to favorite list?</string>
+    <string name="add_favorite_confirm">Are you sure you want to add this Exhibition to favorite list?</string>
     <string name="remove_favorite">Remove favorite</string>
     <string name="remove_favorite_confirm">Are you sure you want to remove this to favorite list?</string>
     <string name="yes">Yes</string>
@@ -29,5 +29,6 @@
     <string name="my_planner">MY PLANNER</string>
     <string name="my_note">My note</string>
     <string name="my_favorite">My favorires</string>
+    <string name="my_calendar">My Calendar</string>
 
 </resources>

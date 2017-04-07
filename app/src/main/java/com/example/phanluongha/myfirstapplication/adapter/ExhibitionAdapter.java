@@ -55,8 +55,6 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Ex
     @Override
     public void onBindViewHolder(ExhibitionHolder holder, final int position) {
         Exhibition ex = filteredItems.get(position);
-
-
         Glide
                 .with(context)
                 .load(ex.getImage())
