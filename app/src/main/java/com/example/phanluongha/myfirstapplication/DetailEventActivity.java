@@ -1,21 +1,31 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
 import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
+import com.example.phanluongha.myfirstapplication.request.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DetailEventActivity extends NavigationActivity implements View.OnClickListener {
 
@@ -27,6 +37,8 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
     private TextView txtConference;
     private TextView txtPlace;
     private ImageView banner;
+    private ImageView imgAd;
+    private TextView txtAdvertise;
     DisplayMetrics metrics;
     private int id;
 
@@ -82,7 +94,11 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
         txtConference.setOnClickListener(this);
         txtPlace = (TextView) findViewById(R.id.txtPlace);
         txtPlace.setOnClickListener(this);
+        imgAd = (ImageView) findViewById(R.id.imgAd);
+        imgAd.setLayoutParams(new RelativeLayout.LayoutParams(metrics.widthPixels, metrics.widthPixels / 3));
+        txtAdvertise = (TextView) findViewById(R.id.txtAdvertise);
         initNavigation();
+        new GetAd().execute();
     }
 
     @Override
@@ -120,6 +136,64 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
                 map.putExtra("id", id);
                 startActivity(map);
                 break;
+        }
+    }
+    public class GetAd extends AsyncTask<String, String, JSONObject> {
+
+        private ProgressDialog progressDialog;
+
+        public GetAd() {
+            progressDialog = new ProgressDialog(DetailEventActivity.this);
+            progressDialog.setMessage("Loading...");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JsonParser jParser = new JsonParser(DetailEventActivity.this);
+            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getadvertisedetail?idAdvertise=2&token=" + DetailEventActivity.this.token + "&idDevice=" + DetailEventActivity.this.idDevice);
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+            progressDialog.dismiss();
+            try {
+                if (json.length() > 0 && json.has("error")) {
+                    try {
+                        Toast.makeText(DetailEventActivity.this, json.getJSONObject("error").getString("msg"), Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    JSONObject data = json.getJSONArray("data").getJSONObject(0);
+                    Glide
+                            .with(DetailEventActivity.this)
+                            .load(data.getString("Image"))
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .crossFade()
+                            .centerCrop()
+                            .into(imgAd);
+                    txtAdvertise.setText(Html.fromHtml(data.getString("Description")));
+                    final String link = data.getString("Link");
+                    if (link.length() > 0) {
+                        imgAd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+                                startActivity(browserIntent);
+                            }
+                        });
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

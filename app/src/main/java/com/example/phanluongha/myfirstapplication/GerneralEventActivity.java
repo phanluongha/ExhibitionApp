@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -112,6 +113,7 @@ public class GerneralEventActivity extends NavigationActivity {
 
         @Override
         protected void onPostExecute(final JSONObject json) {
+            Log.e("T", json.toString());
             progressDialog.dismiss();
             if (json.has("error")) {
                 try {
@@ -157,6 +159,8 @@ public class GerneralEventActivity extends NavigationActivity {
                         @Override
                         public void onClick(View v) {
                             try {
+                                if (data.getString("Email").length() == 0)
+                                    return;
                                 Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data.getString("Email")));
                                 startActivity(emailIntent);
                             } catch (JSONException e) {
@@ -169,9 +173,10 @@ public class GerneralEventActivity extends NavigationActivity {
                         public void onClick(View v) {
                             try {
                                 if (ActivityCompat.checkSelfPermission(GerneralEventActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-                                    Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + data.getString("Phone")));
+                                    Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + data.getString("Phone").replace(" ", "")));
                                     startActivity(intentCall);
                                 } else {
+                                    phone = data.getString("Phone").replace(" ", "");
                                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                         ActivityCompat.requestPermissions(GerneralEventActivity.this,
                                                 new String[]{Manifest.permission.CALL_PHONE},
@@ -191,6 +196,8 @@ public class GerneralEventActivity extends NavigationActivity {
         }
     }
 
+    String phone;
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -198,7 +205,10 @@ public class GerneralEventActivity extends NavigationActivity {
             case 1: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    imgPhone.performClick();
+                    if (ActivityCompat.checkSelfPermission(GerneralEventActivity.this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        Intent intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
+                        GerneralEventActivity.this.startActivity(intentCall);
+                    }
                 }
                 return;
             }

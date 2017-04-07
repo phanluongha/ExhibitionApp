@@ -6,6 +6,7 @@
     <string name="select_bussiness_area">Please select a business sector you\'re insterested in</string>
     <string name="general_infomation">General Infomation</string>
     <string name="exhibitor">Exhibitor</string>
+    <string name="exhibitors">Exhibitors</string>
     <string name="products">Products</string>
     <string name="competition_activity">Competitions/Activities</string>
     <string name="activity">Activities</string>
@@ -25,4 +26,8 @@
     <string name="txt_now">now</string>
     <string name="txt_mins"> mins</string>
     <string name="txt_hrs"> hrs</string>
+    <string name="my_planner">MY PLANNER</string>
+    <string name="my_note">My note</string>
+    <string name="my_favorite">My favorires</string>
+
 </resources>

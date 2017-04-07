@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import fancycoverflow.FancyCoverFlowSampleAdapter;
 
 public class ListExhibitionActivity extends NavigationActivity implements EventCategoryChildClickListener {
 
+    private ScrollView scrollView;
     private SwipeRefreshLayout swipeLayout;
     private LinearLayout layoutCategotyAction;
     private ImageView imgCategotyAction;
@@ -66,6 +68,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        scrollView = (ScrollView) findViewById(R.id.content_list_exhibition);
         listExhibition = (LinearLayout) findViewById(R.id.listExhibition);
         layoutCategotyAction = (LinearLayout) findViewById(R.id.layoutCategotyAction);
         imgCategotyAction = (ImageView) findViewById(R.id.imgCategotyAction);
@@ -146,6 +149,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
 
     @Override
     public void keyClickedIndex(int id) {
+        scrollView.smoothScrollTo(0, 0);
         getListEvent(id);
     }
 
@@ -245,7 +249,6 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                         events.clear();
                     }
                     JSONArray datas = json.getJSONArray("data");
-                    Log.e("T", json.toString());
 
                     for (int i = 0; i < datas.length(); i++) {
                         JSONObject ev = datas.getJSONObject(i);
@@ -254,6 +257,8 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                         e.setImage2(ev.getString("ImageLink2"));
                         e.setName(ev.getString("Name"));
                         e.setId(ev.getInt("idEvent"));
+                        e.setOpen(ev.getInt("isOpen") == 1);
+                        e.setWebLink(ev.getString("WebLink"));
                         events.add(e);
                     }
                     adapter = new FancyCoverFlowSampleAdapter(ListExhibitionActivity.this, events, metrics.widthPixels);
@@ -261,13 +266,19 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                     ListExhibitionActivity.this.fancyCoverFlow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent detailEvent = new Intent(ListExhibitionActivity.this, DetailEventActivity.class);
-                            detailEvent.putExtra("id", events.get(position).getId());
-                            detailEvent.putExtra("banner", events.get(position).getImage2());
-                            detailEvent.putExtra("name", events.get(position).getName());
-                            startActivity(detailEvent);
+                            if (events.get(position).isOpen()) {
+                                Intent detailEvent = new Intent(ListExhibitionActivity.this, DetailEventActivity.class);
+                                detailEvent.putExtra("id", events.get(position).getId());
+                                detailEvent.putExtra("banner", events.get(position).getImage2());
+                                detailEvent.putExtra("name", events.get(position).getName());
+                                startActivity(detailEvent);
+                            } else if (events.get(position).getWebLink().length() > 0) {
+                                Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(events.get(position).getWebLink()));
+                                startActivity(web);
+                            }
                         }
                     });
+//                    ListExhibitionActivity.this.fancyCoverFlow.setSelection();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -378,6 +389,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                             .load(data.getString("Image"))
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .crossFade()
+                            .centerCrop()
                             .into(imgAd);
                     txtAdvertise.setText(Html.fromHtml(data.getString("Description")));
                     final String link = data.getString("Link");

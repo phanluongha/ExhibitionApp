@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Favorite"
+                android:text="@string/my_favorite"
                 android:textColor="@android:color/white"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_profile_gallery_active_style"
                 android:gravity="center_horizontal"
-                android:text="Products"
+                android:text="@string/products"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_profile_achivement_nomal_style"
                 android:gravity="center_horizontal"
-                android:text="Exhibitors"
+                android:text="@string/exhibitors"
                 android:textColor="@android:color/black" />
         </LinearLayout>
 

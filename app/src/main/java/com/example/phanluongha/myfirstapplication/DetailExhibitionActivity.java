@@ -92,12 +92,6 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         layoutProduct = (LinearLayout) findViewById(R.id.layoutProduct);
         btnLogin = (LinearLayout) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
-        SharedPreferences sharedPreferences = getSharedPreferences("check_login", MODE_PRIVATE);
-//        if (sharedPreferences.getBoolean("is_login", false)) {
-//            btnLogin.setVisibility(View.GONE);
-//            txtContact.setVisibility(View.VISIBLE);
-//            txtEmail.setVisibility(View.VISIBLE);
-//        }
         Bundle b = getIntent().getExtras();
         if (b != null) {
             idEvent = b.getInt("idEvent");
@@ -343,24 +337,28 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                 } else {
 //                    Log.e("T12121", json.toString());
                     JSONArray products = json.getJSONArray("data");
-                    layoutProduct.removeAllViews();
-                    TreeNode root = TreeNode.root();
-                    TreeNode nodeCat = new TreeNode(null).setViewHolder(new DetailExhibitionActivity.ProductCategoryHolder(DetailExhibitionActivity.this));
-                    for (int i = 0; i < products.length(); i++) {
-                        JSONObject product = products.getJSONObject(i);
-                        Product productChild = new Product();
-                        productChild.setName(product.getString("Name"));
-                        productChild.setId(product.getInt("idProduct"));
-                        productChild.setImage(product.getString("ImageLink"));
-                        productChild.setDescription(product.getString("Description"));
-                        productChild.setFavorite(product.getBoolean("isFavorite"));
-                        productChild.setIdEvent(idEvent);
-                        TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
-                        nodeCat.addChildren(nodeCatChild);
+                    if(products.length()>0) {
+                        layoutProduct.removeAllViews();
+                        TreeNode root = TreeNode.root();
+                        TreeNode nodeCat = new TreeNode(null).setViewHolder(new DetailExhibitionActivity.ProductCategoryHolder(DetailExhibitionActivity.this));
+                        for (int i = 0; i < products.length(); i++) {
+                            JSONObject product = products.getJSONObject(i);
+                            Product productChild = new Product();
+                            productChild.setName(product.getString("Name"));
+                            productChild.setId(product.getInt("idProduct"));
+                            productChild.setImage(product.getString("ImageLink"));
+                            productChild.setDescription(product.getString("Description"));
+                            productChild.setFavorite(product.getBoolean("isFavorite"));
+                            productChild.setIdEvent(idEvent);
+                            TreeNode nodeCatChild = new TreeNode(productChild).setViewHolder(new DetailExhibitionActivity.ProductHolderChild(DetailExhibitionActivity.this));
+                            nodeCat.addChildren(nodeCatChild);
+                        }
+                        root.addChild(nodeCat);
+                        AndroidTreeView tView = new AndroidTreeView(DetailExhibitionActivity.this, root);
+                        layoutProduct.addView(tView.getView());
+                    }else{
+                        layoutProduct.setVisibility(View.GONE);
                     }
-                    root.addChild(nodeCat);
-                    AndroidTreeView tView = new AndroidTreeView(DetailExhibitionActivity.this, root);
-                    layoutProduct.addView(tView.getView());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

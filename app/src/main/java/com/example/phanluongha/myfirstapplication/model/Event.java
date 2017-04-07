@@ -43,4 +43,22 @@ public class Event {
     public void setName(String name) {
         this.name = name;
     }
+    private boolean isOpen;
+    private String WebLink;
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public String getWebLink() {
+        return WebLink;
+    }
+
+    public void setWebLink(String webLink) {
+        WebLink = webLink;
+    }
 }

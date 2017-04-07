@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">VES</string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="events">Sự kiện</string>
+    <string name="note">Ghi chú</string>
+    <string name="select_bussiness_area">Vui lòng chọn lĩnh vực mà bạn quan tâm</string>
+    <string name="general_infomation">Thông tin chung</string>
+    <string name="exhibitor">Người triễn lãm</string>
+    <string name="exhibitors">Người triễn lãm</string>
+    <string name="products">Sản phẩm</string>
+    <string name="competition_activity">Cuộc thi/Hoạt động</string>
+    <string name="activity">Hoạt động</string>
+    <string name="conferences">Hội nghị</string>
+    <string name="floor_plan">Bản đồ</string>
+    <string name="txt_search">Tìm kiếm</string>
+    <string name="add_favorite">Thêm yêu thích</string>
+    <string name="add_favorite_confirm">Bạn chắc chắn muốn thêm vào danh sách yêu thích?</string>
+    <string name="remove_favorite">Xóa khỏi yêu thích</string>
+    <string name="remove_favorite_confirm">Bạn chắc chắn muốn xóa khỏi danh sách yêu thích?</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="description">Mô tả</string>
+    <string name="skip">Bỏ qua</string>
+    <string name="my_inbox">Hộp thư đến</string>
+    <string name="txt_now">vừa mới</string>
+    <string name="txt_mins"> phút</string>
+    <string name="txt_hrs"> giờ</string>
+    <string name="my_planner">Lập kế hoạch</string>
+    <string name="my_note">Ghi chú</string>
+    <string name="my_favorite">Yêu thích</string>
+</resources>

@@ -47,9 +47,27 @@
             android:orientation="vertical"
             android:paddingBottom="16dp">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/flagEN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/flag_en" />
+
+                <ImageView
+                    android:id="@+id/flagVN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/flag_vn" />
+            </LinearLayout>
 
             <LinearLayout
-
                 android:id="@+id/btnMyPlant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1.5"
-                    android:text="MY PLANNER"
+                    android:text="@string/my_planner"
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -127,7 +145,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1.5"
-                        android:text="My Note"
+                        android:text="@string/my_note"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
@@ -206,7 +224,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1.5"
-                        android:text="My Favourites"
+                        android:text="@string/my_favorite"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 
@@ -244,7 +262,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1.5"
-                        android:text="My Inbox"
+                        android:text="@string/my_inbox"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
 

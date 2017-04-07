@@ -13,6 +13,25 @@
         android:background="#F5F5F5"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgAd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtAdvertise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
         <ImageView
             android:id="@+id/banner"
             android:layout_width="match_parent"
@@ -63,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:drawablePadding="5dp"
                     android:drawableTop="@drawable/icon_exhibitors"
-                    android:text="@string/exhibitor"
+                    android:text="@string/exhibitors"
                     android:textColor="#494F5D" />
             </LinearLayout>
         </LinearLayout>
@@ -111,9 +130,9 @@
                     android:id="@+id/txtActivity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:drawablePadding="5dp"
                     android:drawableTop="@drawable/icon_fring"
+                    android:gravity="center"
                     android:text="@string/competition_activity"
                     android:textColor="#494F5D" />
             </LinearLayout>
