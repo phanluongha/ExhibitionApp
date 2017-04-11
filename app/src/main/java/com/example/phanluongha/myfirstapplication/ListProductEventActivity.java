@@ -31,6 +31,7 @@ import com.example.phanluongha.myfirstapplication.impl.RcvProductClick;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.model.Product;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -212,8 +213,8 @@ public class ListProductEventActivity extends NavigationActivity implements RcvP
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListProductEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.idDevice + "&token=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.token);
-            Log.e("T","http://188.166.241.242/api/getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.idDevice + "&token=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.idDevice + "&token=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.token);
+            Log.e("T", Config.SERVER_HOST + "getproductlistofevent?idEvent=" + String.valueOf(idEvent) + "&idDevice=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.idDevice + "&token=" + com.example.phanluongha.myfirstapplication.ListProductEventActivity.this.token);
             return json;
         }
 
@@ -294,7 +295,7 @@ public class ListProductEventActivity extends NavigationActivity implements RcvP
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListProductEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "addfavorite", m);
             return json;
         }
 
@@ -342,7 +343,7 @@ public class ListProductEventActivity extends NavigationActivity implements RcvP
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListProductEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "deletefavorite", m);
             return json;
         }
 

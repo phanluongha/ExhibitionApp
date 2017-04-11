@@ -19,6 +19,7 @@ import com.example.phanluongha.myfirstapplication.impl.RcvActivityClick;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 import com.example.phanluongha.myfirstapplication.model.DayActivity;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -218,7 +219,7 @@ public class ListActivityEventActivity extends DefaultActivity implements View.O
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListActivityEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getactivitieslistofevent?idEvent=" + String.valueOf(idEvent) + "&idTypeActivities=" + String.valueOf(idTypeActivities) + "&token=" + ListActivityEventActivity.this.token + "&idDevice=" + ListActivityEventActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST +"getactivitieslistofevent?idEvent=" + String.valueOf(idEvent) + "&idTypeActivities=" + String.valueOf(idTypeActivities) + "&token=" + ListActivityEventActivity.this.token + "&idDevice=" + ListActivityEventActivity.this.idDevice);
             return json;
         }
 
@@ -266,6 +267,8 @@ public class ListActivityEventActivity extends DefaultActivity implements View.O
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            a.setHosted(activity.getString("Hosted"));
+                            a.setDescription(activity.getString("Description"));
                             d.activities.add(a);
                         }
                         days.add(d);
@@ -327,7 +330,7 @@ public class ListActivityEventActivity extends DefaultActivity implements View.O
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListActivityEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST +"addfavorite", m);
             return json;
         }
 
@@ -377,7 +380,7 @@ public class ListActivityEventActivity extends DefaultActivity implements View.O
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListActivityEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST +"deletefavorite", m);
             return json;
         }
 

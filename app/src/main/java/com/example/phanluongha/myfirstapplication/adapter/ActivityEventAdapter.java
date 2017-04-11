@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -60,10 +61,7 @@ public class ActivityEventAdapter extends RecyclerView.Adapter<ActivityEventAdap
     public void onBindViewHolder(ExhibitionHolder holder, final int position) {
         Activity activity = arrayActivity.get(position);
         holder.txtName.setText(activity.getName());
-
         holder.txtBooth.setText(activity.getPlace());
-
-
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm a");
         Date date = new Date(activity.getTime());
         holder.txtTime.setText(simpleDateFormat.format(date));
@@ -72,7 +70,8 @@ public class ActivityEventAdapter extends RecyclerView.Adapter<ActivityEventAdap
             holder.layoutActive.setBackgroundColor(Color.GRAY);
             holder.txtTime.setTextColor(Color.GRAY);
         }
-
+        holder.txtHosted.setText(activity.getHosted());
+        holder.txtDescription.setText(activity.getDescription());
         if (!activity.isFavorite()) {
             holder.imgFavotite.setImageResource(R.drawable.activity_empty_stick);
         } else {
@@ -81,7 +80,7 @@ public class ActivityEventAdapter extends RecyclerView.Adapter<ActivityEventAdap
         holder.imgFavotite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rcvActivityClick.onItemFavoriteProductClick(positionParent,position);
+                rcvActivityClick.onItemFavoriteProductClick(positionParent, position);
             }
         });
     }
@@ -92,15 +91,35 @@ public class ActivityEventAdapter extends RecyclerView.Adapter<ActivityEventAdap
         TextView txtBooth;
         TextView txtTime;
         ImageView imgFavotite;
+        TextView txtHosted;
+        TextView txtDescription;
         LinearLayout layoutActive;
+        ImageView imgShowMore;
+        TableLayout layoutMore;
 
         public ExhibitionHolder(View v) {
             super(v);
             txtName = (TextView) v.findViewById(R.id.txtName);
             txtBooth = (TextView) v.findViewById(R.id.txtBooth);
             txtTime = (TextView) v.findViewById(R.id.txtTime);
+            txtHosted = (TextView) v.findViewById(R.id.txtHosted);
+            txtDescription = (TextView) v.findViewById(R.id.txtDescription);
             imgFavotite = (ImageView) v.findViewById(R.id.imgFavotite);
             layoutActive = (LinearLayout) v.findViewById(R.id.layoutActive);
+            imgShowMore = (ImageView) v.findViewById(R.id.imgShowMore);
+            layoutMore = (TableLayout) v.findViewById(R.id.layoutMore);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (layoutMore.getVisibility() == View.GONE) {
+                        layoutMore.setVisibility(View.VISIBLE);
+                        imgShowMore.setImageResource(R.drawable.keyboard_arrow_up);
+                    } else {
+                        layoutMore.setVisibility(View.GONE);
+                        imgShowMore.setImageResource(R.drawable.keyboard_arrow_down);
+                    }
+                }
+            });
         }
     }
 

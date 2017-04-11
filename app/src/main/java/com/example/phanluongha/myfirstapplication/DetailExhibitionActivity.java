@@ -35,6 +35,7 @@ import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
 import com.example.phanluongha.myfirstapplication.model.Product;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -60,6 +61,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
     private TextView txtContact;
     private TextView txtEmail;
     private LinearLayout layoutProduct;
+    private TextView goToBooth;
     DisplayMetrics metrics;
     private int idEvent;
     private int idExhibitor;
@@ -92,25 +94,18 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         layoutProduct = (LinearLayout) findViewById(R.id.layoutProduct);
         btnLogin = (LinearLayout) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
+        goToBooth = (TextView) findViewById(R.id.goToBooth);
+        goToBooth.setOnClickListener(this);
         Bundle b = getIntent().getExtras();
         if (b != null) {
-            idEvent = b.getInt("idEvent");
             idExhibitor = b.getInt("id");
-            isFavorite = b.getBoolean("isFavorite");
-            if (isFavorite) {
-                imgFavorite.setImageResource(R.drawable.fill_stick);
-            } else {
-                imgFavorite.setImageResource(R.drawable.empty_stick);
-            }
-            imgFavorite.setOnClickListener(DetailExhibitionActivity.this);
             new GetDetailExhibition(idExhibitor).execute();
-            new GetProductOfExhibition(idExhibitor, idEvent).execute();
         }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailExhibitionActivity.this, NotepadActivity.class);
+                Intent intent = new Intent(DetailExhibitionActivity.this, ListNoteActivity.class);
                 startActivity(intent);
             }
         });
@@ -161,6 +156,12 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         switch (v.getId()) {
             case R.id.btnLogin:
                 startActivityForResult(new Intent(DetailExhibitionActivity.this, SignInActivity.class), 1000);
+                break;
+            case R.id.goToBooth:
+                Intent map = new Intent(DetailExhibitionActivity.this, MapActivity.class);
+                map.putExtra("id", idEvent);
+                map.putExtra("idExhibitor", idExhibitor);
+                startActivity(map);
                 break;
             case R.id.imgFavorite:
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -261,15 +262,13 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice);
-//            Log.e("T", json.toString());
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getexhibitordetail?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice);
             return json;
         }
 
         @Override
         protected void onPostExecute(JSONObject json) {
             progressDialog.dismiss();
-//            Log.e("T",json.toString());
             try {
                 if (json.length() > 0 && json.has("error")) {
                     try {
@@ -288,9 +287,17 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                     txtName.setText(ex.getString("Name"));
                     txtBooth.setText(ex.getString("BoothNo"));
                     txtPlace.setText(ex.getString("Address"));
-//                    txtDescription.setText(ex.getString("Description"));
                     txtContact.setText(ex.getString("Phone"));
                     txtEmail.setText(ex.getString("Email"));
+                    idEvent = Integer.parseInt(ex.getString("idEvent"));
+                    isFavorite = ex.getBoolean("isFavorite");
+                    if (isFavorite) {
+                        imgFavorite.setImageResource(R.drawable.fill_stick);
+                    } else {
+                        imgFavorite.setImageResource(R.drawable.empty_stick);
+                    }
+                    imgFavorite.setOnClickListener(DetailExhibitionActivity.this);
+                    new GetProductOfExhibition(idExhibitor, idEvent).execute();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -320,7 +327,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getproductlistofexhibitor?idExhibitor=" + String.valueOf(idExhibitor) + "&token=" + DetailExhibitionActivity.this.token + "&idDevice=" + DetailExhibitionActivity.this.idDevice + "&idEvent=" + String.valueOf(idEvent));
             return json;
         }
 
@@ -337,7 +344,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                 } else {
 //                    Log.e("T12121", json.toString());
                     JSONArray products = json.getJSONArray("data");
-                    if(products.length()>0) {
+                    if (products.length() > 0) {
                         layoutProduct.removeAllViews();
                         TreeNode root = TreeNode.root();
                         TreeNode nodeCat = new TreeNode(null).setViewHolder(new DetailExhibitionActivity.ProductCategoryHolder(DetailExhibitionActivity.this));
@@ -356,7 +363,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
                         root.addChild(nodeCat);
                         AndroidTreeView tView = new AndroidTreeView(DetailExhibitionActivity.this, root);
                         layoutProduct.addView(tView.getView());
-                    }else{
+                    } else {
                         layoutProduct.setVisibility(View.GONE);
                     }
                 }
@@ -452,7 +459,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "addfavorite", m);
             return json;
         }
 
@@ -499,7 +506,7 @@ public class DetailExhibitionActivity extends NavigationActivity implements View
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailExhibitionActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "deletefavorite", m);
             return json;
         }
 

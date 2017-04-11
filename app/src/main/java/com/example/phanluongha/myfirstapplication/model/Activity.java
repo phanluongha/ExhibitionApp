@@ -63,4 +63,23 @@ public class Activity {
     public void setDay(String day) {
         this.day = day;
     }
+
+    private String hosted;
+    private String description;
+
+    public String getHosted() {
+        return hosted;
+    }
+
+    public void setHosted(String hosted) {
+        this.hosted = hosted;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

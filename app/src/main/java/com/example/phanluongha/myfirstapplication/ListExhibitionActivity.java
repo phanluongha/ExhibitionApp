@@ -30,6 +30,7 @@ import com.example.phanluongha.myfirstapplication.impl.EventCategoryChildClickLi
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -228,12 +229,13 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventlist" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idChildCategory=" + String.valueOf(category) : ""));
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "geteventlist" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token + (category > 0 ? "&idChildCategory=" + String.valueOf(category) : ""));
             return json;
         }
 
         @Override
         protected void onPostExecute(JSONObject json) {
+            Log.e("T", json.toString());
             progressDialog.dismiss();
             try {
                 if (json.length() > 0 && json.has("error")) {
@@ -279,7 +281,8 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
                             }
                         }
                     });
-//                    ListExhibitionActivity.this.fancyCoverFlow.setSelection();
+                    if (datas.length() > 1)
+                        ListExhibitionActivity.this.fancyCoverFlow.setSelection(1);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -305,7 +308,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getcategorylist" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getcategorylist" + "?idDevice=" + ListExhibitionActivity.this.idDevice + "&token=" + ListExhibitionActivity.this.token);
             return json;
         }
 
@@ -369,7 +372,7 @@ public class ListExhibitionActivity extends NavigationActivity implements EventC
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getadvertisedetail?idAdvertise=2&token=" + ListExhibitionActivity.this.token + "&idDevice=" + ListExhibitionActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getadvertisedetail?idAdvertise=2&token=" + ListExhibitionActivity.this.token + "&idDevice=" + ListExhibitionActivity.this.idDevice);
             return json;
         }
 

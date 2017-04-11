@@ -42,4 +42,33 @@ public class MapNode {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    private String name;
+    private String booth;
+
+    public String getBooth() {
+        return booth;
+    }
+
+    public void setBooth(String booth) {
+        this.booth = booth;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private int id = -1;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

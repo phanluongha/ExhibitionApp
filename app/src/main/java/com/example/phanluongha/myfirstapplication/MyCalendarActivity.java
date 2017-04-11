@@ -25,6 +25,7 @@ import com.example.phanluongha.myfirstapplication.impl.RcvMyCalendarClick;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 import com.example.phanluongha.myfirstapplication.model.DayActivity;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
@@ -227,7 +228,7 @@ public class MyCalendarActivity extends DefaultActivity implements RcvMyCalendar
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MyCalendarActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getlistfavoritedactivitiesbydate?token=" + MyCalendarActivity.this.token + "&idDevice=" + MyCalendarActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getlistfavoritedactivitiesbydate?token=" + MyCalendarActivity.this.token + "&idDevice=" + MyCalendarActivity.this.idDevice);
             return json;
         }
 
@@ -269,6 +270,8 @@ public class MyCalendarActivity extends DefaultActivity implements RcvMyCalendar
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            a.setHosted(activity.getString("Hosted"));
+                            a.setDescription(activity.getString("Description"));
                             MyCalendarActivity.this.activities.add(a);
                         }
                     }
@@ -303,7 +306,7 @@ public class MyCalendarActivity extends DefaultActivity implements RcvMyCalendar
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MyCalendarActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "addfavorite", m);
             return json;
         }
 
@@ -351,7 +354,7 @@ public class MyCalendarActivity extends DefaultActivity implements RcvMyCalendar
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MyCalendarActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "deletefavorite", m);
             return json;
         }
 

@@ -4,7 +4,12 @@
     tools:context="com.example.minhnguyen2.myapplication.MainActivity">
     <item
         android:id="@+id/action_save"
-        android:title="Save Notepad"
         android:icon="@drawable/ic_plus"
+        android:title="Save Notepad"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_bin"
+        android:title="Delete Notepad"
         app:showAsAction="always" />
 </menu>

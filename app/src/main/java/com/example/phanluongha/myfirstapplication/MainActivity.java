@@ -1,13 +1,17 @@
 package com.example.phanluongha.myfirstapplication;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -23,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.model.Product;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                checkToken();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        } else {
+            checkToken();
+        }
+    }
+
+    private void checkToken() {
         final String token = sharedpreferences.getString("token", "");
         final String idDevice = sharedpreferences.getString("idDevice", "");
         if (token.length() > 0 && idDevice.length() > 0 && !token.equalsIgnoreCase("null") && !idDevice.equalsIgnoreCase("null")) {
@@ -74,6 +92,12 @@ public class MainActivity extends AppCompatActivity {
                     Settings.Secure.ANDROID_ID);
             new GetToken(android_id).execute();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        checkToken();
     }
 
     public class GetToken extends AsyncTask<String, String, JSONObject> {
@@ -96,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MainActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/checkdeviceid?idDevice=" + idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "checkdeviceid?idDevice=" + idDevice + "&lang=" + sharedpreferences.getString("language", "en") + "&deviceType=android");
             return json;
         }
 
@@ -113,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     final JSONObject data = json.getJSONObject("data");
                     sharedpreferences.edit().clear()
-                            .putString("token", data.getString("token")).putString("idDevice", data.getString("idDevice")).commit();
+                            .putString("token", data.getString("token")).putString("idDevice", data.getString("idDevice")).putString("language", sharedpreferences.getString("language", "en")).commit();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -153,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MainActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getadvertisedetail?idAdvertise=1&token=" + token + "&idDevice=" + idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getadvertisedetail?idAdvertise=1&token=" + token + "&idDevice=" + idDevice);
             return json;
         }
 

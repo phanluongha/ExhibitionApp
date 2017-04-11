@@ -25,6 +25,7 @@ import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.model.Activity;
 import com.example.phanluongha.myfirstapplication.model.Inbox;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import org.json.JSONArray;
@@ -117,7 +118,7 @@ public class MyInboxActivity extends DefaultActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(MyInboxActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getallnotification?token=" + MyInboxActivity.this.token + "&idDevice=" + MyInboxActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST +"getallnotification?token=" + MyInboxActivity.this.token + "&idDevice=" + MyInboxActivity.this.idDevice);
             return json;
         }
 

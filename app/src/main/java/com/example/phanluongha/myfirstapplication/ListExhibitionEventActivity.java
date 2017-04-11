@@ -32,6 +32,7 @@ import com.example.phanluongha.myfirstapplication.impl.RcvExhibitionClick;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -228,7 +229,7 @@ public class ListExhibitionEventActivity extends NavigationActivity implements R
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitorlist?idEvent=" + String.valueOf(idEvent) + "&token=" + ListExhibitionEventActivity.this.token + "&idDevice=" + ListExhibitionEventActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST +"getexhibitorlist?idEvent=" + String.valueOf(idEvent) + "&token=" + ListExhibitionEventActivity.this.token + "&idDevice=" + ListExhibitionEventActivity.this.idDevice);
             return json;
         }
 
@@ -309,7 +310,7 @@ public class ListExhibitionEventActivity extends NavigationActivity implements R
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST +"addfavorite", m);
             return json;
         }
 
@@ -357,7 +358,7 @@ public class ListExhibitionEventActivity extends NavigationActivity implements R
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(ListExhibitionEventActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST +"deletefavorite", m);
             return json;
         }
 

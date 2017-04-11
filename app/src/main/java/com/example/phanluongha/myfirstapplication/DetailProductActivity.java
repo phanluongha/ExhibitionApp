@@ -30,6 +30,7 @@ import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.model.Exhibition;
 import com.example.phanluongha.myfirstapplication.model.Product;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -99,7 +100,7 @@ public class DetailProductActivity extends NavigationActivity implements View.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailProductActivity.this, NotepadActivity.class);
+                Intent intent = new Intent(DetailProductActivity.this, ListNoteActivity.class);
                 startActivity(intent);
             }
         });
@@ -243,7 +244,7 @@ public class DetailProductActivity extends NavigationActivity implements View.On
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailProductActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getexhibitorproduct?idProduct=" + String.valueOf(idProduct) + "&idEvent=" + String.valueOf(idEvent) + "&token=" + DetailProductActivity.this.token + "&idDevice=" + DetailProductActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getexhibitorproduct?idProduct=" + String.valueOf(idProduct) + "&idEvent=" + String.valueOf(idEvent) + "&token=" + DetailProductActivity.this.token + "&idDevice=" + DetailProductActivity.this.idDevice);
             return json;
         }
 
@@ -326,7 +327,7 @@ public class DetailProductActivity extends NavigationActivity implements View.On
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailProductActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/addfavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "addfavorite", m);
             return json;
         }
 
@@ -373,7 +374,7 @@ public class DetailProductActivity extends NavigationActivity implements View.On
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailProductActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl("http://188.166.241.242/api/deletefavorite", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "deletefavorite", m);
             return json;
         }
 

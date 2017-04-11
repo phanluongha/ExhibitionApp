@@ -27,8 +27,16 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.DetailEventActivity;
+import com.example.phanluongha.myfirstapplication.MapActivity;
 import com.example.phanluongha.myfirstapplication.R;
 import com.example.phanluongha.myfirstapplication.model.Event;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 
 import java.util.ArrayList;
 
@@ -40,11 +48,18 @@ public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
     private Context context;
     private ArrayList<Event> events;
     private int screenWidth;
+    ImageLoader imageLoader = ImageLoader.getInstance();
+    DisplayImageOptions defaultOptions;
 
     public FancyCoverFlowSampleAdapter(Context context, ArrayList<Event> events, int screenWidth) {
         this.context = context;
         this.events = events;
         this.screenWidth = screenWidth;
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+                context).memoryCache(new WeakMemoryCache()).defaultDisplayImageOptions(
+                defaultOptions).build();
+        imageLoader.init(config);
+        defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true).build();
     }
 
     @Override
@@ -72,14 +87,8 @@ public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
             imageView = new ImageView(viewGroup.getContext());
             imageView.setLayoutParams(new FancyCoverFlow.LayoutParams(screenWidth / 2, 2 * screenWidth / 3));
         }
-        imageView.setImageResource(R.drawable.placeholder);
-        Glide
-                .with(context)
-                .load(e.getImage())
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .crossFade()
-                .into(imageView);
+        ImageAware ia = new ImageViewAware(imageView, false);
+        imageLoader.displayImage(e.getImage(), ia, defaultOptions);
         return imageView;
     }
 }

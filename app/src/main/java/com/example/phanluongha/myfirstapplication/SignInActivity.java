@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.model.Event;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,7 +94,7 @@ public class SignInActivity extends DefaultActivity implements View.OnClickListe
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(SignInActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/checkuserlogin?username=" + username + "&password=" + password + "&token=" + SignInActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "checkuserlogin?username=" + username + "&password=" + password + "&token=" + SignInActivity.this.token);
             return json;
         }
 
@@ -152,7 +153,7 @@ public class SignInActivity extends DefaultActivity implements View.OnClickListe
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(SignInActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getforgotpasswordlink?token=" + SignInActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getforgotpasswordlink?token=" + SignInActivity.this.token);
             return json;
         }
 
@@ -205,7 +206,7 @@ public class SignInActivity extends DefaultActivity implements View.OnClickListe
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(SignInActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getsignuplink?token=" + SignInActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getsignuplink?token=" + SignInActivity.this.token);
             return json;
         }
 

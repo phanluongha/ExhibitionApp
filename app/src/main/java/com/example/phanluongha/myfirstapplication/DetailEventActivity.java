@@ -23,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.phanluongha.myfirstapplication.adapter.ListActivityEventAdapter;
 import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +42,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
     private TextView txtAdvertise;
     DisplayMetrics metrics;
     private int id;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -50,6 +52,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +88,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
         txtExhibitor.setOnClickListener(this);
         txtProduct = (TextView) findViewById(R.id.txtProduct);
         txtProduct.setOnClickListener(this);
-        txtActivity = (TextView)findViewById(R.id.txtActivity);
+        txtActivity = (TextView) findViewById(R.id.txtActivity);
         txtActivity.setOnClickListener(this);
         txtConference = (TextView) findViewById(R.id.txtConference);
         txtConference.setOnClickListener(this);
@@ -135,6 +138,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
                 break;
         }
     }
+
     public class GetAd extends AsyncTask<String, String, JSONObject> {
 
         private ProgressDialog progressDialog;
@@ -153,7 +157,7 @@ public class DetailEventActivity extends NavigationActivity implements View.OnCl
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(DetailEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getadvertisedetail?idAdvertise=3&token=" + DetailEventActivity.this.token + "&idDevice=" + DetailEventActivity.this.idDevice);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getadvertisedetail?idAdvertise=3&token=" + DetailEventActivity.this.token + "&idDevice=" + DetailEventActivity.this.idDevice);
             return json;
         }
 

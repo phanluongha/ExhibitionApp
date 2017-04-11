@@ -20,7 +20,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="description">Description</string>
-    <string name="title_activity_note">NoteActivity</string>
     <string name="skip">Skip</string>
     <string name="my_inbox">Inbox</string>
     <string name="txt_now">now</string>
@@ -30,5 +29,12 @@
     <string name="my_note">My note</string>
     <string name="my_favorite">My favorires</string>
     <string name="my_calendar">My Calendar</string>
+    <string name="save_completed">Save complete</string>
+    <string name="save_not_completed">Please check content again</string>
+    <string name="empty_note">Empty note</string>
+    <string name="hosted_by">Hosted By</string>
+    <string name="go_to_booth">Go to booth</string>
+    <string name="guest">GUEST</string>
+    <string name="suggestions">Suggestions</string>
 
 </resources>

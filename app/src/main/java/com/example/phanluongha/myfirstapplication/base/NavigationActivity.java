@@ -3,9 +3,10 @@ package com.example.phanluongha.myfirstapplication.base;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -20,15 +21,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.phanluongha.myfirstapplication.ListNoteActivity;
 import com.example.phanluongha.myfirstapplication.MyCalendarActivity;
 import com.example.phanluongha.myfirstapplication.MyFavouritesActivity;
 import com.example.phanluongha.myfirstapplication.MyInboxActivity;
-import com.example.phanluongha.myfirstapplication.NotepadActivity;
 import com.example.phanluongha.myfirstapplication.R;
 import com.example.phanluongha.myfirstapplication.SignInActivity;
 import com.example.phanluongha.myfirstapplication.customview.BadgeView;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
 import com.example.phanluongha.myfirstapplication.utils.AnimationShowHideView;
+import com.example.phanluongha.myfirstapplication.utils.Config;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,9 +62,22 @@ public class NavigationActivity extends DefaultActivity {
     private ImageView flagVN;
     AlphaAnimation alphaDimly;
     AlphaAnimation alphaClearly;
+    private static final int PLACE_PICKER_REQUEST = 1000;
+    private GoogleApiClient mClient;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+        mClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .build();
+    }
 
 
     protected void initNavigation() {
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         txtUsername = (TextView) findViewById(R.id.txtUsername);
         layoutChildMyPlant = (LinearLayout) findViewById(R.id.layoutChildMyPlant);
         imgShowHidePlant = (ImageView) findViewById(R.id.imgShowHidePlant);
@@ -86,7 +106,17 @@ public class NavigationActivity extends DefaultActivity {
         btnSuggest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(NavigationActivity.this, "btnSuggest", Toast.LENGTH_SHORT).show();
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(NavigationActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                }
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
             }
         });
         btnHotdeals.setOnClickListener(new View.OnClickListener() {
@@ -112,25 +142,37 @@ public class NavigationActivity extends DefaultActivity {
         btnMyCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
                 startActivity(new Intent(NavigationActivity.this, MyCalendarActivity.class));
             }
         });
         btnMyFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
                 startActivity(new Intent(NavigationActivity.this, MyFavouritesActivity.class));
             }
         });
         btnMyInbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
                 startActivity(new Intent(NavigationActivity.this, MyInboxActivity.class));
             }
         });
         btnMyNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NavigationActivity.this, NotepadActivity.class));
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
+                startActivity(new Intent(NavigationActivity.this, ListNoteActivity.class));
             }
         });
         flagEN = (ImageView) findViewById(R.id.flagEN);
@@ -160,9 +202,12 @@ public class NavigationActivity extends DefaultActivity {
         flagEN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
                 MultipartBody.Builder m = new MultipartBody.Builder();
                 m.setType(MultipartBody.FORM);
-                m.addFormDataPart("lang", "2");
+                m.addFormDataPart("lang", "en");
                 m.addFormDataPart("idDevice", NavigationActivity.this.idDevice);
                 m.addFormDataPart("token", NavigationActivity.this.token);
                 new ChangeLanguage("en", m).execute();
@@ -171,9 +216,12 @@ public class NavigationActivity extends DefaultActivity {
         flagVN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
                 MultipartBody.Builder m = new MultipartBody.Builder();
                 m.setType(MultipartBody.FORM);
-                m.addFormDataPart("lang", "1");
+                m.addFormDataPart("lang", "vi");
                 m.addFormDataPart("idDevice", NavigationActivity.this.idDevice);
                 m.addFormDataPart("token", NavigationActivity.this.token);
                 new ChangeLanguage("vi", m).execute();
@@ -203,13 +251,13 @@ public class NavigationActivity extends DefaultActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(NavigationActivity.this);
-            JSONObject json = jParser.getPostJSONFromUrl(" http://188.166.241.242/api/changeLangCode", m);
+            JSONObject json = jParser.getPostJSONFromUrl(Config.SERVER_HOST + "changelangcode", m);
             return json;
         }
 
         @Override
         protected void onPostExecute(JSONObject json) {
-            Log.e("T",json.toString());
+            Log.e("T", json.toString());
             progressDialog.dismiss();
             try {
                 if (json.length() > 0 && json.has("error")) {
@@ -262,7 +310,6 @@ public class NavigationActivity extends DefaultActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         }
@@ -312,7 +359,7 @@ public class NavigationActivity extends DefaultActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(NavigationActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/getnumberofnotificationnotread" + "?idDevice=" + NavigationActivity.this.idDevice + "&token=" + NavigationActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST + "getnumberofnotificationnotread" + "?idDevice=" + NavigationActivity.this.idDevice + "&token=" + NavigationActivity.this.token);
             return json;
         }
 

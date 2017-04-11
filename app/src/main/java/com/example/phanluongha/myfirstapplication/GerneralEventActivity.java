@@ -29,6 +29,7 @@ import com.example.phanluongha.myfirstapplication.base.DefaultActivity;
 import com.example.phanluongha.myfirstapplication.base.NavigationActivity;
 import com.example.phanluongha.myfirstapplication.model.EventCategory;
 import com.example.phanluongha.myfirstapplication.request.JsonParser;
+import com.example.phanluongha.myfirstapplication.utils.Config;
 import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
@@ -107,7 +108,7 @@ public class GerneralEventActivity extends NavigationActivity {
         @Override
         protected JSONObject doInBackground(String... params) {
             JsonParser jParser = new JsonParser(GerneralEventActivity.this);
-            JSONObject json = jParser.getJSONFromUrl("http://188.166.241.242/api/geteventdetail?idEvent=" + String.valueOf(id) + "&token=" + GerneralEventActivity.this.token);
+            JSONObject json = jParser.getJSONFromUrl(Config.SERVER_HOST +"geteventdetail?idEvent=" + String.valueOf(id) + "&token=" + GerneralEventActivity.this.token);
             return json;
         }
 

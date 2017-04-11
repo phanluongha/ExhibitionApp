@@ -1,6 +1,9 @@
 package com.example.phanluongha.myfirstapplication.customview;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -8,17 +11,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.phanluongha.myfirstapplication.DetailExhibitionActivity;
 import com.example.phanluongha.myfirstapplication.R;
 import com.example.phanluongha.myfirstapplication.model.MapNode;
 
 import java.io.Console;
 import java.util.ArrayList;
+
+import okhttp3.MultipartBody;
 
 /**
  * Created by PhanLuongHa on 2/25/2017.
@@ -38,8 +45,9 @@ public class MyImageView extends ImageView {
     private int iconStoreActiveHeight;
     public ArrayList<MapNode> mapNodes = new ArrayList<MapNode>();
     public int[][] arrayNode;
-    private int first = -1;
-    private int second = -1;
+    public int first = -1;
+    public int second = -1;
+    public ZoomView zoomView;
 
     public MyImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -65,28 +73,39 @@ public class MyImageView extends ImageView {
 
         paintLine = new Paint();
         paintLine.setColor(Color.BLUE);
-        paintLine.setStrokeWidth(10);
+        paintLine.setStrokeWidth(3);
+    }
+
+    public void setZoomView(ZoomView zoomView) {
+        this.zoomView = zoomView;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        float zoom = 1.0f;
+        if (zoomView != null)
+            zoom = zoomView.getZoom();
+        int iconStoreNormalWidthNew = (int) (iconStoreNormalWidth / zoom);
+        int iconStoreNormalHeightNew = (int) (iconStoreNormalHeight / zoom);
+        int iconStoreActiveWidthNew = (int) (iconStoreActiveWidth / zoom);
+        int iconStoreActiveHeightNew = (int) (iconStoreActiveHeight / zoom);
         for (int i = 0; i < mapNodes.size(); i++) {
             MapNode mn = mapNodes.get(i);
             if (mn.isStore()) {
                 if (!mn.isActive()) {
-                    float x = mn.getX() - iconStoreNormalWidth / 2;
-                    float y = mn.getY() - iconStoreNormalHeight;
-                    canvas.drawBitmap(iconStoreNormal, x, y, paintNormal);
+                    float x = mn.getX() - iconStoreNormalWidthNew / 2;
+                    float y = mn.getY() - iconStoreNormalHeightNew;
+                    canvas.drawBitmap(Bitmap.createScaledBitmap(iconStoreNormal, iconStoreNormalWidthNew, iconStoreNormalHeightNew, false), x, y, paintNormal);
                 } else {
-                    float x = mn.getX() - iconStoreActiveWidth / 2;
-                    float y = mn.getY() - iconStoreActiveWidth;
-                    canvas.drawBitmap(iconStoreActive, x, y, paintNormal);
+                    float x = mn.getX() - iconStoreActiveWidthNew / 2;
+                    float y = mn.getY() - iconStoreActiveHeightNew;
+                    canvas.drawBitmap(Bitmap.createScaledBitmap(iconStoreActive, iconStoreActiveWidthNew, iconStoreActiveHeightNew, false), x, y, paintNormal);
                 }
             }
-            if (first != -1 && second != -1) {
-                dijkstra(first, second, mapNodes.size(), arrayNode, canvas);
-            }
+        }
+        if (first != -1 && second != -1) {
+            dijkstra(first, second, mapNodes.size(), arrayNode, canvas);
         }
     }
 
@@ -166,41 +185,50 @@ public class MyImageView extends ImageView {
         float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                float zoom = 1.0f;
+                if (zoomView != null)
+                    zoom = zoomView.getZoom();
+                int iconStoreNormalWidthNew = (int) (iconStoreNormalWidth / zoom);
+                int iconStoreNormalHeightNew = (int) (iconStoreNormalHeight / zoom);
+                int iconStoreActiveWidthNew = (int) (iconStoreActiveWidth / zoom);
+                int iconStoreActiveHeightNew = (int) (iconStoreActiveHeight / zoom);
                 for (int i = 0; i < mapNodes.size(); i++) {
                     MapNode mn = mapNodes.get(i);
                     float mnX;
                     float mnY;
                     if (mn.isActive()) {
-                        mnX = mn.getX() - iconStoreNormalWidth / 2;
-                        mnY = mn.getY() - iconStoreNormalHeight;
-                        if (x >= mnX && x <= mnX + iconStoreNormalWidth && y >= mnY && y <= mnY + iconStoreNormalHeight) {
-                            mn.setActive(false);
-                            if (first == i) {
-                                first = -1;
-                                if (second != -1) {
-                                    first = second;
-                                    second = -1;
-                                }
-                            }
-                            invalidate();
+                        mnX = mn.getX() - iconStoreNormalWidthNew / 2;
+                        mnY = mn.getY() - iconStoreNormalHeightNew;
+                        if (x >= mnX && x <= mnX + iconStoreNormalWidthNew && y >= mnY && y <= mnY + iconStoreNormalHeightNew) {
+//                            mn.setActive(false);
+//                            if (first == i) {
+//                                first = -1;
+//                                if (second != -1) {
+//                                    first = second;
+//                                    second = -1;
+//                                }
+//                            }
+//                            invalidate();
+                            showInfor(mn);
                             break;
                         }
                     } else {
-                        mnX = mn.getX() - iconStoreActiveWidth / 2;
-                        mnY = mn.getY() - iconStoreActiveHeight;
-                        if (x >= mnX && x <= mnX + iconStoreActiveWidth && y >= mnY && y <= mnY + iconStoreActiveHeight) {
-                            mn.setActive(true);
-                            if (first == -1) {
-                                first = i;
-                            } else if (second == -1) {
-                                second = i;
-                            } else {
-                                mapNodes.get(first).setActive(false);
-                                mapNodes.get(second).setActive(false);
-                                first = i;
-                                second = -1;
-                            }
-                            invalidate();
+                        mnX = mn.getX() - iconStoreActiveWidthNew / 2;
+                        mnY = mn.getY() - iconStoreActiveHeightNew;
+                        if (x >= mnX && x <= mnX + iconStoreActiveWidthNew && y >= mnY && y <= mnY + iconStoreActiveHeightNew) {
+//                            mn.setActive(true);
+//                            if (first == -1) {
+//                                first = i;
+//                            } else if (second == -1) {
+//                                second = i;
+//                            } else {
+//                                mapNodes.get(first).setActive(false);
+//                                mapNodes.get(second).setActive(false);
+//                                first = i;
+//                                second = -1;
+//                            }
+//                            invalidate();
+                            showInfor(mn);
                             break;
                         }
                     }
@@ -209,6 +237,45 @@ public class MyImageView extends ImageView {
                 return true;
         }
         return false;
+    }
+
+    private void showInfor(final MapNode mn) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+        alertDialogBuilder.setTitle(context
+                .getString(R.string.exhibitor));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            alertDialogBuilder.setMessage(Html.fromHtml("<p>" + mn.getName() + "<p></p>" + mn.getBooth() + "</p>", Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            alertDialogBuilder.setMessage(Html.fromHtml("<p>" + mn.getName() + "<p></p>" + mn.getBooth() + "</p>"));
+        }
+        alertDialogBuilder
+                .setPositiveButton(
+                        context.getString(R.string.go_to_booth),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int id) {
+                                Intent exhibitor = new Intent(context, DetailExhibitionActivity.class);
+                                exhibitor.putExtra("id", mn.getId());
+                                context.startActivity(exhibitor);
+                            }
+                        })
+
+                .setNegativeButton(
+                        context.getString(R.string.no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int id) {
+
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder
+                .create();
+        alertDialog.show();
+
     }
 
 }

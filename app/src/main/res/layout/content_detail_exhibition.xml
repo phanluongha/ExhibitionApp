@@ -65,12 +65,30 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/booth_number" />
 
-                    <TextView
-                        android:id="@+id/txtBooth"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:textColor="#9B9B9B" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtBooth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
+                            android:textColor="#9B9B9B" />
+
+                        <TextView
+                            android:id="@+id/goToBooth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/background_blue_border"
+                            android:drawableLeft="@drawable/icon_gotobooth"
+                            android:drawablePadding="3dp"
+                            android:padding="5dp"
+                            android:text="@string/go_to_booth"
+                            android:textColor="@android:color/white" />
+                    </LinearLayout>
                 </TableRow>
 
                 <TableRow
@@ -147,11 +165,11 @@
 
                         <LinearLayout
                             android:id="@+id/btnLogin"
-                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingLeft="5dp">
+                            android:paddingLeft="5dp"
+                            android:visibility="gone">
 
                             <TextView
                                 android:layout_width="match_parent"

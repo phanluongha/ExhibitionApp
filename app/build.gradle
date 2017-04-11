@@ -7,9 +7,10 @@ android {
         applicationId "vn.exhibition.ves"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -41,4 +42,6 @@ dependencies {
     compile 'com.github.sundeepk:compact-calendar-view:2.0.0'
     testCompile 'junit:junit:4.12'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'com.google.code.gson:gson:2.2.+'
+    compile 'com.google.android.gms:play-services:8.1.0'
 }
